@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+@theme {
+    /* Color system ------------------------------------------------ */
+    --color-ink: #121212;
+    --color-ink-soft: #1c1c1e;
+    --color-ink-elevated: #232325;
+    --color-paper: #faf8f4;
+    --color-paper-dim: #f1efe9;
+    --color-stone: #8b8781;
+    --color-stone-light: #c9c5bd;
+    --color-line: #26262866;
+    --color-line-light: #e5e1d8;
+    --color-cobalt: #2b4fe0;
+    --color-cobalt-dark: #1c37ad;
+    --color-cobalt-light: #eef1fd;
+    --color-good: #1f8a52;
+    --color-warn: #b5490f;
+
+    /* Type system ---------------------------------------------------*/
+    --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+    --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    --animate-marquee: marquee 26s linear infinite;
+
+    @keyframes fade-up {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes marquee {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-50%);
+        }
+    }
+}
+
+@layer base {
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        background-color: var(--color-paper);
+        color: var(--color-ink);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-family: var(--font-display);
+        letter-spacing: -0.01em;
+    }
+
+    ::selection {
+        background-color: var(--color-cobalt);
+        color: var(--color-paper);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-cobalt);
+        outline-offset: 2px;
+    }
+
+    img {
+        -webkit-user-drag: none;
+        user-select: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+@layer utilities {
+    .label-tag {
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    .price {
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .bracket::before {
+        content: "[ ";
+    }
+
+    .bracket::after {
+        content: " ]";
+    }
+
+    .container-edge {
+        padding-left: clamp(1rem, 4vw, 3rem);
+        padding-right: clamp(1rem, 4vw, 3rem);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
