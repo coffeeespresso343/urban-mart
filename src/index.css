@@ -1,29 +1,84 @@
 @import "tailwindcss";
 
 @theme {
-    /* Color system ------------------------------------------------ */
-    --color-ink: #121212;
-    --color-ink-soft: #1c1c1e;
-    --color-ink-elevated: #232325;
-    --color-paper: #faf8f4;
-    --color-paper-dim: #f1efe9;
-    --color-stone: #8b8781;
-    --color-stone-light: #c9c5bd;
-    --color-line: #26262866;
-    --color-line-light: #e5e1d8;
-    --color-cobalt: #2b4fe0;
-    --color-cobalt-dark: #1c37ad;
-    --color-cobalt-light: #eef1fd;
-    --color-good: #1f8a52;
-    --color-warn: #b5490f;
+    /* ================================================================
+     COLOR SYSTEM — Urban-Mart
+     Premium / Editorial / Urban / Warm
+     ================================================================ */
 
-    /* Type system ---------------------------------------------------*/
-    --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
-    --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    /* Core surfaces */
+    --color-ink: #171614;
+    --color-ink-soft: #211f1c;
+    --color-ink-elevated: #2b2925;
 
-    --animate-fade-up: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    --animate-marquee: marquee 26s linear infinite;
+    --color-paper: #f7f5f0;
+    --color-paper-dim: #eeece6;
+    --color-paper-warm: #e5e0d6;
+
+    /* Neutral text */
+    --color-stone: #77736c;
+    --color-stone-light: #b7b2a8;
+    --color-stone-dark: #514e48;
+
+    /* Borders */
+    --color-line: #29272266;
+    --color-line-light: #ddd9d0;
+
+    /* Premium accent — muted copper */
+    --color-copper: #a7653f;
+    --color-copper-dark: #824c30;
+    --color-copper-light: #f1e5dc;
+
+    /* Semantic colors */
+    --color-good: #46705a;
+    --color-warn: #a45d32;
+    --color-error: #a5483f;
+
+    /* ================================================================
+     TYPE SYSTEM
+     ================================================================ */
+
+    --font-display:
+        "Archivo",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+    --font-body:
+        "Inter",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+    --font-mono:
+        "JetBrains Mono",
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        monospace;
+
+    /* ================================================================
+     ANIMATIONS
+     ================================================================ */
+
+    --animate-fade-up:
+        fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+    --animate-marquee:
+        marquee 26s linear infinite;
+
+    --animate-fade-in:
+        fade-in 0.4s ease-out forwards;
+
+    --animate-scale-in:
+        scale-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+
+    /* ================================================================
+     KEYFRAMES
+     ================================================================ */
 
     @keyframes fade-up {
         from {
@@ -34,6 +89,28 @@
         to {
             opacity: 1;
             transform: translateY(0);
+        }
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes scale-in {
+        from {
+            opacity: 0;
+            transform: scale(0.97);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
         }
     }
 
@@ -48,45 +125,111 @@
     }
 }
 
+
+/* ================================================================
+   BASE
+   ================================================================ */
+
 @layer base {
-    * {
+
+    *,
+    *::before,
+    *::after {
         -webkit-tap-highlight-color: transparent;
     }
 
     html {
         scroll-behavior: smooth;
+        background: var(--color-paper);
     }
 
     body {
+        margin: 0;
         background-color: var(--color-paper);
         color: var(--color-ink);
+
         font-family: var(--font-body);
+
         -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+
         overflow-x: hidden;
     }
 
     h1,
     h2,
     h3,
-    h4 {
+    h4,
+    h5,
+    h6 {
+        margin: 0;
+
         font-family: var(--font-display);
-        letter-spacing: -0.01em;
+
+        letter-spacing: -0.025em;
+        line-height: 1.05;
+    }
+
+    p {
+        line-height: 1.6;
     }
 
     ::selection {
-        background-color: var(--color-cobalt);
+        background-color: var(--color-copper);
         color: var(--color-paper);
     }
 
     :focus-visible {
-        outline: 2px solid var(--color-cobalt);
-        outline-offset: 2px;
+        outline: 2px solid var(--color-copper);
+        outline-offset: 3px;
+    }
+
+    button,
+    a,
+    input,
+    textarea,
+    select {
+        font: inherit;
+    }
+
+    button {
+        cursor: pointer;
     }
 
     img {
+        display: block;
+
+        max-width: 100%;
+
         -webkit-user-drag: none;
         user-select: none;
     }
+
+    /* ==============================================================
+     SCROLLBAR
+     ============================================================== */
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--color-paper-dim);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--color-stone-light);
+        border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-stone);
+    }
+
+    /* ==============================================================
+     NO SCROLLBAR
+     ============================================================== */
 
     .no-scrollbar::-webkit-scrollbar {
         display: none;
@@ -98,19 +241,35 @@
     }
 }
 
+
+/* ================================================================
+   UTILITIES
+   ================================================================ */
+
 @layer utilities {
+
+    /* Small uppercase metadata */
     .label-tag {
         font-family: var(--font-mono);
+
         font-size: 0.6875rem;
+        font-weight: 500;
+
         letter-spacing: 0.14em;
+        line-height: 1.2;
+
         text-transform: uppercase;
     }
 
+    /* Product prices */
     .price {
         font-family: var(--font-mono);
+
         font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
     }
 
+    /* Editorial bracket styling */
     .bracket::before {
         content: "[ ";
     }
@@ -119,11 +278,68 @@
         content: " ]";
     }
 
+    /* Responsive page edges */
     .container-edge {
         padding-left: clamp(1rem, 4vw, 3rem);
         padding-right: clamp(1rem, 4vw, 3rem);
     }
+
+    /* Premium hairline */
+    .hairline {
+        height: 1px;
+        background: var(--color-line-light);
+    }
+
+    /* Copper accent line */
+    .accent-line {
+        width: 2.5rem;
+        height: 2px;
+        background: var(--color-copper);
+    }
+
+    /* Subtle paper surface */
+    .surface {
+        background: var(--color-paper);
+        border: 1px solid var(--color-line-light);
+    }
+
+    /* Elevated dark surface */
+    .surface-dark {
+        background: var(--color-ink-soft);
+        color: var(--color-paper);
+    }
+
+    /* Premium image treatment */
+    .image-editorial {
+        overflow: hidden;
+    }
+
+    .image-editorial img {
+        transition:
+            transform 700ms cubic-bezier(0.16, 1, 0.3, 1),
+            filter 500ms ease;
+    }
+
+    .image-editorial:hover img {
+        transform: scale(1.035);
+    }
+
+    /* Hide selection-like scrollbar behavior on horizontal areas */
+    .scroll-x {
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+    }
+
+    .scroll-x::-webkit-scrollbar {
+        display: none;
+    }
 }
+
+
+/* ================================================================
+   REDUCED MOTION
+   ================================================================ */
 
 @media (prefers-reduced-motion: reduce) {
 
