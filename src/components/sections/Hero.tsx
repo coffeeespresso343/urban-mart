@@ -52,7 +52,7 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="relative order-1 aspect-4/5 w-full overflow-hidden lg:order-2 lg:aspect-auto lg:h-[90vh]"
+          className="relative order-1 aspect-4/3 w-full overflow-hidden lg:order-2 lg:aspect-auto lg:h-[90vh]"
         >
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=1400&q=80&auto=format&fit=crop"

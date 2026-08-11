@@ -1,0 +1,40 @@
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import ProductGrid from "../product/ProductGrid";
+import { newArrivals } from "../../data/products";
+
+const FeaturedProducts = () => {
+  return (
+    <section className="bg-paper-dim py-20 sm:py-28">
+      <div className="container-edge">
+        <div className="mb-10 flex items-end justify-between">
+          <div>
+            <span className="label-tag text-copper">Just In</span>
+            <h2 className="mt-2 font-display text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+              New Arrivals
+            </h2>
+          </div>
+          <Link
+            to="/shop?sort=newest"
+            className="label-tag hidden items-center gap-1.5 font-semibold hover:text-copper sm:flex"
+          >
+            View All <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </Link>
+        </div>
+
+        <ProductGrid products={newArrivals} />
+
+        <div className="mt-10 flex items-center justify-center sm:hidden">
+          <Link
+            to="/shop?sort=newest"
+            className="label-tag font-semibold text-copper"
+          >
+            View Alll New Arrivals
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default FeaturedProducts;
