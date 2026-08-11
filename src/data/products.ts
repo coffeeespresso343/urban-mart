@@ -134,6 +134,8 @@ export const products: Product[] = [
     colors: ["Graphite", "Sand"],
     tags: ["storage", "case", "organization"],
     featured: true,
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 4,
@@ -156,6 +158,8 @@ export const products: Product[] = [
     colors: ["Black", "Olive"],
     tags: ["travel", "organizer", "cables"],
     featured: true,
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 5,
@@ -223,6 +227,8 @@ export const products: Product[] = [
     stock: 63,
     colors: ["Gray", "Black"],
     tags: ["cables", "desk", "organization"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 8,
@@ -267,6 +273,8 @@ export const products: Product[] = [
     stock: 58,
     colors: ["Black", "Stone"],
     tags: ["pouch", "tech", "organization"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 10,
@@ -374,6 +382,8 @@ export const products: Product[] = [
     stock: 37,
     colors: ["Black"],
     tags: ["tools", "driver", "workshop"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 15,
@@ -439,6 +449,8 @@ export const products: Product[] = [
     stock: 66,
     colors: ["Black", "Sand"],
     tags: ["notebook", "pen", "everyday carry"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 18,
@@ -460,6 +472,8 @@ export const products: Product[] = [
     stock: 48,
     colors: ["Black", "White"],
     tags: ["charger", "wireless", "desk"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 19,
@@ -504,6 +518,8 @@ export const products: Product[] = [
     colors: ["Black", "Olive"],
     tags: ["duffel", "travel", "weekender"],
     featured: true,
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 21,
@@ -609,6 +625,8 @@ export const products: Product[] = [
     stock: 42,
     colors: ["Silver", "Space Gray"],
     tags: ["laptop", "stand", "desk"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 26,

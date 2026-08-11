@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import type { Product } from "../../types/Product";
 import ProductCard from "./ProductCard";
+import EmptyState from "../ui/EmptyState";
+import { SearchX } from "lucide-react";
 
 const ProductGrid = ({
   products,
@@ -9,7 +11,14 @@ const ProductGrid = ({
   products: Product[];
   emptyMessage?: string;
 }) => {
-  if (products.length === 0) return <h1>EMPTY STATE</h1>;
+  if (products.length === 0)
+    return (
+      <EmptyState
+        icon={SearchX}
+        title="No products found!"
+        message={emptyMessage}
+      />
+    );
 
   return (
     <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
