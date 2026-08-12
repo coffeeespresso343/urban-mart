@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useUIStore } from "../../context/uiStore";
 import { Link, NavLink } from "react-router-dom";
-import { ArrowUpRight, X } from "lucide-react";
+import { ArrowUpRight, ShoppingCart, X } from "lucide-react";
 import { useEffect } from "react";
 
 const LINKS = [
@@ -51,20 +51,26 @@ const MobileNavigation = () => {
             shadow-[0_25px_80px_rgba(23,22,20,0.22)] backdrop-blur-2xl supports-[backdrop-filter]:bg-paper/65"
           >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-white/35 to-transparent" />
-            <div className="pointer-events-none absolute -right-20 top-20 h-48 w-48 rounded-full bg-copper/10 blur-3xl" />
+            <div className="pointer-events-none absolute -right-20 top-20 h-48 w-48 rounded-full bg-orange/10 blur-3xl" />
             <div className="relative flex items-center justify-between border-b border-line-light/80 px-5 py-5">
               <Link
                 to="/"
                 onClick={closeMobileMenu}
-                className="font-display text-lg font-black uppercase tracking-tight text-ink"
+                className="flex items-center font-display font-black tracking-tight text-ink"
               >
-                Urban<span className="mx-1 text-copper">-</span>Mart
+                <h1 className="text-lg">
+                  <span className="bg-linear-to-r from-orange to-ink bg-clip-text text-transparent">
+                    Urban
+                  </span>
+                  Mart
+                </h1>
+                <ShoppingCart className="h-5 w-5 text-orange" />
               </Link>
               <button
                 type="button"
                 onClick={closeMobileMenu}
                 className="group flex h-10 w-10 items-center justify-center rounded-full border border-line-light bg-white/30
-              text-ink backdrop-blur-md transition-all duration-300 hover:border-copper/40 hover:bg-copper-light hover:text-copper active:scale-95"
+              text-ink backdrop-blur-md transition-all duration-300 hover:border-orange/40 hover:bg-orange-light hover:text-orange active:scale-95"
               >
                 <X
                   className="h-4.5 w-4.5 transition-transform duration-300 group-hover:rotate-90"
@@ -83,7 +89,7 @@ const MobileNavigation = () => {
                     font-bold tracking-tight transition-all duration-300 ${
                       isActive
                         ? "bg-ink text-paper shadow-lg shadow-ink/10"
-                        : "text-ink hover:bg-white/45 hover:text-copper"
+                        : "text-ink hover:bg-white/45 hover:text-orange"
                     }`
                     }
                   >
@@ -98,7 +104,7 @@ const MobileNavigation = () => {
                           }`}
                         />
                         {!isActive && (
-                          <span className="absolute inset-0 -z-0 translate-x-[-101%] bg-copper-light/70 transition-transform duration-500 ease-out group-hover:translate-x-0" />
+                          <span className="absolute inset-0 -z-0 translate-x-[-101%] bg-orange-light/70 transition-transform duration-500 ease-out group-hover:translate-x-0" />
                         )}
                       </>
                     )}

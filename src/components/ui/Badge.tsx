@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 
-type Tone = "ink" | "copper" | "warn" | "good" | "stone";
+type Tone = "ink" | "orange" | "warn" | "good" | "stone";
 
 const toneClasses: Record<Tone, string> = {
   ink: "bg-ink text-paper",
-  copper: "bg-copper text-paper",
+  orange: "bg-orange text-paper",
   warn: "bg-warn text-paper",
   good: "bg-good text-paper",
   stone: "bg-paper-dim text-ink border border-line-light",

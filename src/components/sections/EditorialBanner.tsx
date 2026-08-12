@@ -28,7 +28,7 @@ const EditorialBanner = () => {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="col-span-1 lg:col-span-5 lg:pl-8"
         >
-          <span className="label-tag text-copper">The Philosophy</span>
+          <span className="label-tag text-orange">The Philosophy</span>
           <h2 className="mt-3 font-display text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl">
             Essentials
             <br />
@@ -43,7 +43,7 @@ const EditorialBanner = () => {
           <Link
             to="/about"
             className="label-tag mt-8 inline-flex items-center gap-2 border-b-2 border-ink pb-1
-          font-semibold hover:text-copper hover:border-copper"
+          font-semibold hover:text-orange hover:border-orange"
           >
             Explore the Collection{" "}
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

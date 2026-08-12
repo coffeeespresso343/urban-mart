@@ -1,4 +1,4 @@
-import { Heart, Menu, Search, ShoppingBag } from "lucide-react";
+import { Heart, Menu, Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useUIStore } from "../../context/uiStore";
@@ -43,9 +43,10 @@ const Navbar = () => {
 
         <Link
           to="/"
-          className="font-display text-lg font-black uppercase tracking-tight sm:text-xl"
+          className="flex items-center gap-0.5 font-body text-lg font-black tracking-tight sm:text-xl"
         >
-          Urban<span className="text-copper">-</span>Mart
+          Urban <span className="text-orange">Mart</span>
+          <ShoppingCart className="h-5 w-5 text-orange" strokeWidth={2.5} />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
@@ -54,8 +55,8 @@ const Navbar = () => {
               key={link.label}
               to={link.to}
               className={({ isActive }) =>
-                `label-tag font-medium transition-colors hover:text-copper ${
-                  isActive ? "text-copper" : "text-ink"
+                `label-tag font-medium transition-colors hover:text-orange ${
+                  isActive ? "text-orange" : "text-ink"
                 }`
               }
             >
@@ -67,25 +68,25 @@ const Navbar = () => {
         <div className="flex items-center gap-5">
           <button
             aria-label="Search"
-            className="text-ink transition-colors hover:text-copper"
+            className="text-ink transition-colors hover:text-orange"
           >
             <Search className="h-5 w-5" aria-hidden="true" />
           </button>
           <Link
             to="/wishlist"
-            className="relative text-ink transition-colors hover:text-copper sm:block"
+            className="relative text-ink transition-colors hover:text-orange sm:block"
           >
             <Heart className="h-5 w-5" aria-hidden="true" />
             {productIds.length > 0 ? (
-              <span className="absolute -right-2 -top-2 h-4 w-4 flex items-center justify-center rounded-full bg-copper text-[10px] font-semibold text-paper">
+              <span className="absolute -right-2 -top-2 h-4 w-4 flex items-center justify-center rounded-full bg-orange text-[10px] font-semibold text-paper">
                 {productIds.length}
               </span>
             ) : null}
           </Link>
-          <button className="relative text-ink transition-colors hover:text-copper sm:block">
+          <button className="relative text-ink transition-colors hover:text-orange sm:block">
             <ShoppingBag className="h-5 w-5" aria-hidden="true" />
             {productIds.length > 0 ? (
-              <span className="absolute -right-2 -top-2 h-4 w-4 flex items-center justify-center rounded-full bg-copper text-[10px] font-semibold text-paper">
+              <span className="absolute -right-2 -top-2 h-4 w-4 flex items-center justify-center rounded-full bg-orange text-[10px] font-semibold text-paper">
                 {productIds.length}
               </span>
             ) : null}

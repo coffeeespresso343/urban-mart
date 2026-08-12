@@ -37,7 +37,7 @@ const BestSellers = () => {
     <section className="py-20 bg-paper-dim sm:py-28">
       <div className="container-edge mb-8 flex items-end justify-between">
         <div>
-          <span className="label-tag text-copper">Fan Favorites</span>
+          <span className="label-tag text-orange">Fan Favorites</span>
           <h2 className="mt-2 font-display text-3xl font-bold uppercase tracking-tight sm:text-4xl">
             Best Sellers
           </h2>

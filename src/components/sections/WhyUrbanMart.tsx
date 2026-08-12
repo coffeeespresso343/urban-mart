@@ -40,7 +40,7 @@ const WhyUrbanMart = () => {
           border border-white/[0.07] bg-white rounded-lg p-5"
           >
             <b.icon
-              className="h-6 w-6 text-copper"
+              className="h-6 w-6 text-orange"
               strokeWidth={1.75}
               aria-hidden="true"
             />

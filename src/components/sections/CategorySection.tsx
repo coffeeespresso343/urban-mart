@@ -20,7 +20,7 @@ const CategorySection = () => {
     <section id="categories" className="container-edge py-20 sm:py-28">
       <div className="mb-10 flex items-end justify-between">
         <div>
-          <span className="label-tag text-copper">Browse</span>
+          <span className="label-tag text-orange">Browse</span>
           <h2 className="mt-2 font-display text-3xl font-bold uppercase tracking-tight sm:text-4xl">
             Shop by Category
           </h2>

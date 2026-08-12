@@ -16,7 +16,7 @@ const Hero = () => {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="relative z-10 order-2 lg:order-1"
         >
-          <span className="label-tag mb-6 inline-block text-copper">
+          <span className="label-tag mb-6 inline-block text-orange">
             Urban-Mart / SS26 Collection
           </span>
           <h1
@@ -34,13 +34,13 @@ const Hero = () => {
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
               to="/shop"
-              className="label-tag inline-flex items-center justify-center bg-paper text-ink px-8 py-4 font-semibold transition-colors hover:bg-copper hover:text-paper"
+              className="label-tag inline-flex items-center justify-center bg-paper text-ink px-8 py-4 font-semibold transition-colors hover:bg-orange hover:text-paper"
             >
               Shop Collection
             </Link>
             <Link
               to="/shop?sort=newest"
-              className="label-tag inline-flex items-center justify-center gap-2 border border-copper px-8 py-4 font-semibold text-paper transition-colors hover:border-paper"
+              className="label-tag inline-flex items-center justify-center gap-2 border border-orange px-8 py-4 font-semibold text-paper transition-colors hover:border-paper"
             >
               Explore New Arrivals{" "}
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

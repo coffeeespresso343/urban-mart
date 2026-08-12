@@ -43,7 +43,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             <Heart
               strokeWidth={1.75}
               aria-hidden="true"
-              className={`h-4 w-4 ${wishlisted ? "fill-copper text-copper" : "text-ink"}`}
+              className={`h-4 w-4 ${wishlisted ? "fill-orange text-orange" : "text-ink"}`}
             />
           </motion.span>
         </button>
@@ -55,7 +55,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           <button
             disabled={outOfStock}
             className="label-tag flex w-full items-center justify-center gap-1.5 bg-paper py-2.5 font-semibold
-            text-ink transition-colors hover:bg-copper hover:text-paper disabled:cursor-not-allowed disabled:opacity-50"
+            text-ink transition-colors hover:bg-orange hover:text-paper disabled:cursor-not-allowed disabled:opacity-50"
           >
             {outOfStock ? "Unavailable" : "Quick Add"}
             {!outOfStock && (
@@ -69,7 +69,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <span className="label-tag text-stone">{product.category}</span>
         <Link
           to={`/product/${product.id}`}
-          className="text-sm font-medium leading-snug text-ink hover:text-copper"
+          className="text-sm font-medium leading-snug text-ink hover:text-orange"
         >
           {product.name}
         </Link>

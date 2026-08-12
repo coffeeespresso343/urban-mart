@@ -24,7 +24,7 @@ const Newsletter = () => {
   return (
     <section className="bg-ink py-20 text-paper-dim sm:py-28">
       <div className="container-edge mx-auto max-w-xl text-center">
-        <span className="label-tag text-copper">Stay in The Loop</span>
+        <span className="label-tag text-orange">Stay in The Loop</span>
         <h2 className="mt-3 font-display text-3xl font-bold uppercase tracking-tight sm:text-4xl">
           Get The Good Stuff.
         </h2>
@@ -62,7 +62,7 @@ const Newsletter = () => {
               type="submit"
               disabled={status === "loading"}
               className="label-tag flex items-center justify-center gap-2 bg-paper px-3.5 py-3.5
-              font-semibold text-ink transition-colors hover:bg-copper hover:text-paper disabled:opacity-60"
+              font-semibold text-ink transition-colors hover:bg-orange hover:text-paper disabled:opacity-60"
             >
               {status === "loading" ? "Subscribing..." : "Subscribe"}
               {status !== "loading" && (
