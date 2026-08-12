@@ -1,6 +1,7 @@
 import { Heart, Menu, Search, ShoppingBag } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useUIStore } from "../../context/uiStore";
 
 const NAV_LINKS = [
   { label: "Shop", to: "/shop" },
@@ -14,6 +15,15 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const productIds: number[] = [1, 2, 4];
 
+  const openMobileMenu = useUIStore((s) => s.openMobileMenu);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <header
       className={`sticky top-0 z-50 border-b transition-all duration-300 ${
@@ -23,7 +33,11 @@ const Navbar = () => {
       }`}
     >
       <div className="container-edge flex h-16 items-center justify-between sm:h-20">
-        <button aria-label="Open menu" className="text-ink lg:hidden">
+        <button
+          onClick={openMobileMenu}
+          aria-label="Open menu"
+          className="text-ink lg:hidden"
+        >
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>
 

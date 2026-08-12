@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./Footer";
 import { useEffect } from "react";
 import AnnouncementBar from "./AnnouncementBar";
+import MobileNavigation from "./MobileNavigation";
 
 const RootLayout = () => {
   const location = useLocation();
@@ -19,6 +20,7 @@ const RootLayout = () => {
         <Outlet />
       </main>
       <Footer />
+      <MobileNavigation />
     </div>
   );
 };
