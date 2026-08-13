@@ -5,6 +5,7 @@ import Badge from "../ui/Badge";
 import ProductRating from "./ProductRating";
 import { Check, Heart, RotateCcw, Share2, Truck } from "lucide-react";
 import { Button } from "../ui/Button";
+import QuantitySelector from "./QuantitySelector";
 
 const ProductInfo = ({ product }: { product: Product }) => {
   const [color, setColor] = useState(product.colors?.[0]);
@@ -79,13 +80,17 @@ const ProductInfo = ({ product }: { product: Product }) => {
 
       <div className="mt-8">
         <span className="label-tag mb-3 block text-ink">Quantity</span>
-        quantity seletor later
+        <QuantitySelector
+          quantity={quantity}
+          onChange={setQuantity}
+          max={Math.max(product.stock, 1)}
+        />
         {outOfStock ? (
-          <p className="label-tag mt-2 text-warn">Currently unavailable</p>
+          <p className="label-tag mt-4 text-warn">Currently unavailable</p>
         ) : lowStock ? (
-          <p className="label-tag mt-2 text-warn">Only {product.stock} left</p>
+          <p className="label-tag mt-4 text-warn">Only {product.stock} left</p>
         ) : (
-          <p className="label-tag mt-2 text-good">In stock, ready to ship</p>
+          <p className="label-tag mt-4 text-good">In stock, ready to ship</p>
         )}
       </div>
 

@@ -55,7 +55,7 @@ const ProductDetails = () => {
         <ProductInfo product={product} />
       </div>
 
-      <ProductReviews />
+      <ProductReviews product={product} />
 
       {related.length > 0 ? (
         <section className="mt-24">
