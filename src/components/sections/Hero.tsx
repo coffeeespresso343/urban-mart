@@ -25,7 +25,7 @@ const Hero = () => {
           >
             Built for
             <br />
-            City Life.
+            City Life<span className="text-orange">.</span>
           </h1>
           <p className="mt-6 max-w-md text-base text-stone-light">
             Functional essentials designed for the way you move, work, travel,

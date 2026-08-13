@@ -1,17 +1,27 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useUIStore } from "../../context/uiStore";
 import { Link, NavLink } from "react-router-dom";
-import { ArrowUpRight, ShoppingCart, X } from "lucide-react";
+import {
+  ArrowUpRight,
+  Flame,
+  Heart,
+  Home,
+  Info,
+  PercentDiamond,
+  ShoppingCart,
+  Sparkle,
+  X,
+} from "lucide-react";
 import { useEffect } from "react";
 
 const LINKS = [
-  { label: "Home", to: "/" },
-  { label: "Shop", to: "/shop" },
-  { label: "New Arrivals", to: "/shop?sort=newest" },
-  { label: "Best Sellers", to: "/shop?filter=best-sellers" },
-  { label: "Deals", to: "/shop?filter=deals" },
-  { label: "Wishlist", to: "/wishlist" },
-  { label: "About", to: "/about" },
+  { Icon: Home, label: "Home", to: "/" },
+  { Icon: ShoppingCart, label: "Shop", to: "/shop" },
+  { Icon: Sparkle, label: "New Arrivals", to: "/shop?sort=newest" },
+  { Icon: Flame, label: "Best Sellers", to: "/shop?filter=best-sellers" },
+  { Icon: PercentDiamond, label: "Deals", to: "/shop?filter=deals" },
+  { Icon: Heart, label: "Wishlist", to: "/wishlist" },
+  { Icon: Info, label: "About", to: "/about" },
 ];
 
 const MobileNavigation = () => {
@@ -47,7 +57,7 @@ const MobileNavigation = () => {
             exit={{ x: "-100%" }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             aria-label="Mobile"
-            className="absolute left-0 top-0 flex w-[calc(100%-1.5rem)] max-w-sm flex-col overflow-hidden rounded-xl border border-white/30 bg-paper/85
+            className="absolute left-0 top-0 flex h-[calc(100%-5rem)]  w-[calc(100%-5rem)] max-w-sm  flex-col overflow-hidden rounded-xl border border-white/30 bg-paper/85
             shadow-[0_25px_80px_rgba(23,22,20,0.22)] backdrop-blur-2xl supports-[backdrop-filter]:bg-paper/65"
           >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-white/35 to-transparent" />
@@ -95,7 +105,10 @@ const MobileNavigation = () => {
                   >
                     {({ isActive }) => (
                       <>
-                        <span className="relative z-10">{link.label}</span>
+                        <div className="relative z-10 flex items-center gap-3">
+                          <span>{<link.Icon className="h-5 w-5" />}</span>{" "}
+                          {link.label}
+                        </div>
                         <ArrowUpRight
                           className={`relative z-10 h-5 w-5 transition-all duration-300 ${
                             isActive

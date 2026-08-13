@@ -125,9 +125,7 @@ const Footer = () => {
         ))}
       </div>
       <div className="container-edge flex flex-col items-center justify-between gap-3 border-t border-white/ py-6 text-xs text-stone ">
-        <p>
-          &copy; {new Date().getFullYear()} Urban-Mart. All Rights Reserved.
-        </p>
+        <p>&copy; {new Date().getFullYear()} UrbanMart. All Rights Reserved.</p>
         <p>Built for city life.</p>
         <p>
           Developed by{" "}
@@ -135,6 +133,7 @@ const Footer = () => {
             href="https://linnkhant.vercel.app"
             target="_blank"
             rel="noopener noreferrer"
+            className="text-white/60"
           >
             Linn Khant
           </a>

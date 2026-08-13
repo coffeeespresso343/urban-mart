@@ -27,7 +27,7 @@ const BENEFITS = [
 
 const WhyUrbanMart = () => {
   return (
-    <section className="border-y border-line py-16">
+    <section className="border-y bg-paper-dim border-line py-16">
       <div className="container-edge grid grid-cols-2 gap-6 sm:grid-cols-4">
         {BENEFITS.map((b, i) => (
           <motion.div
@@ -37,7 +37,7 @@ const WhyUrbanMart = () => {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.4, delay: i * 0.05 }}
             className="flex flex-col items-start gap-3
-          border border-white/[0.07] bg-white rounded-lg p-5"
+          border border-white/60 bg-white/70 rounded-lg p-5"
           >
             <b.icon
               className="h-6 w-6 text-orange"

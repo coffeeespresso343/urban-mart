@@ -659,7 +659,7 @@ export const getProductById = (id: number): Product | undefined => {
 
 export const getRelatedProducts = (
   product: Product,
-  count: number,
+  count?: number,
 ): Product[] => {
   return products
     .filter((p) => p.id !== product.id && p.category === product.category)

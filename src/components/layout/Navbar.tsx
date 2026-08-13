@@ -4,6 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useUIStore } from "../../context/uiStore";
 
 const NAV_LINKS = [
+  { label: "Home", to: "/" },
   { label: "Shop", to: "/shop" },
   { label: "Categories", to: "/shop#categories" },
   { label: "New Arrivals", to: "/shop?sort=newest" },

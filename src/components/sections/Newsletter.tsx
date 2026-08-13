@@ -1,4 +1,4 @@
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { isValidEmail } from "../../utils/validation";
 
@@ -34,7 +34,7 @@ const Newsletter = () => {
         </p>
 
         {status === "success" ? (
-          <div className="mx-auto mt-8 flex min-w-sm items-center justify-center gap-2 border border-good/40 bg-good/10 px-4 py-3.5 text-sm text-good">
+          <div className="mx-auto mt-8 flex min-w-sm items-center justify-center gap-2 border border-good/40 bg-good/10 px-4 py-3.5 text-sm text-green-400">
             <Check className="h-5 w-5" aria-hidden="true" /> You are subscribed.
             Welcome to Urban-Mart.
           </div>
@@ -65,8 +65,10 @@ const Newsletter = () => {
               font-semibold text-ink transition-colors hover:bg-orange hover:text-paper disabled:opacity-60"
             >
               {status === "loading" ? "Subscribing..." : "Subscribe"}
-              {status !== "loading" && (
-                <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              {status === "loading" ? (
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+              ) : (
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               )}
             </button>
           </form>
