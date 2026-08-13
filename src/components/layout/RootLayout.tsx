@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import { useEffect } from "react";
 import AnnouncementBar from "./AnnouncementBar";
 import MobileNavigation from "./MobileNavigation";
+import { ToastContainer } from "../ui/Toast";
 
 const RootLayout = () => {
   const location = useLocation();
@@ -21,6 +22,7 @@ const RootLayout = () => {
       </main>
       <Footer />
       <MobileNavigation />
+      <ToastContainer />
     </div>
   );
 };

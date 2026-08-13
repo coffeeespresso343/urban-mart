@@ -2,8 +2,12 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import ImageWithFallback from "../ui/ImageWithFallback";
+import { useUIStore } from "../../hooks/uiStore";
+import { Button } from "../ui/Button";
 
 const Hero = () => {
+  const showToast = useUIStore((s) => s.showToast);
+
   return (
     <section className="relative overflow-hidden bg-ink text-paper">
       <div
@@ -32,15 +36,19 @@ const Hero = () => {
             and live.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
+            <Button onClick={() => showToast("Hello World! Hello World!")}>
+              Toast test
+            </Button>
             <Link
-              to="/shop"
-              className="label-tag inline-flex items-center justify-center bg-paper text-ink px-8 py-4 font-semibold transition-colors hover:bg-orange hover:text-paper"
+              to="/"
+              className="label-tag inline-flex items-center justify-center bg-paper text-ink px-8 py-4 font-semibold transition-all duration-200
+               hover:bg-orange hover:text-paper active:scale-[0.98]"
             >
               Shop Collection
             </Link>
             <Link
               to="/shop?sort=newest"
-              className="label-tag inline-flex items-center justify-center gap-2 border border-orange px-8 py-4 font-semibold text-paper transition-colors hover:border-paper"
+              className="label-tag inline-flex items-center justify-center gap-2 border border-orange px-8 py-4 font-semibold text-paper transition-all duration-200 active:scale-[0.98] hover:border-paper"
             >
               Explore New Arrivals{" "}
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

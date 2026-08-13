@@ -56,6 +56,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
       return [...prev, { product, quantity, color }];
     });
+    // console.log(`Added to your bag - ${product.name}`);
     showToast(`Added to your bag - ${product.name}`, "success");
     openCart();
   };
@@ -92,7 +93,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const applyPromoCode = (code: string): boolean => {
     const normalized = code.trim().toUpperCase();
-    if (VALID_PROMOS[normalized]) {
+    if (normalized in VALID_PROMOS) {
       setPromoCode(normalized);
       showToast("Promo code applied", "success");
       return true;

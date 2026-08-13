@@ -6,9 +6,13 @@ import { ArrowRight, Heart } from "lucide-react";
 import { formatPrice } from "../../utils/currency";
 import Badge from "../ui/Badge";
 import ProductRating from "./ProductRating";
+import { useCart } from "../../hooks/useCart";
+import { useWishlist } from "../../hooks/useWishlist";
 
 const ProductCard = ({ product }: { product: Product }) => {
-  const wishlisted = true;
+  const { addItem } = useCart();
+  const { isWishListed, toggleWishlist } = useWishlist();
+  const wishlisted = isWishListed(product.id);
   const outOfStock = product.stock <= 0;
   const lowStock = product.stock > 0 && product.stock <= 5;
 
@@ -33,7 +37,14 @@ const ProductCard = ({ product }: { product: Product }) => {
           {outOfStock ? <Badge tone="stone">Sold out </Badge> : null}
         </div>
 
-        <button className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-paper/90 text-ink backdrop-blur transition-transform hover:scale-110">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.preventDefault();
+            toggleWishlist(product);
+          }}
+          className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-paper/90 text-ink backdrop-blur transition-transform hover:scale-110"
+        >
           <motion.span
             key={wishlisted ? "on" : "off"}
             initial={{ scale: 0.6 }}
@@ -49,17 +60,27 @@ const ProductCard = ({ product }: { product: Product }) => {
         </button>
 
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 translate-y-full bg-linear-to-r from-ink/85 to-transparent
-        p-3 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 sm:pointer-events-auto"
+          className="pointer-events-auto absolute inset-x-0 bottom-0 translate-y-0 
+          bg-linear-to-t from-ink/85 to-transparent p-3 pt-7
+        sm:translate-y-full sm:opacity-0 sm:transition-all sm:duration-300 sm:group-hover:translate-y-0 sm:group-hover:opacity-100"
         >
           <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              if (!outOfStock) addItem(product, 1, product.colors?.[0]);
+            }}
             disabled={outOfStock}
-            className="label-tag flex w-full items-center justify-center gap-1.5 bg-paper py-2.5 font-semibold
-            text-ink transition-colors hover:bg-orange hover:text-paper disabled:cursor-not-allowed disabled:opacity-50"
+            className="label-tag rounded-lg border border-white/20 flex w-full items-center justify-center gap-1.5 bg-paper/95 px-4 py-3 sm:py-2.5 font-semibold
+            text-ink shadow-lg backdrop-blur-none transition-all duration-300 active:scale-[0.98] hover:border-orange hover:bg-orange hover:text-paper hover:shadow-xl disabled:border-transparent disabled:bg-stone-light/80 disabled:text-stone-dark disabled:cursor-not-allowed disabled:opacity-70"
           >
             {outOfStock ? "Unavailable" : "Quick Add"}
             {!outOfStock && (
-              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              <ArrowRight
+                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                strokeWidth={2.2}
+                aria-hidden="true"
+              />
             )}
           </button>
         </div>

@@ -68,7 +68,7 @@ const ProductGallery = ({
         </AnimatePresence>
         <span
           className="absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-paper/90
-        text-ink opacity-0 transition-opacity group-hover:opacity-100"
+        text-ink opacity-70 sm:opacity-0 transition-opacity group-hover:opacity-100"
         >
           <ZoomIn className="h-4 w-4" aria-hidden="true" />
         </span>
