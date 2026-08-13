@@ -1,7 +1,7 @@
 import { Heart, Menu, Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useUIStore } from "../../context/uiStore";
+import { useUIStore } from "../../hooks/uiStore";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },

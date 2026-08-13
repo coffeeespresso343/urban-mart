@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useUIStore } from "../../context/uiStore";
+import { useUIStore } from "../../hooks/uiStore";
 import { Link, NavLink } from "react-router-dom";
 import {
   ArrowUpRight,
