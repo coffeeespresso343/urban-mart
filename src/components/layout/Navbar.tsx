@@ -2,6 +2,8 @@ import { Heart, Menu, Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useUIStore } from "../../hooks/uiStore";
+import { useWishlist } from "../../hooks/useWishlist";
+import { useCart } from "../../hooks/useCart";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
@@ -14,9 +16,12 @@ const NAV_LINKS = [
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
-  const productIds: number[] = [1, 2, 4];
-
+  const openSearch = useUIStore((s) => s.openSearch);
+  const openCart = useUIStore((s) => s.openCart);
   const openMobileMenu = useUIStore((s) => s.openMobileMenu);
+
+  const { totals } = useCart();
+  const { productIds } = useWishlist();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -68,6 +73,7 @@ const Navbar = () => {
 
         <div className="flex items-center gap-5">
           <button
+            onClick={openSearch}
             aria-label="Search"
             className="text-ink transition-colors hover:text-orange"
           >
@@ -84,11 +90,14 @@ const Navbar = () => {
               </span>
             ) : null}
           </Link>
-          <button className="relative text-ink transition-colors hover:text-orange sm:block">
+          <button
+            onClick={openCart}
+            className="relative text-ink transition-colors hover:text-orange sm:block"
+          >
             <ShoppingBag className="h-5 w-5" aria-hidden="true" />
-            {productIds.length > 0 ? (
+            {totals.itemCount > 0 ? (
               <span className="absolute -right-2 -top-2 h-4 w-4 flex items-center justify-center rounded-full bg-orange text-[10px] font-semibold text-paper">
-                {productIds.length}
+                {totals.itemCount}
               </span>
             ) : null}
           </button>

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import AnnouncementBar from "./AnnouncementBar";
 import MobileNavigation from "./MobileNavigation";
 import { ToastContainer } from "../ui/Toast";
+import SearchOverlay from "./SearchOverlay";
 
 const RootLayout = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const RootLayout = () => {
       </main>
       <Footer />
       <MobileNavigation />
+      <SearchOverlay />
       <ToastContainer />
     </div>
   );

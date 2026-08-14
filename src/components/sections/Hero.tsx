@@ -8,6 +8,12 @@ import { Button } from "../ui/Button";
 const Hero = () => {
   const showToast = useUIStore((s) => s.showToast);
 
+  const toastTest = () => {
+    showToast("Hello World! Hello World!", "info");
+    showToast("Hello World! Hello World!", "success");
+    showToast("Hello World! Hello World!", "error");
+  };
+
   return (
     <section className="relative overflow-hidden bg-ink text-paper">
       <div
@@ -36,9 +42,7 @@ const Hero = () => {
             and live.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <Button onClick={() => showToast("Hello World! Hello World!")}>
-              Toast test
-            </Button>
+            <Button onClick={toastTest}>Toast test</Button>
             <Link
               to="/"
               className="label-tag inline-flex items-center justify-center bg-paper text-ink px-8 py-4 font-semibold transition-all duration-200
