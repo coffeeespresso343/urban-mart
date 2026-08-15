@@ -1,23 +1,85 @@
-import { Search, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { Loader, Search, SlidersHorizontal, X } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { categories } from "../data/categories";
-import { defaultFilters, type ProductFilters } from "../utils/filters";
+import {
+  defaultFilters,
+  filterProducts,
+  type ProductFilters,
+} from "../utils/filters";
 import { useDebounce } from "../hooks/useDebounce";
 import { products } from "../data/products";
 import { useSearchParams } from "react-router-dom";
+import type { ProductCategory, SortOption } from "../types/Product";
+import { sortProducts } from "../utils/sortProducts";
+import ProductGrid from "../components/product/ProductGrid";
+import { Button } from "../components/ui/Button";
+import SortSelect from "../components/filters/SortSelect";
+import FilterSidebar from "../components/filters/FilterSidebar";
+
+const PAGE_SIZE = 12;
 
 const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState("");
-
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [filters, setFilters] = useState<ProductFilters>(defaultFilters);
-  const activeCategory = filters.categories[0];
+  const [sort, setSort] = useState<SortOption>("featured");
 
   const debouncedSearch = useDebounce(searchInput, 250);
+
+  useEffect(() => {
+    const search = searchParams.get("search") ?? "";
+    const categorySlug = searchParams.get("category");
+    const sortParam = searchParams.get("sort") as SortOption | null;
+    const filterParam = searchParams.get("filter");
+
+    setSearchInput(search);
+
+    let nextCategories: ProductCategory[] = [];
+
+    if (categorySlug) {
+      const match = categories.find((c) => c.slug === categorySlug);
+      if (match) nextCategories = [match.name];
+    }
+
+    setFilters((prev) => ({ ...prev, search, categories: nextCategories }));
+
+    if (sortParam) setSort(sortParam);
+
+    if (filterParam === "deals") {
+      setFilters((prev) => ({ ...prev, search }));
+    }
+  }, []);
 
   const dealsOnly = searchParams.get("filter") === "deals";
   const bestSellersOnly = searchParams.get("filter") === "best-sellers";
 
+  const filteredProducts = useMemo(() => {
+    let list = filterProducts(products, filters);
+
+    if (dealsOnly) list = list.filter((p) => p.compareAtPrice);
+    if (bestSellersOnly) list = list.filter((p) => p.bestSeller);
+    return sortProducts(list, sort);
+  }, [filters, sort, dealsOnly, bestSellersOnly]);
+
+  const visibleProducts = filteredProducts.slice(0, visibleCount);
+
+  const updateFilter = (next: ProductFilters) => {
+    setFilters(next);
+    setVisibleCount(PAGE_SIZE);
+  };
+
+  const resetFilter = () => {
+    setFilters({ ...defaultFilters, search: filters.search });
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete("category");
+      next.delete("filter");
+      return next;
+    });
+  };
+
+  const activeCategory = filters.categories[0];
   return (
     <div className="container-edge py-10 sm:py-14">
       <div className="mb-8">
@@ -68,18 +130,44 @@ const Shop = () => {
           ))}
         </div>
       </div>
-
-      <div>
-        <p>0 products</p>
-        <div>
-          <button>Filter</button>
-          <div>Sort select</div>
+      <div className="flex items-center justify-between border-y border-line-light py-4">
+        <p className="label-tag text-stone">
+          {filteredProducts.length} products
+        </p>
+        <div className="flex items-center gap-4">
+          <button className="label-tag flex items-center gap-1.5 font-medium lg:hidden">
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            Filter
+          </button>
+          <div className="hidden lg:block">
+            <SortSelect value={sort} onChange={setSort} />
+          </div>
         </div>
       </div>
+      <div className="block py-3 lg:hidden">
+        <SortSelect value={sort} onChange={setSort} />
+      </div>
+      <div className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-[220px_1fr]">
+        <aside className="hidden lg:block">
+          <FilterSidebar
+            filters={filters}
+            onChange={updateFilter}
+            onReset={resetFilter}
+          />
+        </aside>
 
-      <div>Sort select</div>
-
-      <div></div>
+        <div>
+          <ProductGrid products={visibleProducts} />
+          {visibleCount < filteredProducts.length ? (
+            <div className="mt-12 flex justify-center">
+              <Button>
+                Load More <Loader className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          ) : null}
+        </div>
+      </div>
+      filter drawer
     </div>
   );
 };
