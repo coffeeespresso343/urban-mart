@@ -3,20 +3,54 @@ import type { Product } from "../../types/Product";
 import { formatPrice } from "../../utils/currency";
 import Badge from "../ui/Badge";
 import ProductRating from "./ProductRating";
-import { Check, Heart, RotateCcw, Share2, Truck } from "lucide-react";
+import {
+  Check,
+  Clipboard,
+  Heart,
+  RotateCcw,
+  Share2,
+  Truck,
+} from "lucide-react";
 import { Button } from "../ui/Button";
 import QuantitySelector from "./QuantitySelector";
+import { useWishlist } from "../../hooks/useWishlist";
+import { useCart } from "../../hooks/useCart";
+import { useUIStore } from "../../hooks/uiStore";
 
 const ProductInfo = ({ product }: { product: Product }) => {
   const [color, setColor] = useState(product.colors?.[0]);
 
   const [quantity, setQuantity] = useState(1);
 
-  const isWishlisted = false;
-  const wishlisted = true;
+  const { addItem } = useCart();
+  const { isWishListed, toggleWishlist } = useWishlist();
+  const showToast = useUIStore((s) => s.showToast);
+
+  const wishlisted = isWishListed(product.id);
 
   const outOfStock = product.stock <= 0;
   const lowStock = product.stock > 0 && product.stock <= 5;
+
+  const handleShare = async () => {
+    const shareData = {
+      title: product.name,
+      text: `Checkout ${product.name} on Urban-Mart`,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      }
+    } catch {
+      // Ignore
+    }
+  };
+
+  const handleCopyLink = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    showToast("Link copied to clipboard", "info");
+  };
 
   return (
     <div className="flex flex-col">
@@ -95,7 +129,12 @@ const ProductInfo = ({ product }: { product: Product }) => {
       </div>
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <Button size="lg" className="flex-1" disabled={outOfStock}>
+        <Button
+          onClick={() => addItem(product, quantity, color)}
+          size="lg"
+          className="flex-1"
+          disabled={outOfStock}
+        >
           {outOfStock ? "Unavailable" : "Add to Cart"}
         </Button>
         <Button
@@ -103,20 +142,33 @@ const ProductInfo = ({ product }: { product: Product }) => {
           variant="outline"
           className="flex-1"
           disabled={outOfStock}
+          onClick={() => toggleWishlist(product)}
         >
           <Heart
             className={`h-4 w-4 ${wishlisted ? "fill-orange text-orange" : ""}`}
           />
           {wishlisted ? "Wishlisted" : "Wishlist"}
         </Button>
-        <Button
-          size="lg"
-          variant="ghost"
-          className="flex-1"
-          disabled={outOfStock}
-        >
-          <Share2 className="h-4 w-4" aria-hidden="true" />
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleShare}
+            size="lg"
+            variant="ghost"
+            className="flex-1"
+            disabled={outOfStock}
+          >
+            <Share2 className="h-4 w-4" aria-hidden="true" />
+          </Button>
+          <Button
+            onClick={handleCopyLink}
+            size="lg"
+            variant="ghost"
+            className="flex-1"
+            disabled={outOfStock}
+          >
+            <Clipboard className="h-4 w-4" aria-hidden="true" />
+          </Button>
+        </div>
       </div>
 
       <div className="mt-10 divide-y divide-line-light border-y border-line-light">

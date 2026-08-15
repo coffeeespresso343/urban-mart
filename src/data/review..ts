@@ -43,6 +43,9 @@ export function getReviewsForProduct(product: Product): ProductReview[] {
       Math.min(5, Math.round(product.rating) - (i % 2)),
     );
     const titles = rating >= 4.5 ? TITLES_POSITIVE : TITLES_MIXED;
+
+    const likeCount = 90 + ((seed * 47) % 271);
+
     return {
       id: `${product.id}-review-${i}`,
       author: AUTHORS[seed % AUTHORS.length],
@@ -59,6 +62,7 @@ export function getReviewsForProduct(product: Product): ProductReview[] {
       title: titles[seed % titles.length],
       body: BODY_TEMPLATES[seed % BODY_TEMPLATES.length],
       verified: seed % 3 !== 0,
+      likeCount,
     };
   });
 }

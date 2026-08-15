@@ -18,6 +18,7 @@ export interface ProductReview {
   title: string;
   body: string;
   verified: boolean;
+  likeCount: number;
 }
 
 export interface Product {

@@ -16,7 +16,7 @@ const variantClasses: Record<Variant, string> = {
   secondary:
     "bg-ink text-paper border border-ink rounded-lg transition-all duration-300 active:scale-[0.98] hover:bg-ink-elevated hover:border-ink-elevated disabled:cursor-not-allowed disabled:opacity-50",
   ghost:
-    "bg-paper-dim rounded-lg transition-all duration-300 active:scale-[0.98] text-ink hover:bg-orange/10",
+    "bg-paper-dim rounded-lg transition-all duration-300 active:scale-[0.98] text-ink",
   outline:
     "bg-transparent rounded-lg transition-all duration-300 active:scale-[0.98] text-ink border border-ink hover:text-paper hover:bg-ink hover:border-ink",
 };

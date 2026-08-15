@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   Clock,
-  Delete,
   Search,
   SearchX,
   TrendingUp,
@@ -90,7 +89,7 @@ const SearchOverlay = () => {
   return (
     <AnimatePresence>
       {searchOpen ? (
-        <div className="fixed inset-0 z-[95]">
+        <div className="fixed inset-0 z-95">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -232,6 +231,7 @@ const SearchOverlay = () => {
 
                   <li className="pt-5 flex items-center justify-center">
                     <button
+                      onClick={() => commitSearch(query)}
                       className="label-tag px-2 py-1 rounded-xl flex items-center justify-center gap-1 
                    bg-orange/5 border border-orange/10 font-semibold transition-all duration-200 text-orange active:scale-97"
                     >
