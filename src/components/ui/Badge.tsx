@@ -1,13 +1,22 @@
+import { Crown, Hourglass, PackageX, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 
 type Tone = "ink" | "orange" | "warn" | "good" | "stone";
 
 const toneClasses: Record<Tone, string> = {
-  ink: "bg-ink text-paper",
-  orange: "bg-orange text-paper",
-  warn: "bg-warn text-paper",
-  good: "bg-good text-paper",
-  stone: "bg-paper-dim text-ink border border-line-light",
+  ink: "bg-ink/10 text-orange",
+  orange: "bg-paper/60 text-orange",
+  warn: "bg-warn/90 text-paper",
+  good: "bg-paper/30 text-orange border border-orange/20",
+  stone: "bg-paper-dim/50 text-error border border-line-light",
+};
+
+const badgeIcon: Record<string, ReactNode> = {
+  "best seller": <Crown size={12} strokeWidth={2.25} />,
+  bestseller: <Crown size={12} strokeWidth={2.25} />,
+  new: <Sparkles size={12} strokeWidth={2.25} />,
+  limited: <Hourglass size={12} strokeWidth={2.25} />,
+  "sold out": <PackageX size={12} strokeWidth={2.25} />,
 };
 
 const Badge = ({
@@ -19,13 +28,16 @@ const Badge = ({
   tone?: Tone;
   className?: string;
 }) => {
+  const label =
+    typeof children === "string" ? children.trim().toLowerCase() : "";
+  const icon = badgeIcon[label];
   return (
     <span
-      className={`label-tag inline-flex items-center gap-1 px-2.5 py-1 font-semibold ${
+      className={`label-tag rounded-2xl backdrop-blur-sm inline-flex items-center gap-1 px-2.5 py-1 font-semibold ${
         toneClasses[tone]
       } ${className}`}
     >
-      {children}
+      {icon} {children}
     </span>
   );
 };

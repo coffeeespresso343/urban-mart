@@ -34,9 +34,9 @@ const ToastItem = ({ toast }: { toast: ToastMessage }) => {
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       role="status"
       aria-live="polite"
-      className="group relative flex items-center w-full overflow-hidden rounded-xl border border-white/10 bg-ink/30 text-paper shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-xl"
+      className="group relative flex items-center w-full overflow-hidden rounded-xl border border-white/10 bg-paper/70 text-ink shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-sm"
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/30 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/50 to-transparent" />
       {/* <div className={`absolute inset-0 left-0 w-[4px] bg-current ${accent}`} /> */}
       <motion.div
         initial={{ scaleX: 1 }}
@@ -46,9 +46,9 @@ const ToastItem = ({ toast }: { toast: ToastMessage }) => {
         className={`absolute left-0 bottom-0 right-0 h-0.5 bg-current ${accent}`}
       />
 
-      <div className="flex min-w-0 flex-1 items-center gap-4 px-4 py-3.5">
+      <div className="flex min-w-0 flex-1 items-center gap-4 px-2 py-3.5">
         <div
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-white/10 bg-white/6 ${accent}`}
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/6 ${accent}`}
         >
           <Icon
             className="h-4.5 w-4.5 shrink-0"
@@ -60,7 +60,7 @@ const ToastItem = ({ toast }: { toast: ToastMessage }) => {
       </div>
       <button
         onClick={() => dismissToast(toast.id)}
-        className="mr-2 flex items-center justify-center h-7 w-7 ml-2 shrink-0 rounded-full text-stone-light transition-all duration-200 hover:bg-white/10 hover:text-paper active:scale-90"
+        className="mr-2 flex items-center justify-center h-7 w-7 ml-2 shrink-0 rounded-full text-ink/50 transition-all duration-200 hover:bg-white/10 hover:text-ink active:scale-90"
       >
         <X className="h-4 w-4" strokeWidth={1.8} />
       </button>

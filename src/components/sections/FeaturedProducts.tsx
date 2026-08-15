@@ -27,9 +27,11 @@ const FeaturedProducts = () => {
         <div className="mt-10 flex items-center justify-center sm:hidden">
           <Link
             to="/shop?sort=newest"
-            className="label-tag font-semibold text-orange"
+            className="label-tag flex items-center gap-2 font-semibold border-b-2 border-ink
+            transition-all duration-200 text-ink hover:text-orange hover:border-orange active:scale-95"
           >
             View Alll New Arrivals
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>

@@ -23,9 +23,9 @@ const ProductGallery = ({
             aria-label={`View image ${index + 1} of ${productName}`}
             aria-current={active === index}
             onClick={() => setActive(index)}
-            className={`relative h-16 w-16 shrink-0 overflow-hidden border transition-colors ${
+            className={`relative h-16 w-16 rounded-md shrink-0 overflow-hidden border transition-colors ${
               active === index
-                ? "border-ink"
+                ? "border-orange"
                 : "border-line-light opacity-70 hover:opacity-100"
             }`}
           >
@@ -46,7 +46,7 @@ const ProductGallery = ({
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") setZoomed((z) => !z);
         }}
-        className="group relative flex-1 cursor-zoom-in overflow-hidden bg-paper-dim"
+        className="group relative rounded-xl flex-1 cursor-zoom-in overflow-hidden bg-paper-dim"
       >
         <AnimatePresence mode="wait">
           <motion.div

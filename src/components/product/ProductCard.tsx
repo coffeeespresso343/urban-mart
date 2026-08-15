@@ -20,7 +20,7 @@ const ProductCard = ({ product }: { product: Product }) => {
     <div className="group relative flex flex-col">
       <Link
         to={`/product/${product.id}`}
-        className="relative block aspect-4/5 overflow-hidden bg-paper-dim"
+        className="relative rounded-xl block aspect-4/5 overflow-hidden bg-paper-dim"
       >
         <ImageWithFallback
           src={product.images[0]}
@@ -30,11 +30,20 @@ const ProductCard = ({ product }: { product: Product }) => {
         />
         <div className="absolute left-3 top-3 flex flex-col gap-1.5">
           {product.badge ? (
-            <Badge tone={product.badge === "Limited" ? "warn" : "ink"}>
+            <Badge
+              className="w-fit"
+              tone={
+                product.badge === "Limited"
+                  ? "warn"
+                  : product.badge === "Best Seller"
+                    ? "good"
+                    : "orange"
+              }
+            >
               {product.badge}
             </Badge>
           ) : null}
-          {outOfStock ? <Badge tone="stone">Sold out </Badge> : null}
+          {outOfStock ? <Badge tone="stone">Sold out</Badge> : null}
         </div>
 
         <button
@@ -43,7 +52,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             e.preventDefault();
             toggleWishlist(product);
           }}
-          className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-paper/90 text-ink backdrop-blur transition-transform hover:scale-110"
+          className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-paper/50 text-ink backdrop-blur transition-transform hover:scale-110"
         >
           <motion.span
             key={wishlisted ? "on" : "off"}
@@ -71,7 +80,7 @@ const ProductCard = ({ product }: { product: Product }) => {
               if (!outOfStock) addItem(product, 1, product.colors?.[0]);
             }}
             disabled={outOfStock}
-            className="label-tag rounded-lg border border-white/20 flex w-full items-center justify-center gap-1.5 bg-paper/95 px-4 py-3 sm:py-2.5 font-semibold
+            className="label-tag rounded-lg border border-white/20 flex w-full items-center justify-center gap-1.5 bg-paper/95 px-4 py-2 sm:py-2.5 font-semibold
             text-ink shadow-lg backdrop-blur-none transition-all duration-300 active:scale-[0.98] hover:border-orange hover:bg-orange hover:text-paper hover:shadow-xl disabled:border-transparent disabled:bg-stone-light/80 disabled:text-stone-dark disabled:cursor-not-allowed disabled:opacity-70"
           >
             {outOfStock ? "Unavailable" : "Quick Add"}
