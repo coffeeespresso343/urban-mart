@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import type { Product } from "../../types/Product";
 import ImageWithFallback from "../ui/ImageWithFallback";
-import { ArrowRight, Heart } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
 import { formatPrice } from "../../utils/currency";
 import Badge from "../ui/Badge";
 import ProductRating from "./ProductRating";
@@ -17,10 +17,10 @@ const ProductCard = ({ product }: { product: Product }) => {
   const lowStock = product.stock > 0 && product.stock <= 5;
 
   return (
-    <div className="group relative flex flex-col">
+    <div className="group bg-white/60 pb-2 rounded-xl relative flex flex-col">
       <Link
         to={`/product/${product.id}`}
-        className="relative rounded-xl block aspect-4/5 overflow-hidden bg-paper-dim"
+        className="relative block rounded-t-xl aspect-4/5 overflow-hidden bg-paper-dim"
       >
         <ImageWithFallback
           src={product.images[0]}
@@ -85,7 +85,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           >
             {outOfStock ? "Unavailable" : "Quick Add"}
             {!outOfStock && (
-              <ArrowRight
+              <ShoppingCart
                 className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
                 strokeWidth={2.2}
                 aria-hidden="true"
@@ -95,7 +95,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         </div>
       </Link>
 
-      <div className="mt-3 flex flex-col gap-1">
+      <div className="mt-3 px-2 flex flex-col gap-1">
         <span className="label-tag text-stone">{product.category}</span>
         <Link
           to={`/product/${product.id}`}
@@ -120,7 +120,9 @@ const ProductCard = ({ product }: { product: Product }) => {
           ) : null}
         </div>
         {lowStock ? (
-          <span className="label-tag text-warn">Only {product.stock} left</span>
+          <span className="label-tag flex items-center justify-center text-warn">
+            Only {product.stock} left
+          </span>
         ) : null}
       </div>
     </div>

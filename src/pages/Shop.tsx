@@ -1,4 +1,11 @@
-import { Loader, Search, SlidersHorizontal, X } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowDownCircle,
+  ArrowUpCircle,
+  Search,
+  SlidersHorizontal,
+  X,
+} from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { categories } from "../data/categories";
 import {
@@ -15,15 +22,17 @@ import ProductGrid from "../components/product/ProductGrid";
 import { Button } from "../components/ui/Button";
 import SortSelect from "../components/filters/SortSelect";
 import FilterSidebar from "../components/filters/FilterSidebar";
+import FilterDrawer from "../components/filters/FilterDrawer";
 
 const PAGE_SIZE = 12;
 
 const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState("");
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [filters, setFilters] = useState<ProductFilters>(defaultFilters);
   const [sort, setSort] = useState<SortOption>("featured");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const debouncedSearch = useDebounce(searchInput, 250);
 
@@ -50,6 +59,11 @@ const Shop = () => {
       setFilters((prev) => ({ ...prev, search }));
     }
   }, []);
+
+  useEffect(() => {
+    setFilters((prev) => ({ ...prev, search: debouncedSearch }));
+    setVisibleCount(PAGE_SIZE);
+  }, [debouncedSearch]);
 
   const dealsOnly = searchParams.get("filter") === "deals";
   const bestSellersOnly = searchParams.get("filter") === "best-sellers";
@@ -80,8 +94,9 @@ const Shop = () => {
   };
 
   const activeCategory = filters.categories[0];
+
   return (
-    <div className="container-edge py-10 sm:py-14">
+    <div className="container-edge bg-paper py-10 sm:py-14">
       <div className="mb-8">
         <h1 className="font-display text-3xl font-black uppercase tracking-wide sm:text-4xl">
           Shop
@@ -100,7 +115,10 @@ const Shop = () => {
             className="w-full border-b border-line-light bg-transparent py-2.5 pl-10 text-sm outline-none focus:border-ink"
           />
           {searchInput ? (
-            <button className="absolute right-0 top-1/2 -translate-y-1/2 text-stone hover:text-ink">
+            <button
+              onClick={() => setSearchInput("")}
+              className="absolute right-0 top-1/2 -translate-y-1/2 text-stone hover:text-ink"
+            >
               <X className="h-4 w-4" />
             </button>
           ) : null}
@@ -108,8 +126,9 @@ const Shop = () => {
 
         <div className="no-scrollbar mt-6 flex gap-2 overflow-x-auto">
           <button
-            className={`label-tag shrink-0 border px-4 py-2 font-medium transition-colors rounded-2xl ${
-              activeCategory
+            onClick={() => updateFilter({ ...filters, categories: [] })}
+            className={`label-tag shrink-0 border px-4 py-2 font-medium transition-colors rounded-2xl duration-200 active:scale-95 ${
+              !activeCategory
                 ? "border-orange bg-orange text-ink"
                 : "border-line-light hover:border-orange"
             }`}
@@ -118,9 +137,15 @@ const Shop = () => {
           </button>
           {categories.map((cat) => (
             <button
-              key={cat.name}
-              className={`label-tag shrink-0 border px-4 py-2 font-medium transition-colors rounded-2xl ${
-                activeCategory
+              key={cat.slug}
+              onClick={() =>
+                updateFilter({
+                  ...filters,
+                  categories: [cat.name],
+                })
+              }
+              className={`label-tag shrink-0 border px-4 py-2 font-medium transition-colors duration-200 active:scale-95 rounded-2xl ${
+                activeCategory === cat.name
                   ? "border-orange bg-orange text-ink"
                   : "border-line-light hover:border-orange"
               }`}
@@ -135,7 +160,11 @@ const Shop = () => {
           {filteredProducts.length} products
         </p>
         <div className="flex items-center gap-4">
-          <button className="label-tag flex items-center gap-1.5 font-medium lg:hidden">
+          <button
+            onClick={() => setDrawerOpen(true)}
+            className="label-tag bg-paper/50 border border-line-light text-ink-elevated px-2 py-1 rounded-md flex items-center gap-1.5 font-medium
+            active:scale-95 lg:hidden"
+          >
             <SlidersHorizontal className="h-3.5 w-3.5" />
             Filter
           </button>
@@ -160,14 +189,36 @@ const Shop = () => {
           <ProductGrid products={visibleProducts} />
           {visibleCount < filteredProducts.length ? (
             <div className="mt-12 flex justify-center">
-              <Button>
-                Load More <Loader className="h-3.5 w-3.5" />
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+              >
+                View More <ArrowDownCircle className="h-3.5 w-3.5" />
               </Button>
             </div>
-          ) : null}
+          ) : (
+            <div className="mt-12 flex justify-center">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => window.scrollTo({ top: 0 })}
+              >
+                Back to Top <ArrowUpCircle className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
-      filter drawer
+
+      <FilterDrawer
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        filters={filters}
+        onChange={updateFilter}
+        onReset={resetFilter}
+        resultCount={filteredProducts.length}
+      />
     </div>
   );
 };

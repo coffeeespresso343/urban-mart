@@ -21,7 +21,7 @@ const ProductRating = ({
           return (
             <Star
               key={i}
-              className={`${statSize} ${filled ? "fill-orange text-orange" : "fill-transparent text-line-light"}`}
+              className={`${statSize} ${filled ? "fill-orange text-orange" : "fill-transparent text-orange"}`}
               strokeWidth={1.5}
               aria-hidden="true"
             />
@@ -36,3 +36,5 @@ const ProductRating = ({
 };
 
 export default ProductRating;
+
+// 09757342441
