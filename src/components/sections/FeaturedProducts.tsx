@@ -10,7 +10,7 @@ const FeaturedProducts = () => {
         <div className="mb-10 flex items-end justify-between">
           <div>
             <span className="label-tag text-orange">Just In</span>
-            <h2 className="mt-2 font-display text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+            <h2 className="mt-2 font-display text-3xl font-bold tracking-tight sm:text-4xl">
               New Arrivals
             </h2>
           </div>

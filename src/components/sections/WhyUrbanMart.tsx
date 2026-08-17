@@ -37,13 +37,15 @@ const WhyUrbanMart = () => {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.4, delay: i * 0.05 }}
             className="flex flex-col items-start gap-3
-          border border-white/60 bg-white/70 rounded-lg p-5"
+          border border-white/60 bg-white/70 rounded-lg p-3"
           >
-            <b.icon
-              className="h-6 w-6 text-orange"
-              strokeWidth={1.75}
-              aria-hidden="true"
-            />
+            <span className="h-8 w-8 rounded-xl bg-orange/10 flex items-center justify-center">
+              <b.icon
+                className="h-5 w-5 text-orange"
+                strokeWidth={1.75}
+                aria-hidden="true"
+              />
+            </span>
             <h3 className="text-sm font-semibold">{b.ttile}</h3>
             <p className="text-xs leading-relaxed text-stone">
               {b.description}

@@ -1,6 +1,6 @@
 import { Heart, Menu, Search, ShoppingBag, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useUIStore } from "../../hooks/uiStore";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCart } from "../../hooks/useCart";
@@ -8,13 +8,15 @@ import { useCart } from "../../hooks/useCart";
 const NAV_LINKS = [
   { label: "Home", to: "/" },
   { label: "Shop", to: "/shop" },
-  { label: "Categories", to: "/shop#categories" },
+  // { label: "Categories", to: "/shop#categories" },
   { label: "New Arrivals", to: "/shop?sort=newest" },
   { label: "Best Sellers", to: "/shop?filter=best-seller" },
   { label: "Deals", to: "/shop?filter=deals" },
+  { label: "About", to: "/about" },
 ];
 
 const Navbar = () => {
+  const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const openSearch = useUIStore((s) => s.openSearch);
   const openCart = useUIStore((s) => s.openCart);
@@ -22,6 +24,16 @@ const Navbar = () => {
 
   const { totals } = useCart();
   const { productIds } = useWishlist();
+
+  const isActiveLink = (to: string) => {
+    const url = new URL(to, window.location.origin);
+
+    return (
+      location.pathname === url.pathname &&
+      location.search === url.search &&
+      location.hash === url.hash
+    );
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -56,19 +68,21 @@ const Navbar = () => {
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">
-          {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.label}
-              to={link.to}
-              className={({ isActive }) =>
-                `label-tag font-medium transition-colors hover:text-orange ${
-                  isActive ? "text-orange" : "text-ink"
-                }`
-              }
-            >
-              {link.label}
-            </NavLink>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const active = isActiveLink(link.to);
+
+            return (
+              <NavLink
+                key={link.label}
+                to={link.to}
+                className={`label-tag font-medium transition-colors hover:text-orange ${
+                  active ? "text-orange" : "text-ink"
+                }`}
+              >
+                {link.label}
+              </NavLink>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-5">

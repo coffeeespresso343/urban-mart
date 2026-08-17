@@ -28,6 +28,16 @@ const MobileNavigation = () => {
   const mobileMenuOpen = useUIStore((s) => s.mobileMenuOpen);
   const closeMobileMenu = useUIStore((s) => s.closeMobileMenu);
 
+  const isActiveLink = (to: string) => {
+    const url = new URL(to, window.location.href);
+
+    return (
+      location.pathname === url.pathname &&
+      location.search === url.search &&
+      location.hash === url.hash
+    );
+  };
+
   useEffect(() => {
     if (!mobileMenuOpen) return;
 
@@ -65,16 +75,13 @@ const MobileNavigation = () => {
             <div className="relative flex items-center justify-between border-b border-line-light/80 px-5 py-5">
               <Link
                 to="/"
-                onClick={closeMobileMenu}
-                className="flex items-center font-display font-black tracking-tight text-ink"
+                className="flex items-center gap-0.5 font-body text-lg font-black tracking-tight sm:text-xl"
               >
-                <h1 className="text-lg">
-                  <span className="bg-linear-to-r from-orange to-ink bg-clip-text text-transparent">
-                    Urban
-                  </span>
-                  Mart
-                </h1>
-                <ShoppingCart className="h-5 w-5 text-orange" />
+                Urban <span className="text-orange">Mart</span>
+                <ShoppingCart
+                  className="h-5 w-5 text-orange"
+                  strokeWidth={2.5}
+                />
               </Link>
               <button
                 type="button"
@@ -89,21 +96,21 @@ const MobileNavigation = () => {
               </button>
             </div>
             <ul className="flex flex-col gap-1 px-4 py-4">
-              {LINKS.map((link) => (
-                <li key={link.label}>
-                  <NavLink
-                    onClick={closeMobileMenu}
-                    to={link.to}
-                    className={({ isActive }) =>
-                      `group relative flex items-center justify-between overflow-hidden rounded-md px-4 py-3.5 font-display text-[14px]
+              {LINKS.map((link) => {
+                const isActive = isActiveLink(link.to);
+
+                return (
+                  <li key={link.label}>
+                    <NavLink
+                      onClick={closeMobileMenu}
+                      to={link.to}
+                      className={`group relative flex items-center justify-between overflow-hidden rounded-md px-4 py-3.5 font-display text-[14px]
                     font-bold tracking-tight transition-all duration-300 ${
                       isActive
-                        ? "bg-ink text-paper shadow-lg shadow-ink/10"
+                        ? "bg-white/45 text-orange shadow-lg shadow-ink/10"
                         : "text-ink hover:bg-white/45 hover:text-orange"
-                    }`
-                    }
-                  >
-                    {({ isActive }) => (
+                    }`}
+                    >
                       <>
                         <div className="relative z-10 flex items-center gap-3">
                           <span>{<link.Icon className="h-5 w-5" />}</span>{" "}
@@ -120,10 +127,10 @@ const MobileNavigation = () => {
                           <span className="absolute inset-0 -z-0 translate-x-[-101%] bg-orange-light/70 transition-transform duration-500 ease-out group-hover:translate-x-0" />
                         )}
                       </>
-                    )}
-                  </NavLink>
-                </li>
-              ))}
+                    </NavLink>
+                  </li>
+                );
+              })}
             </ul>
           </motion.nav>
         </div>

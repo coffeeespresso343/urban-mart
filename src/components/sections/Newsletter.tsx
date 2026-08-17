@@ -25,7 +25,7 @@ const Newsletter = () => {
     <section className="bg-ink py-20 text-paper-dim sm:py-28">
       <div className="container-edge mx-auto max-w-xl text-center">
         <span className="label-tag text-orange">Stay in The Loop</span>
-        <h2 className="mt-3 font-display text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+        <h2 className="mt-3 font-display text-3xl font-bold  tracking-tight sm:text-4xl">
           Get The Good Stuff.
         </h2>
         <p className="mt-4 mx-auto max-w-sm text-stone-light">

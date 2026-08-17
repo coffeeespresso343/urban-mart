@@ -49,7 +49,7 @@ const Wishlist = () => {
 
   return (
     <div className="container-edge py-10">
-      <h1 className="mb-8 font-display text-3xl font-black uppercase tracking-wide sm:text-4xl">
+      <h1 className="mb-8 font-display text-3xl font-black tracking-wide sm:text-4xl">
         Wishlist
       </h1>
 

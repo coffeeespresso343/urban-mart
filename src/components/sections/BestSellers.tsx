@@ -38,7 +38,7 @@ const BestSellers = () => {
       <div className="container-edge mb-8 flex items-end justify-between">
         <div>
           <span className="label-tag text-orange">Fan Favorites</span>
-          <h2 className="mt-2 font-display text-3xl font-bold uppercase tracking-tight sm:text-4xl">
+          <h2 className="mt-2 font-display text-3xl font-bold tracking-tight sm:text-4xl">
             Best Sellers
           </h2>
         </div>

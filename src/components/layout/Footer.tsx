@@ -70,7 +70,7 @@ const Footer = () => {
             and live.
           </p>
 
-          <div className="mt-4 bg-orange/10 border border-orange/20 rounded-xs p-3 flex flex-col items-center justify-center gap-2">
+          <div className="mt-4 bg-orange/10 border border-orange/20 rounded-md p-3 flex flex-col items-center justify-center gap-2">
             <p className="max-w-xs text-stone text-[12px] text-center">
               Built with Heart and too much Coffee by Linn Khant
             </p>

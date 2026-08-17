@@ -2,18 +2,8 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import ImageWithFallback from "../ui/ImageWithFallback";
-import { useUIStore } from "../../hooks/uiStore";
-import { Button } from "../ui/Button";
 
 const Hero = () => {
-  const showToast = useUIStore((s) => s.showToast);
-
-  const toastTest = () => {
-    showToast("Hello World! Hello World!", "info");
-    showToast("Hello World! Hello World!", "success");
-    showToast("Hello World! Hello World!", "error");
-  };
-
   return (
     <section className="relative overflow-hidden bg-ink text-paper">
       <div
@@ -30,7 +20,7 @@ const Hero = () => {
             Urban-Mart / SS26 Collection
           </span>
           <h1
-            className="font-display text-5xl font-black uppercase leading-[0.95] tracking-tight
+            className="font-display text-5xl font-black leading-[0.95] tracking-tight
           sm:text-6xl lg:text-7xl"
           >
             Built for
@@ -42,19 +32,18 @@ const Hero = () => {
             and live.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <Button onClick={toastTest}>Toast test</Button>
             <Link
-              to="/"
-              className="label-tag inline-flex items-center justify-center bg-paper text-ink px-8 py-4 font-semibold transition-all duration-200
+              to="/shop"
+              className="label-tag rounded-lg inline-flex items-center justify-center bg-paper text-ink px-8 py-4 font-semibold transition-all duration-200
                hover:bg-orange hover:text-paper active:scale-[0.98]"
             >
               Shop Collection
             </Link>
             <Link
               to="/shop?sort=newest"
-              className="label-tag inline-flex items-center justify-center gap-2 border border-orange px-8 py-4 font-semibold text-paper transition-all duration-200 active:scale-[0.98] hover:border-paper"
+              className="label-tag rounded-lg inline-flex items-center justify-center gap-2 border border-orange px-8 py-4 font-semibold text-paper transition-all duration-200 active:scale-[0.98] hover:border-paper"
             >
-              Explore New Arrivals{" "}
+              Explore New Arrivals
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
             </Link>
           </div>

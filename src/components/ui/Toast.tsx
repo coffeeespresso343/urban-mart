@@ -34,7 +34,7 @@ const ToastItem = ({ toast }: { toast: ToastMessage }) => {
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       role="status"
       aria-live="polite"
-      className="group relative flex items-center w-full overflow-hidden rounded-xl border border-white/10 bg-paper/70 text-ink shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-sm"
+      className="group relative flex items-center w-full overflow-hidden rounded-xl border border-white/50 bg-paper/70 text-ink shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-sm"
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/50 to-transparent" />
       {/* <div className={`absolute inset-0 left-0 w-[4px] bg-current ${accent}`} /> */}

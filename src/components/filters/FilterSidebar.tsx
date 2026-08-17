@@ -27,10 +27,6 @@ const FilterSidebar = ({
     });
   };
 
-  useEffect(() => {
-    console.log("minRating is now:", filters.minRating);
-  }, [filters.minRating]);
-
   return (
     <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between">
@@ -89,9 +85,6 @@ const FilterSidebar = ({
                 checked={filters.minRating === rating}
                 onChange={() => {
                   onChange({ ...filters, minRating: rating });
-                  console.log("minRating:", filters.minRating);
-                  console.log("rating:", rating);
-                  console.log("checked:", filters.minRating === rating);
                 }}
                 className="h-4 w-4 accent-orange"
               />

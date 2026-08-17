@@ -1,5 +1,4 @@
 import {
-  ArrowDown,
   ArrowDownCircle,
   ArrowUpCircle,
   Search,
@@ -98,7 +97,7 @@ const Shop = () => {
   return (
     <div className="container-edge bg-paper py-10 sm:py-14">
       <div className="mb-8">
-        <h1 className="font-display text-3xl font-black uppercase tracking-wide sm:text-4xl">
+        <h1 className="font-display text-3xl font-black tracking-wide sm:text-4xl">
           Shop
         </h1>
         <div className="relative mt-6 max-w-md">
@@ -197,17 +196,18 @@ const Shop = () => {
                 View More <ArrowDownCircle className="h-3.5 w-3.5" />
               </Button>
             </div>
-          ) : (
+          ) : visibleCount >= filteredProducts.length &&
+            visibleProducts.length > PAGE_SIZE / 2 ? (
             <div className="mt-12 flex justify-center">
               <Button
                 size="sm"
-                variant="ghost"
+                variant="outline"
                 onClick={() => window.scrollTo({ top: 0 })}
               >
                 Back to Top <ArrowUpCircle className="h-3.5 w-3.5" />
               </Button>
             </div>
-          )}
+          ) : null}
         </div>
       </div>
 
