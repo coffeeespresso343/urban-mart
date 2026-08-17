@@ -6,6 +6,7 @@ import AnnouncementBar from "./AnnouncementBar";
 import MobileNavigation from "./MobileNavigation";
 import { ToastContainer } from "../ui/Toast";
 import SearchOverlay from "./SearchOverlay";
+import CartDrawer from "../cart/CartDrawer";
 
 const RootLayout = () => {
   const location = useLocation();
@@ -24,6 +25,7 @@ const RootLayout = () => {
       <Footer />
       <MobileNavigation />
       <SearchOverlay />
+      <CartDrawer />
       <ToastContainer />
     </div>
   );

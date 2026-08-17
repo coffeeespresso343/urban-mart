@@ -1,0 +1,80 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { useUIStore } from "../../hooks/uiStore";
+import { useCart } from "../../hooks/useCart";
+import { ShoppingBag, X } from "lucide-react";
+import EmptyState from "../ui/EmptyState";
+import { Button } from "../ui/Button";
+import CartSummary from "./CartSummary";
+import CartItem from "./CartItem";
+
+const CartDrawer = () => {
+  const cartOpen = useUIStore((s) => s.cartOpen);
+  const closeCart = useUIStore((s) => s.closeCart);
+  const { items } = useCart();
+
+  return (
+    <AnimatePresence>
+      {cartOpen ? (
+        <div className="fixed inset-0 z-[95]">
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            onClick={closeCart}
+            className="absolute inset-0 bg-ink/50"
+          />
+          <motion.aside
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-paper shadow-2xl"
+          >
+            <div className="flex items-center justify-between border-b border-line-light px-6 py-5">
+              <h2 className="font-display text-md font-bold tracking-tight uppercase">
+                Your Bag{" "}
+                {items.length > 0 &&
+                  `(${items.length}) ${items.length === 1 ? "Item" : "Items"}`}
+              </h2>
+              <button
+                onClick={closeCart}
+                className="h-7 w-7 flex items-center justify-center bg-orange/5 rounded-full text-stone transition-colors hover:text-ink"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {items.length === 0 ? (
+              <div className="flex flex-1 items-center justify-center">
+                <EmptyState
+                  icon={ShoppingBag}
+                  title="Your bag is empty"
+                  message="Look like you haven't been added anything yet."
+                  action={
+                    <Button onClick={closeCart}>Continue Shopping</Button>
+                  }
+                />
+              </div>
+            ) : (
+              <>
+                <div className="flex-1 divide-y divide-line-light overflow-y-auto px-6">
+                  {items.map((item) => (
+                    <CartItem
+                      key={`${item.product.id}-${item.color ?? ""}`}
+                      item={item}
+                      compact
+                    />
+                  ))}
+                </div>
+                <div className="border-t border-line-light px-6 py-5">
+                  <CartSummary />
+                </div>
+              </>
+            )}
+          </motion.aside>
+        </div>
+      ) : null}
+    </AnimatePresence>
+  );
+};
+export default CartDrawer;
