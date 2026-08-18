@@ -32,7 +32,7 @@ export const useUIStore = create<UIState>((set) => ({
   openCart: () => set({ cartOpen: true, searchOpen: false }),
   closeCart: () => set({ cartOpen: false }),
   toggleCart: () => set((s) => ({ cartOpen: !s.cartOpen, searchOpen: false })),
-  openSearch: () => set({ searchOpen: true, cartOpen: true }),
+  openSearch: () => set({ searchOpen: true, cartOpen: false }),
   closeSearch: () => set({ searchOpen: false }),
   openMobileMenu: () => set({ mobileMenuOpen: true }),
   closeMobileMenu: () => set({ mobileMenuOpen: false }),

@@ -27,7 +27,7 @@ const CategorySection = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {featured.map((category, index) => (
           <motion.div
             key={category.slug}
@@ -38,7 +38,7 @@ const CategorySection = () => {
           >
             <Link
               to={`/shop?category=${category.slug}`}
-              className="group relative block aspect-4/3 overflow-hidden bg-ink"
+              className="group relative block rounded-md aspect-4/3 overflow-hidden bg-ink"
             >
               <ImageWithFallback
                 src={category.image}

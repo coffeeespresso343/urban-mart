@@ -56,12 +56,12 @@ const Newsletter = () => {
                 if (status === "error") setStatus("idle");
               }}
               placeholder="you@email.com"
-              className="font-mono text-xs flex-1 border border-white/20 bg-transparent px-4 py-3.5 text-paper placeholder:text-stone "
+              className="font-mono text-xs flex-1 rounded-md border border-white/20 bg-transparent px-4 py-3.5 text-paper placeholder:text-stone "
             />
             <button
               type="submit"
               disabled={status === "loading"}
-              className="label-tag flex items-center justify-center gap-2 bg-paper px-3.5 py-3.5
+              className="label-tag flex rounded-md items-center justify-center gap-2 bg-paper px-3.5 py-3.5
               font-semibold text-ink transition-colors hover:bg-orange hover:text-paper disabled:opacity-60"
             >
               {status === "loading" ? "Subscribing..." : "Subscribe"}

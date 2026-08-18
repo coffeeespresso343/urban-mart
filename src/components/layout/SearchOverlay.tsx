@@ -232,8 +232,8 @@ const SearchOverlay = () => {
                   <li className="pt-5 flex items-center justify-center">
                     <button
                       onClick={() => commitSearch(query)}
-                      className="label-tag px-2 py-1 rounded-xl flex items-center justify-center gap-1 
-                   bg-orange/5 border border-orange/10 font-semibold transition-all duration-200 text-orange active:scale-97"
+                      className="label-tag flex items-center justify-center gap-1 
+                    font-semibold transition-all duration-200 text-orange active:scale-97"
                     >
                       View all results for "{query}"
                       <ArrowRight className="h-3.5 w-3.5" />

@@ -17,10 +17,10 @@ const ProductCard = ({ product }: { product: Product }) => {
   const lowStock = product.stock > 0 && product.stock <= 5;
 
   return (
-    <div className="group bg-white/60 pb-2 rounded-xl relative flex flex-col">
+    <div className="group bg-white/60 pb-2 rounded-md relative flex flex-col">
       <Link
         to={`/product/${product.id}`}
-        className="relative block rounded-t-xl aspect-4/5 overflow-hidden bg-paper-dim"
+        className="relative block rounded-t-md aspect-4/5 overflow-hidden bg-paper-dim"
       >
         <ImageWithFallback
           src={product.images[0]}

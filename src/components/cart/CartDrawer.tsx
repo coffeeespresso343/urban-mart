@@ -6,20 +6,39 @@ import EmptyState from "../ui/EmptyState";
 import { Button } from "../ui/Button";
 import CartSummary from "./CartSummary";
 import CartItem from "./CartItem";
+import { useEffect } from "react";
 
 const CartDrawer = () => {
   const cartOpen = useUIStore((s) => s.cartOpen);
   const closeCart = useUIStore((s) => s.closeCart);
   const { items } = useCart();
 
+  const showToast = useUIStore((s) => s.showToast);
+
+  useEffect(() => {
+    if (!cartOpen) return;
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeCart();
+    };
+
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [cartOpen, closeCart]);
+
   return (
     <AnimatePresence>
       {cartOpen ? (
         <div className="fixed inset-0 z-[95]">
           <motion.div
-            initial={{ opacity: 0, x: "100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "100%" }}
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
             onClick={closeCart}
             className="absolute inset-0 bg-ink/50"
           />
@@ -31,7 +50,7 @@ const CartDrawer = () => {
             className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-paper shadow-2xl"
           >
             <div className="flex items-center justify-between border-b border-line-light px-6 py-5">
-              <h2 className="font-display text-md font-bold tracking-tight uppercase">
+              <h2 className="font-display text-md font-bold tracking-wider ">
                 Your Bag{" "}
                 {items.length > 0 &&
                   `(${items.length}) ${items.length === 1 ? "Item" : "Items"}`}
@@ -67,7 +86,12 @@ const CartDrawer = () => {
                   ))}
                 </div>
                 <div className="border-t border-line-light px-6 py-5">
-                  <CartSummary />
+                  <CartSummary
+                    onCheckout={() =>
+                      showToast("Add checkout page later: CartDrawer")
+                    }
+                    checkoutLabel="Checkout"
+                  />
                 </div>
               </>
             )}

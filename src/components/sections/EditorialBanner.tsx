@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import ImageWithFallback from "../ui/ImageWithFallback";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import company from "../../assets/company.avif";
 
 const EditorialBanner = () => {
   return (
@@ -12,10 +13,10 @@ const EditorialBanner = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.6 }}
-          className="relative col-span-1 aspect-4/3 overflow-hidden bg-paper-dim lg:col-span-7"
+          className="relative col-span-1 rounded-2xl aspect-4/3 overflow-hidden bg-paper-dim lg:col-span-7"
         >
           <ImageWithFallback
-            src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1400&q=80&auto=format&fit=crop"
+            src={company}
             alt="Minimal workspace with essential everyday objects"
             className="h-full w-full object-cover"
           />
@@ -29,10 +30,10 @@ const EditorialBanner = () => {
           className="col-span-1 lg:col-span-5 lg:pl-8"
         >
           <span className="label-tag text-orange">The Philosophy</span>
-          <h2 className="mt-3 font-display text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl">
+          <h2 className="mt-3 font-display text-4xl font-black uppercase leading-[0.95] tracking-tight sm:text-5xl">
             Essentials
             <br />
-            Refined
+            <span className="text-orange">Refined</span>
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-stone">
             Every product in the catalog earns its place through use, not trend.

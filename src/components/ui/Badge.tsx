@@ -6,7 +6,7 @@ type Tone = "ink" | "orange" | "warn" | "good" | "stone";
 const toneClasses: Record<Tone, string> = {
   ink: "bg-ink/10 text-orange",
   orange: "bg-paper/60 text-orange",
-  warn: "bg-warn/90 text-paper",
+  warn: "bg-warn/70 text-paper",
   good: "bg-paper/70 text-orange",
   stone: "bg-paper-dim/50 text-error border border-line-light",
 };

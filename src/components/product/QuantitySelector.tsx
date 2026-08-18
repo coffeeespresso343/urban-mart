@@ -1,5 +1,4 @@
 import { Minus, Plus } from "lucide-react";
-import React from "react";
 
 const QuantitySelector = ({
   quantity,
@@ -12,9 +11,9 @@ const QuantitySelector = ({
   max?: number;
   size?: "sm" | "md";
 }) => {
-  const dim = size === "sm" ? "h-8 w-8" : "h-10 w-10";
+  const dim = size === "sm" ? "h-7 w-7" : "h-10 w-10";
   return (
-    <div className="inline-flex items-center border border-line-light">
+    <div className="inline-flex items-center rounded-lg border border-line-light">
       <button
         onClick={() => onChange(Math.max(1, quantity - 1))}
         disabled={quantity <= 1}

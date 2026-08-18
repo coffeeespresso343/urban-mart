@@ -58,7 +58,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
     // console.log(`Added to your bag - ${product.name}`);
     showToast(`Added to your bag - ${product.name}`, "success");
-    openCart();
+    // openCart();
   };
 
   const removeItem = (productId: number, color?: string) => {
