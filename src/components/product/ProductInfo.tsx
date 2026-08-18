@@ -7,8 +7,10 @@ import {
   Check,
   Clipboard,
   Heart,
+  PlusCircle,
   RotateCcw,
   Share2,
+  ShoppingCart,
   Truck,
 } from "lucide-react";
 import { Button } from "../ui/Button";
@@ -22,7 +24,7 @@ const ProductInfo = ({ product }: { product: Product }) => {
 
   const [quantity, setQuantity] = useState(1);
 
-  const { addItem } = useCart();
+  const { addItem, isAdded } = useCart();
   const { isWishListed, toggleWishlist } = useWishlist();
   const showToast = useUIStore((s) => s.showToast);
 
@@ -30,6 +32,8 @@ const ProductInfo = ({ product }: { product: Product }) => {
 
   const outOfStock = product.stock <= 0;
   const lowStock = product.stock > 0 && product.stock <= 5;
+
+  const added = isAdded(product.id, product.colors?.[0]);
 
   const handleShare = async () => {
     const shareData = {
@@ -130,12 +134,27 @@ const ProductInfo = ({ product }: { product: Product }) => {
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <Button
-          onClick={() => addItem(product, quantity, color)}
+          onClick={() => {
+            addItem(product, quantity, color);
+          }}
           size="lg"
           className="flex-1"
           disabled={outOfStock}
         >
-          {outOfStock ? "Unavailable" : "Add to Cart"}
+          {!added ? (
+            <ShoppingCart
+              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+              strokeWidth={2.2}
+              aria-hidden="true"
+            />
+          ) : !outOfStock ? (
+            <PlusCircle
+              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+              strokeWidth={2.2}
+              aria-hidden="true"
+            />
+          ) : null}
+          {outOfStock ? "Unavailable" : added ? "Add more" : "Quick Add"}
         </Button>
         <Button
           size="lg"

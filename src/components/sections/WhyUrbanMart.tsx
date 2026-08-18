@@ -28,7 +28,7 @@ const BENEFITS = [
 const WhyUrbanMart = () => {
   return (
     <section className="border-y bg-paper-dim border-line py-16">
-      <div className="container-edge grid grid-cols-2 gap-6 sm:grid-cols-4">
+      <div className="container-edge grid grid-cols-2 gap-4 sm:grid-cols-4">
         {BENEFITS.map((b, i) => (
           <motion.div
             key={b.ttile}

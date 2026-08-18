@@ -25,14 +25,19 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
   const isWishListed = (productId: number) => productIds.includes(productId);
 
   const toggleWishlist = (product: Product) => {
-    setProductIds((prev) => {
-      if (prev.includes(product.id)) {
-        showToast(`Removed form wishlist`, "info");
-        return prev.filter((id) => id !== product.id);
-      }
+    const alreadyWishlisted = productIds.includes(product.id);
+
+    setProductIds((prev) =>
+      alreadyWishlisted
+        ? prev.filter((id) => id !== product.id)
+        : [...prev, product.id],
+    );
+
+    if (alreadyWishlisted) {
+      showToast(`Removed ${product.name} from wishlist`, "info");
+    } else {
       showToast(`Added to wishlist - ${product.name}`, "success");
-      return [...prev, product.id];
-    });
+    }
   };
 
   const removeFromWishlist = (productId: number) => {

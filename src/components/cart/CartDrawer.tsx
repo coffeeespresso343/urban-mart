@@ -47,7 +47,7 @@ const CartDrawer = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-paper shadow-2xl"
+            className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-paper-dim shadow-2xl"
           >
             <div className="flex items-center justify-between border-b border-line-light px-6 py-5">
               <h2 className="font-display text-md font-bold tracking-wider ">

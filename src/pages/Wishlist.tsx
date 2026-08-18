@@ -9,24 +9,15 @@ import ImageWithFallback from "../components/ui/ImageWithFallback";
 import ProductRating from "../components/product/ProductRating";
 import { formatPrice } from "../utils/currency";
 import { useCart } from "../hooks/useCart";
-import { useState } from "react";
 
 const Wishlist = () => {
-  const [isAdded, setIsAdded] = useState<number[]>([]);
-
   const { productIds, removeFromWishlist } = useWishlist();
 
-  const { addItem } = useCart();
+  const { addItem, isAdded } = useCart();
 
   const items = productIds
     .map((id) => products.find((p) => p.id === id))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
-
-  const handleAdd = (productId: number) => {
-    setIsAdded((prev) =>
-      prev.includes(productId) ? prev : [...prev, productId],
-    );
-  };
 
   if (items.length <= 0) {
     return (
@@ -56,7 +47,7 @@ const Wishlist = () => {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {items.map((product, index) => {
           const outOfStock = product.stock <= 0;
-          const added = isAdded.includes(product.id);
+          const added = isAdded(product.id, product.colors?.[0]);
 
           return (
             <motion.div
@@ -110,7 +101,6 @@ const Wishlist = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     addItem(product, 1, product.colors?.[0]);
-                    handleAdd(product.id);
                   }}
                 >
                   {added ? (

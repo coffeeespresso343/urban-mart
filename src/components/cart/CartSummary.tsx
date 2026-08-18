@@ -36,7 +36,13 @@ const CartSummary = ({
             className="text-xs font-mono flex-1 rounded-md border border-line-light bg-paper px-3 py-2 text-ink
           placeholder:text-stone placeholder:uppercase focus:border-orange"
           />
-          <Button type="submit" size="sm" variant="secondary">
+          <Button
+            type="submit"
+            size="sm"
+            variant="secondary"
+            disabled={!code}
+            className="disabled:opacity-50"
+          >
             Apply
           </Button>
         </form>

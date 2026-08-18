@@ -17,6 +17,7 @@ interface CartContextValue {
   applyPromoCode: (code: string) => boolean;
   removePromoCode: () => void;
   totals: CartTotals;
+  isAdded: (productId: number, color?: string) => boolean;
 }
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
@@ -37,7 +38,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
   );
 
   const showToast = useUIStore((s) => s.showToast);
-  const openCart = useUIStore((s) => s.openCart);
 
   const addItem = (product: Product, quantity = 1, color?: string) => {
     setItems((prev) => {
@@ -59,6 +59,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     // console.log(`Added to your bag - ${product.name}`);
     showToast(`Added to your bag - ${product.name}`, "success");
     // openCart();
+  };
+
+  const isAdded = (productId: number, color?: string) => {
+    return items.some(
+      (item) =>
+        lineKey(item.product.id, item.color) === lineKey(productId, color),
+    );
   };
 
   const removeItem = (productId: number, color?: string) => {
@@ -134,6 +141,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     applyPromoCode,
     removePromoCode,
     totals,
+    isAdded,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

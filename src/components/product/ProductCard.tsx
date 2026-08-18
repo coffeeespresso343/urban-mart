@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import type { Product } from "../../types/Product";
 import ImageWithFallback from "../ui/ImageWithFallback";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Heart, PlusCircle, ShoppingCart } from "lucide-react";
 import { formatPrice } from "../../utils/currency";
 import Badge from "../ui/Badge";
 import ProductRating from "./ProductRating";
@@ -10,11 +10,14 @@ import { useCart } from "../../hooks/useCart";
 import { useWishlist } from "../../hooks/useWishlist";
 
 const ProductCard = ({ product }: { product: Product }) => {
-  const { addItem } = useCart();
+  // const [isAdded, setIsAdded] = useState(false);
+  const { addItem, isAdded } = useCart();
   const { isWishListed, toggleWishlist } = useWishlist();
   const wishlisted = isWishListed(product.id);
   const outOfStock = product.stock <= 0;
   const lowStock = product.stock > 0 && product.stock <= 5;
+
+  const added = isAdded(product.id, product.colors?.[0]);
 
   return (
     <div className="group bg-white/60 pb-2 rounded-md relative flex flex-col">
@@ -80,17 +83,26 @@ const ProductCard = ({ product }: { product: Product }) => {
               if (!outOfStock) addItem(product, 1, product.colors?.[0]);
             }}
             disabled={outOfStock}
-            className="label-tag rounded-lg border border-white/20 flex w-full items-center justify-center gap-1.5 bg-paper/95 px-4 py-2 sm:py-2.5 font-semibold
-            text-ink shadow-lg backdrop-blur-none transition-all duration-300 active:scale-[0.98] hover:border-orange hover:bg-orange hover:text-paper hover:shadow-xl disabled:border-transparent disabled:bg-stone-light/80 disabled:text-stone-dark disabled:cursor-not-allowed disabled:opacity-70"
+            className="label-tag rounded-lg border border-white/20 flex w-full items-center justify-center bg-paper/95 gap-1.5 px-4 py-2 sm:py-2.5 font-semibold
+            text-ink shadow-lg backdrop-blur-none transition-all duration-300 active:scale-[0.98] hover:border-orange hover:bg-orange hover:text-paper hover:shadow-xl disabled:border-transparent
+             disabled:bg-stone-light/80 disabled:text-stone-dark disabled:cursor-not-allowed disabled:opacity-70
+            "
           >
-            {outOfStock ? "Unavailable" : "Quick Add"}
-            {!outOfStock && (
+            {outOfStock ? "Unavailable" : added ? "Add more" : "Quick Add"}
+
+            {!added ? (
               <ShoppingCart
                 className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
                 strokeWidth={2.2}
                 aria-hidden="true"
               />
-            )}
+            ) : !outOfStock ? (
+              <PlusCircle
+                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                strokeWidth={2.2}
+                aria-hidden="true"
+              />
+            ) : null}
           </button>
         </div>
       </Link>
