@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ImageWithFallback from "../ui/ImageWithFallback";
 import hero from "../../assets/hero.avif";
+import { Button } from "../ui/Button";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative overflow-hidden bg-ink text-paper">
       <div
@@ -33,7 +36,18 @@ const Hero = () => {
             and live.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <Link
+            <Button variant="primary" onClick={() => navigate("/shop")}>
+              Shop Collection
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => navigate("/shop?sort=newest")}
+              className="bg-ink-elevated"
+            >
+              Explore New Arrivals
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </Button>
+            {/* <Link
               to="/shop"
               className="label-tag rounded-lg inline-flex items-center justify-center bg-paper text-ink px-8 py-4 font-semibold transition-all duration-200
                hover:bg-orange hover:text-paper active:scale-[0.98]"
@@ -46,7 +60,7 @@ const Hero = () => {
             >
               Explore New Arrivals
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-            </Link>
+            </Link> */}
           </div>
         </motion.div>
 

@@ -7,9 +7,9 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import InputField from "../components/checkout/InputField";
-import type { ShippingAddress } from "../types/Order";
+import type { Order, ShippingAddress } from "../types/Order";
 import { Button } from "../components/ui/Button";
 import {
   formatCardNumber,
@@ -25,10 +25,24 @@ import {
 import { formatPrice } from "../utils/currency";
 import { useCart } from "../hooks/useCart";
 import EmptyState from "../components/ui/EmptyState";
-import { useUIStore } from "../hooks/uiStore";
+import ImageWithFallback from "../components/ui/ImageWithFallback";
 
 const STEPS = ["Information", "Shipping", "Payment", "Confirmation"] as const;
 type StepName = (typeof STEPS)[number];
+const SHIPPING_METHODS = [
+  {
+    id: "standard",
+    label: "Standard Shipping",
+    time: "3-5 business days",
+    price: 0,
+  },
+  {
+    id: "express",
+    label: "Express Shipping",
+    time: "1-2 business days",
+    price: 18,
+  },
+];
 
 type Errors = Partial<Record<keyof ShippingAddress, string>>;
 
@@ -36,8 +50,7 @@ const Checkout = () => {
   const { items, totals, clearCart } = useCart();
   const [stepIndex, setStepIndex] = useState(0);
   const [processing, setProcessing] = useState(false);
-
-  const showToast = useUIStore((S) => S.showToast);
+  const navigate = useNavigate();
 
   const [address, setAddress] = useState<ShippingAddress>({
     firstName: "",
@@ -61,6 +74,8 @@ const Checkout = () => {
 
   const [errors, setErrors] = useState<Errors>({});
 
+  const [shippingMethod, setShippingMethod] = useState(SHIPPING_METHODS[0].id);
+
   if (items.length === 0 && !processing) {
     return (
       <div className="container-edge py-20">
@@ -77,6 +92,10 @@ const Checkout = () => {
       </div>
     );
   }
+
+  const shippingCost =
+    SHIPPING_METHODS.find((m) => m.id === shippingMethod)?.price ?? 0;
+  const grandTotal = totals.total + shippingCost;
 
   const validateInformation = (): boolean => {
     const next: Errors = {};
@@ -144,6 +163,33 @@ const Checkout = () => {
   const placeOrder = () => {
     setProcessing(true);
     setStepIndex(3);
+
+    const DAY_IN_MS = 24 * 60 * 60 * 1000;
+    const deliveryDays = shippingMethod === "express" ? 2 : 5;
+
+    const order: Order = {
+      id: `UM-${crypto.randomUUID()}`,
+      items,
+      totals: { ...totals, shipping: shippingCost, total: grandTotal },
+      shippingAddress: address,
+      shippingMethod:
+        SHIPPING_METHODS.find((m) => m.id === shippingMethod)?.label ??
+        "Standard Shipping",
+      placeAt: new Date().toISOString(),
+      estimatedDelivery: new Date(
+        Date.now() + deliveryDays * DAY_IN_MS,
+      ).toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+      }),
+    };
+    console.log("Order: ", order);
+
+    setTimeout(() => {
+      localStorage.setItem("urban-mart-last-order", JSON.stringify(order));
+      clearCart();
+      navigate("/order-confirmation");
+    }, 1600);
   };
 
   return (
@@ -205,7 +251,7 @@ const Checkout = () => {
         })}
       </ol>
 
-      <div>
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_400px]">
         <div>
           <AnimatePresence mode="wait">
             {stepIndex === 0 ? (
@@ -325,6 +371,47 @@ const Checkout = () => {
                   error={errors.country}
                 />
 
+                <fieldset className="mt-2">
+                  <legend className="label-tag mb-3 text-stone">
+                    Shipping Method
+                  </legend>
+                  <div className="flex flex-col gap-3">
+                    {SHIPPING_METHODS.map((method) => (
+                      <label
+                        key={method.id}
+                        className={`flex cursor-pointer rounded-md items-center justify-between border px-4 py-3.5 transition-colors ${
+                          shippingMethod === method.id
+                            ? "border-orange"
+                            : "border-line-light"
+                        }`}
+                      >
+                        <span className="flex items-center gap-3">
+                          <input
+                            type="radio"
+                            name="shipping-method"
+                            checked={shippingMethod === method.id}
+                            onChange={() => setShippingMethod(method.id)}
+                            className="h-4 w-4 accent-orange"
+                          />
+                          <span>
+                            <span className="block text-sm font-medium">
+                              {method.label}
+                            </span>
+                            <span className="label-tag text-stone">
+                              {method.time}
+                            </span>
+                          </span>
+                        </span>
+                        <span className="price text-sm font-semibold">
+                          {method.price === 0
+                            ? "Free"
+                            : formatPrice(method.price)}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+
                 <div className="mt-2 flex gap-3">
                   <Button type="button" variant="ghost" onClick={goBack}>
                     <ChevronLeft className="h-4 w-4" /> Back
@@ -404,7 +491,7 @@ const Checkout = () => {
                     <ChevronLeft className="h-4 w-4" /> Back
                   </Button>
                   <Button size="lg" type="submit">
-                    Place Order - {formatPrice(3939)}
+                    Place Order - {formatPrice(grandTotal)}
                   </Button>
                 </div>
               </motion.form>
@@ -424,6 +511,68 @@ const Checkout = () => {
               </motion.div>
             ) : null}
           </AnimatePresence>
+        </div>
+
+        <div className="h-fit rounded-xl border border-line-light p-4">
+          <h3 className="label-tag mb-4 font-semibold">Order Summary</h3>
+          <div className="max-h-72  divide-y divide-line-light overflow-y-auto scrollbar-none">
+            {items.map((item) => (
+              <div
+                key={`${item.product.id}-${item.color ?? ""}`}
+                className="flex gap-3 py-3"
+              >
+                <div className="relative h-16 w-16 rounded-sm shrink-0 overflow-hidden bg-paper-dim">
+                  <ImageWithFallback
+                    src={item.product.images[0]}
+                    alt={item.product.name}
+                    className="h-full w-full"
+                  />
+                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange/80 text-[10px] text-paper font-semibold">
+                    {item.quantity}
+                  </span>
+                </div>
+
+                <div className="flex-1">
+                  <p className="text-sm font-medium">{item.product.name}</p>
+                  {item.color ? (
+                    <p className="label-tag text-stone">{item.color}</p>
+                  ) : null}
+                </div>
+
+                <span className="price text-sm">
+                  {formatPrice(item.product.price)}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 flex flex-col gap-2 border-t border-line-light pt-4 text-sm">
+            <div className="flex items-center justify-between text-stone">
+              <span>Subtotal</span>
+              <span className="price text-ink">
+                {formatPrice(totals.subtotal)}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between text-stone">
+              <span>Shipping</span>
+              <span className="price text-ink">
+                {shippingCost === 0 ? "Free" : formatPrice(shippingCost)}
+              </span>
+            </div>
+
+            {totals.discount > 0 ? (
+              <div className="flex items-center justify-between text-good">
+                <span>Discount</span>
+                <span className="price">-{formatPrice(totals.discount)}</span>
+              </div>
+            ) : null}
+
+            <div className="mt-2 flex items-center justify-between border-t border-line-light pt-3 text-base font-semibold">
+              <span>Total</span>
+              <span>{formatPrice(grandTotal)}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

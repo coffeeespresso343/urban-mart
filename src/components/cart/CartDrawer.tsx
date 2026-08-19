@@ -7,13 +7,13 @@ import { Button } from "../ui/Button";
 import CartSummary from "./CartSummary";
 import CartItem from "./CartItem";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CartDrawer = () => {
   const cartOpen = useUIStore((s) => s.cartOpen);
   const closeCart = useUIStore((s) => s.closeCart);
   const { items } = useCart();
-
-  const showToast = useUIStore((s) => s.showToast);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!cartOpen) return;
@@ -87,9 +87,10 @@ const CartDrawer = () => {
                 </div>
                 <div className="border-t border-line-light px-6 py-5">
                   <CartSummary
-                    onCheckout={() =>
-                      showToast("Add checkout page later: CartDrawer")
-                    }
+                    onCheckout={() => {
+                      navigate("/checkout");
+                      closeCart();
+                    }}
                     checkoutLabel="Checkout"
                   />
                 </div>

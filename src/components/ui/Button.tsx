@@ -14,7 +14,7 @@ const variantClasses: Record<Variant, string> = {
   primary:
     "bg-orange border border-orange text-paper rounded-md shadow-sm shadow-orange/10 transition-all duration-300 active:scale-[0.98] hover:border-orange-dark hover:shadow-lg hover:shadow-orange/15 hover:bg-orange-dark disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-orange disabled:hover:border-orange",
   secondary:
-    "bg-ink text-paper border border-ink rounded-md transition-all duration-300 active:scale-[0.98] hover:text-orange hover:bg-ink-elevated hover:border-ink-elevated disabled:cursor-not-allowed disabled:opacity-50",
+    "bg-ink text-orange border border-ink rounded-md transition-all duration-300 active:scale-[0.98] hover:text-paper hover:bg-ink hover:border-ink-elevated disabled:cursor-not-allowed disabled:opacity-50",
   ghost:
     "bg-paper-dim rounded-md border border-orange/5 transition-all duration-300 active:scale-[0.98] text-orange hover:border-line-light",
   outline:
