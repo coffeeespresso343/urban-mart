@@ -8,8 +8,8 @@ const BestSellers = () => {
   //   console.log("Best Sellers: ", bestSellers.length);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const [canScrollPrev, setCanScrollPrev] = useState(true);
-  const [canScrollNext, setCanScrollNext] = useState(true);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
   const [activePage, setActivePage] = useState(0);
   const pageCount = Math.ceil(bestSellers.length);
   //   console.log("Page Count: ", pageCount);
@@ -86,15 +86,31 @@ const BestSellers = () => {
       </div>
 
       <div className="mt-8 flex items-center justify-center gap-2 lg:hidden">
+        <button
+          disabled={!canScrollPrev}
+          onClick={() => scrollBy(-1)}
+          className="flex h-8 w-8 rounded-full items-center justify-center bg-ink/10 text-ink/80
+          transition-colors active:scale-95 hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
         {Array.from({ length: pageCount }).map((_, i) => (
           <span
             key={i}
             className={`h-1.5 rounded-full transition-all ${
-              i === activePage ? "w-6 bg-ink" : "w-1.5 bg-line-light"
+              i === activePage ? "w-6 bg-ink/80" : "w-1.5 bg-line-light"
             }`}
             aria-hidden="true"
           />
         ))}
+        <button
+          disabled={!canScrollNext}
+          onClick={() => scrollBy(1)}
+          className="flex h-8 w-8 rounded-full items-center justify-center bg-ink/10 text-ink/80
+          transition-colors active:scale-95 hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
       </div>
     </section>
   );

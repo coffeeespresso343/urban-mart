@@ -34,7 +34,13 @@ const ProductDetails = () => {
     .slice(0, 4);
 
   return (
-    <motion.div key={product?.id} className="container-edge py-10 sm:py-14">
+    <motion.div
+      key={product?.id}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="container-edge py-10 sm:py-14"
+    >
       <nav className="mb-6 flex items-center gap-1.5 text-xs text-stone">
         <Link to="/shop" className="hover:text-orange">
           Shop

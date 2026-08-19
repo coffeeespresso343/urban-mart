@@ -9,7 +9,7 @@ export const isValidPostalCode = (value: string): boolean =>
 
 export const isValidCardNumber = (value: string): boolean => {
   const digits = value.replace(/\s/g, "");
-  return /^\d{13, 19}$/.test(digits);
+  return /^\d{13,19}$/.test(digits);
 };
 
 export const isValidExpiry = (value: string) => {
@@ -35,7 +35,7 @@ export const formatCardNumber = (value: string): string =>
   value
     .replace(/\D/g, "")
     .slice(0, 19)
-    .replace(/(.{4})/g, "$1")
+    .replace(/(.{4})/g, "$1 ")
     .trim();
 
 export const formatExpiry = (value: string): string => {

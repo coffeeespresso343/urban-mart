@@ -64,7 +64,7 @@ const Newsletter = () => {
             <button
               type="submit"
               disabled={status === "loading"}
-              className="label-tag flex items-center justify-center gap-2 bg-paper px-3.5 py-3.5
+              className="label-tag rounded-xl flex items-center justify-center gap-2 bg-paper px-3.5 py-3.5
               font-semibold text-ink transition-colors hover:bg-orange hover:text-paper disabled:opacity-60"
             >
               {status === "loading" ? "Subscribing..." : "Subscribe"}
