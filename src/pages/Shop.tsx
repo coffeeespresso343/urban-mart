@@ -22,6 +22,7 @@ import { Button } from "../components/ui/Button";
 import SortSelect from "../components/filters/SortSelect";
 import FilterSidebar from "../components/filters/FilterSidebar";
 import FilterDrawer from "../components/filters/FilterDrawer";
+import { ProductGridSkeleton } from "../components/ui/Skeleton";
 
 const PAGE_SIZE = 12;
 
@@ -73,6 +74,18 @@ const Shop = () => {
     if (dealsOnly) list = list.filter((p) => p.compareAtPrice);
     if (bestSellersOnly) list = list.filter((p) => p.bestSeller);
     return sortProducts(list, sort);
+  }, [filters, sort, dealsOnly, bestSellersOnly]);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 350);
+
+    return () => clearTimeout(timeout);
   }, [filters, sort, dealsOnly, bestSellersOnly]);
 
   const visibleProducts = filteredProducts.slice(0, visibleCount);
@@ -185,29 +198,37 @@ const Shop = () => {
         </aside>
 
         <div>
-          <ProductGrid products={visibleProducts} />
-          {visibleCount < filteredProducts.length ? (
-            <div className="mt-12 flex justify-center">
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-              >
-                View More <ArrowDownCircle className="h-3.5 w-3.5" />
-              </Button>
-            </div>
-          ) : visibleCount >= filteredProducts.length &&
-            visibleProducts.length > PAGE_SIZE / 2 ? (
-            <div className="mt-12 flex justify-center">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => window.scrollTo({ top: 0 })}
-              >
-                Back to Top <ArrowUpCircle className="h-3.5 w-3.5" />
-              </Button>
-            </div>
-          ) : null}
+          {isLoading ? (
+            <ProductGridSkeleton
+              count={Math.min(visibleProducts.length || PAGE_SIZE, PAGE_SIZE)}
+            />
+          ) : (
+            <>
+              <ProductGrid products={visibleProducts} />
+              {visibleCount < filteredProducts.length ? (
+                <div className="mt-12 flex justify-center">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                  >
+                    View More <ArrowDownCircle className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              ) : visibleCount >= filteredProducts.length &&
+                visibleProducts.length > PAGE_SIZE / 2 ? (
+                <div className="mt-12 flex justify-center">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => window.scrollTo({ top: 0 })}
+                  >
+                    Back to Top <ArrowUpCircle className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              ) : null}
+            </>
+          )}
         </div>
       </div>
 
