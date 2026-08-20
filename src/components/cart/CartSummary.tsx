@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { ShoppingCart, X } from "lucide-react";
 import { useCart } from "../../hooks/useCart";
 import { Button } from "../ui/Button";
 import { useState, type FormEvent } from "react";
@@ -99,6 +99,7 @@ const CartSummary = ({
           disabled={totals.itemCount === 0}
         >
           {checkoutLabel}
+          <ShoppingCart className="h-3.5 w-3.5" strokeWidth={2.5} />
         </Button>
       ) : null}
     </div>

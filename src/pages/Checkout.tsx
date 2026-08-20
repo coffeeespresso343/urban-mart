@@ -1,10 +1,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  ArrowRight,
   Check,
   ChevronLeft,
+  CreditCard,
+  Info,
   Lock,
   ShoppingBag,
   ShoppingCart,
+  Truck,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -85,7 +89,10 @@ const Checkout = () => {
           message="Add something to your bag before checking out."
           action={
             <Link to="/shop">
-              <Button>Continue Shopping</Button>
+              <Button>
+                Continue Shopping
+                <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} />
+              </Button>
             </Link>
           }
         />
@@ -202,8 +209,8 @@ const Checkout = () => {
           Urban <span className="text-orange">Mart</span>
           <ShoppingCart className="h-5 w-5 text-orange" strokeWidth={2.5} />
         </Link>
-        <div className="flex items-center gap-1.5 text-stone">
-          <span className="h-6 w-6 bg-paper-dim rounded-md flex items-center justify-center">
+        <div className="flex items-center gap-1.5 text-good">
+          <span className="h-6 w-6 bg-good/10 rounded-md flex items-center justify-center">
             <Lock className="h-4 w-4" />
           </span>
           <span className="label-tag">Secure Checkout</span>
@@ -264,7 +271,10 @@ const Checkout = () => {
                 transition={{ duration: 0.25 }}
                 className="flex flex-col gap-5"
               >
-                <h2 className="font-display text-xl text-orange font-bold tracking-tight">
+                <h2 className="flex items-center gap-2 font-display text-xl text-orange font-bold tracking-tight">
+                  <span className="h-7 w-7 rounded-md  bg-orange/10 flex items-center justify-center">
+                    <Info className="h-5 w-5" />
+                  </span>
                   Information
                 </h2>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -337,7 +347,10 @@ const Checkout = () => {
                 transition={{ duration: 0.25 }}
                 className="flex flex-col gap-5"
               >
-                <h2 className="font-display text-xl text-orange font-bold tracking-tight">
+                <h2 className="flex items-center gap-2 font-display text-xl text-orange font-bold tracking-tight">
+                  <span className="h-7 w-7 rounded-md  bg-orange/10 flex items-center justify-center">
+                    <Truck className="h-5 w-5" />
+                  </span>
                   Shipping
                 </h2>
                 <InputField
@@ -433,7 +446,10 @@ const Checkout = () => {
                 transition={{ duration: 0.25 }}
                 className="flex flex-col gap-5"
               >
-                <h2 className="font-display text-xl text-orange font-bold tracking-tight">
+                <h2 className="flex items-center gap-2 font-display text-xl text-orange font-bold tracking-tight">
+                  <span className="h-7 w-7 rounded-md  bg-orange/10 flex items-center justify-center">
+                    <CreditCard className="h-5 w-5" />
+                  </span>
                   Payment
                 </h2>
                 <p className="text-stone text-xs">
@@ -504,7 +520,8 @@ const Checkout = () => {
                 animate={{ opacity: 1 }}
                 className="flex flex-col items-center justify-center py-24 text-center"
               >
-                <span className="h-10 w-10 animate-spin rounded-full border-2 border-orange border-t-transparent" />
+                <span className="h-10 w-10 animate-spin rounded-full border-3 border-orange border-t-transparent" />
+
                 <p className="label-tag mt-6 text-stone">
                   Processing your order...
                 </p>

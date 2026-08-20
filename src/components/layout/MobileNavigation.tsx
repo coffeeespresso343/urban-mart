@@ -13,6 +13,8 @@ import {
   X,
 } from "lucide-react";
 import { useEffect } from "react";
+import { useWishlist } from "../../hooks/useWishlist";
+import { useCart } from "../../hooks/useCart";
 
 const LINKS = [
   { Icon: Home, label: "Home", to: "/" },
@@ -21,10 +23,13 @@ const LINKS = [
   { Icon: Flame, label: "Best Sellers", to: "/shop?filter=best-sellers" },
   { Icon: PercentDiamond, label: "Deals", to: "/shop?filter=deals" },
   { Icon: Heart, label: "Wishlist", to: "/wishlist" },
+  { Icon: ShoppingCart, label: "Checkout", to: "/checkout" },
   { Icon: Info, label: "About", to: "/about" },
 ];
 
 const MobileNavigation = () => {
+  const { productIds } = useWishlist();
+  const { totals } = useCart();
   const mobileMenuOpen = useUIStore((s) => s.mobileMenuOpen);
   const closeMobileMenu = useUIStore((s) => s.closeMobileMenu);
 
@@ -67,7 +72,7 @@ const MobileNavigation = () => {
             exit={{ x: "-100%" }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             aria-label="Mobile"
-            className="absolute left-0 top-0 flex h-[calc(100%-5rem)]  w-[calc(100%-5rem)] max-w-sm  flex-col overflow-hidden rounded-xl border border-white/30 bg-paper/85
+            className="absolute left-0 top-0 flex h-[calc(100%-3rem)]  w-[calc(100%-5rem)] max-w-sm  flex-col overflow-hidden rounded-xl border border-white/30 bg-paper/85
             shadow-[0_25px_80px_rgba(23,22,20,0.22)] backdrop-blur-2xl supports-[backdrop-filter]:bg-paper/65"
           >
             <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-linear-to-b from-white/35 to-transparent" />
@@ -98,6 +103,10 @@ const MobileNavigation = () => {
             <ul className="flex flex-col gap-1 px-4 py-4">
               {LINKS.map((link) => {
                 const isActive = isActiveLink(link.to);
+                const wishlistDot =
+                  productIds.length > 0 && link.label === "Wishlist";
+                const cartDot =
+                  totals.itemCount > 0 && link.label === "Checkout";
 
                 return (
                   <li key={link.label}>
@@ -114,6 +123,13 @@ const MobileNavigation = () => {
                       <>
                         <div className="relative z-10 flex items-center gap-3">
                           <span>{<link.Icon className="h-5 w-5" />}</span>{" "}
+                          <span className="absolute top-0 left-3.5 flex items-center justify-center">
+                            {wishlistDot ? (
+                              <span className="h-1.5 w-1.5 bg-orange rounded-full" />
+                            ) : cartDot ? (
+                              <span className="h-1.5 w-1.5 bg-orange rounded-full" />
+                            ) : null}
+                          </span>
                           {link.label}
                         </div>
                         <ArrowUpRight

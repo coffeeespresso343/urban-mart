@@ -10,7 +10,6 @@ import { useCart } from "../../hooks/useCart";
 import { useWishlist } from "../../hooks/useWishlist";
 
 const ProductCard = ({ product }: { product: Product }) => {
-  // const [isAdded, setIsAdded] = useState(false);
   const { addItem, isAdded } = useCart();
   const { isWishListed, toggleWishlist } = useWishlist();
   const wishlisted = isWishListed(product.id);
@@ -83,7 +82,7 @@ const ProductCard = ({ product }: { product: Product }) => {
               if (!outOfStock) addItem(product, 1, product.colors?.[0]);
             }}
             disabled={outOfStock}
-            className="label-tag rounded-lg border border-white/20 flex w-full items-center justify-center bg-paper/95 gap-1.5 px-4 py-2 sm:py-2.5 font-semibold
+            className="label-tag rounded-md border border-white/20 flex w-full items-center justify-center bg-paper/95 gap-1.5 px-4 py-2 sm:py-2.5 font-semibold
             text-ink shadow-lg backdrop-blur-none transition-all duration-300 active:scale-[0.98] hover:border-orange hover:bg-orange hover:text-paper hover:shadow-xl disabled:border-transparent
              disabled:bg-stone-light/80 disabled:text-stone-dark disabled:cursor-not-allowed disabled:opacity-70
             "

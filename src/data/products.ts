@@ -3,63 +3,32 @@ import type { Product } from "../types/Product";
 const img = (id: string, w = 1200) =>
   `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format&fit=crop`;
 
-// Image pools grouped loosely by category so galleries feel coherent.
 const pool = {
-  tools: [
-    img("1622560480605-d83c853bc5c3"),
-    img("1572981779307-38b8cabb2407"),
-    img("1581147036324-d711a4956f9a"),
-    img("1504148455328-c376907d081c"),
-    img("1530124566582-a618bc2615dc"),
+  everydayCarry: [
+    img("1605468424365-bac89e69cc4a"), // red and silver multi tool — Denise Jans
+    img("1594299447935-e5b840f54b9b"), // black backpack on white box — I'M ZION
   ],
   lighting: [
-    img("1524678606370-a47ad25cb82a"),
-    img("1507494924047-60b8ee826ca9"),
-    img("1513506003901-1e6a229e2d15"),
-    img("1543198126-a8ad8e47c0a1"),
-    img("1524484485831-a92ffc0de03f"),
+    img("1605194004886-56d82f482d53"), // white and red table lamp — George Bakos
   ],
   storage: [
-    img("1595428774223-ef52624120d2"),
-    img("1618221469555-7f3ad97540d6"),
-    img("1582719478250-c89cae4dc85b"),
-    img("1553062407-98eeb64c6a62"),
-    img("1600585152220-90363fe7e115"),
+    img("1583686298564-46fbffda0707"), // red and black plastic crates — Teng Yuhong
   ],
-  tech: [
-    img("1585386959984-a4155224a1ad"),
-    img("1587829741301-dc798b83add3"),
-    img("1587202372634-32705e3bf49c"),
-    img("1523206489230-c012c64b2b48"),
-    img("1587825140708-dfaf72ae4b04"),
+  techAccessories: [
+    img("1749048575579-c6f995615893"), // desk setup with tech accessories — Matúš Gocman
   ],
   home: [
-    img("1493666438817-866a91353ca9"),
-    img("1513694203232-719a280e022f"),
-    img("1519710164239-da123dc03ef4"),
-    img("1524758631624-e2822e304c36"),
-    img("1505692433770-19aa9b57bda5"),
+    img("1567416880385-6158327d05d6"), // books on floating shelf — Ekrulila
   ],
   travel: [
-    img("1516035069371-29a1b244cc32"),
-    img("1553440569-bcc63803a83d"),
-    img("1502920917128-1aa500764cbd"),
-    img("1590874103328-eac38a683ce7"),
-    img("1553062407-98eeb64c6a62"),
+    img("1448582649076-3981753123b5"), // brown duffel bag beside chair — Erol Ahmed
+  ],
+  tools: [
+    img("1756027583186-a04a19e4f6ce"), // assorted tools: wrenches, pliers, hammer — Ruslan Ruslan
   ],
   lifestyle: [
-    img("1483985988355-763728e1935b"),
-    img("1542291026-7eec264c27ff"),
-    img("1520975916090-3105956dac38"),
-    img("1490481651871-ab68de25d43d"),
-    img("1441986300917-64674bd600d8"),
-  ],
-  edc: [
-    img("1622560480605-d83c853bc5c3"),
-    img("1548036328-c9fa89d128fa"),
-    img("1547949003-9792a18a2645"),
-    img("1560343090-f0409e92791a"),
-    img("1585155770447-2f66e2a397b5"),
+    img("1657040111323-0aa59a7af59d"), // pour-over coffee — Jamie Long
+    img("1600369672770-985fd30004eb"), // white and blue knit throw — Jordan Bigelow
   ],
 };
 
@@ -79,7 +48,7 @@ export const products: Product[] = [
       "Folding lock mechanism, one-hand deploy",
       "Includes nylon EDC pouch",
     ],
-    images: [pool.edc[0], pool.tools[0], pool.tools[2]],
+    images: [pool.everydayCarry[0]],
     rating: 4.8,
     reviewCount: 214,
     stock: 34,
@@ -103,7 +72,7 @@ export const products: Product[] = [
       "USB-C input, 5W low-draw LED",
       "Touch control on base",
     ],
-    images: [pool.lighting[0], pool.lighting[1], pool.lighting[2]],
+    images: [pool.lighting[0]],
     rating: 4.7,
     reviewCount: 156,
     stock: 22,
@@ -127,15 +96,13 @@ export const products: Product[] = [
       "Modular divider tray included",
       "Stacks and locks with matching units",
     ],
-    images: [pool.storage[0], pool.storage[1], pool.storage[4]],
+    images: [pool.storage[0]],
     rating: 4.6,
     reviewCount: 98,
-    stock: 5,
+    stock: 41,
     colors: ["Graphite", "Sand"],
     tags: ["storage", "case", "organization"],
     featured: true,
-    bestSeller: true,
-    badge: "Best Seller",
   },
   {
     id: 4,
@@ -151,15 +118,13 @@ export const products: Product[] = [
       "Mesh zip pocket for small items",
       "Folds flat, packs in any bag",
     ],
-    images: [pool.travel[1], pool.travel[2], pool.tech[1]],
+    images: [pool.travel[0]],
     rating: 4.5,
     reviewCount: 87,
     stock: 56,
     colors: ["Black", "Olive"],
     tags: ["travel", "organizer", "cables"],
     featured: true,
-    bestSeller: true,
-    badge: "Best Seller",
   },
   {
     id: 5,
@@ -176,10 +141,10 @@ export const products: Product[] = [
       "Magnetic quick-access pocket",
       "Load-bearing sternum strap",
     ],
-    images: [pool.edc[1], pool.travel[0], pool.edc[3]],
+    images: [pool.everydayCarry[1]],
     rating: 4.9,
     reviewCount: 302,
-    stock: 14,
+    stock: 18,
     badge: "Best Seller",
     colors: ["Black", "Slate", "Olive"],
     tags: ["backpack", "daily", "laptop"],
@@ -200,12 +165,14 @@ export const products: Product[] = [
       'Collapses to 1.5" for storage',
       "IPX4 splash resistant",
     ],
-    images: [pool.lighting[3], pool.lighting[4], pool.travel[3]],
+    images: [pool.lighting[0]],
     rating: 4.4,
     reviewCount: 63,
     stock: 47,
     colors: ["Charcoal"],
     tags: ["lantern", "led", "outdoor", "power bank"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 7,
@@ -221,14 +188,12 @@ export const products: Product[] = [
       "Non-slip base pads",
       "Fits under-desk or on top",
     ],
-    images: [pool.tech[0], pool.tech[2], pool.home[3]],
+    images: [pool.techAccessories[0]],
     rating: 4.3,
     reviewCount: 74,
     stock: 63,
     colors: ["Gray", "Black"],
     tags: ["cables", "desk", "organization"],
-    bestSeller: true,
-    badge: "Best Seller",
   },
   {
     id: 8,
@@ -244,7 +209,7 @@ export const products: Product[] = [
       "Magnetic back and kickstand",
       "Audible bell at zero",
     ],
-    images: [pool.tools[1], pool.tools[3], pool.home[1]],
+    images: [pool.tools[0]],
     rating: 4.6,
     reviewCount: 51,
     stock: 39,
@@ -267,7 +232,7 @@ export const products: Product[] = [
       "Internal elastic organization",
       "Fits inside most daypacks",
     ],
-    images: [pool.tech[4], pool.edc[2], pool.travel[4]],
+    images: [pool.techAccessories[0]],
     rating: 4.5,
     reviewCount: 112,
     stock: 58,
@@ -290,12 +255,14 @@ export const products: Product[] = [
       "Two-compartment layout",
       "10.5 x 6 x 2 in",
     ],
-    images: [pool.home[0], pool.home[2], pool.storage[2]],
+    images: [pool.home[0]],
     rating: 4.4,
     reviewCount: 44,
     stock: 71,
     colors: ["Concrete Gray"],
     tags: ["desk", "tray", "home"],
+    badge: "Best Seller",
+    bestSeller: true,
   },
   {
     id: 11,
@@ -311,7 +278,7 @@ export const products: Product[] = [
       "Holds up to 20 lbs evenly loaded",
       "24 x 6 in",
     ],
-    images: [pool.home[3], pool.home[4], pool.storage[3]],
+    images: [pool.home[0]],
     rating: 4.7,
     reviewCount: 39,
     stock: 26,
@@ -332,12 +299,14 @@ export const products: Product[] = [
       "Removable label card included",
       "12 x 8 x 5 in",
     ],
-    images: [pool.storage[2], pool.storage[4], pool.storage[0]],
+    images: [pool.storage[0]],
     rating: 4.2,
     reviewCount: 58,
     stock: 84,
     colors: ["Clear", "Graphite"],
     tags: ["storage", "bin", "closet"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 13,
@@ -353,7 +322,7 @@ export const products: Product[] = [
       "Set of 3: small, medium, large",
       "Machine washable",
     ],
-    images: [pool.travel[2], pool.travel[0], pool.storage[1]],
+    images: [pool.travel[0]],
     rating: 4.6,
     reviewCount: 129,
     stock: 45,
@@ -376,14 +345,12 @@ export const products: Product[] = [
       "Magnetic bit tip",
       "Compact hard case included",
     ],
-    images: [pool.tools[2], pool.tools[4], pool.tools[0]],
+    images: [pool.tools[0]],
     rating: 4.7,
     reviewCount: 91,
     stock: 37,
     colors: ["Black"],
     tags: ["tools", "driver", "workshop"],
-    bestSeller: true,
-    badge: "Best Seller",
   },
   {
     id: 15,
@@ -399,7 +366,7 @@ export const products: Product[] = [
       "Three brightness settings",
       "Aluminum housing",
     ],
-    images: [pool.lighting[2], pool.lighting[4], pool.edc[3]],
+    images: [pool.lighting[0]],
     rating: 4.3,
     reviewCount: 67,
     stock: 52,
@@ -420,7 +387,7 @@ export const products: Product[] = [
       "12oz companion mug included",
       "Dishwasher safe",
     ],
-    images: [pool.lifestyle[0], pool.lifestyle[3], pool.home[4]],
+    images: [pool.lifestyle[0]],
     rating: 4.8,
     reviewCount: 73,
     stock: 29,
@@ -443,14 +410,12 @@ export const products: Product[] = [
       "Elastic closure with pen loop",
       "Fits any back pocket",
     ],
-    images: [pool.edc[3], pool.lifestyle[4], pool.edc[0]],
+    images: [pool.everydayCarry[0]],
     rating: 4.6,
     reviewCount: 84,
     stock: 66,
     colors: ["Black", "Sand"],
     tags: ["notebook", "pen", "everyday carry"],
-    bestSeller: true,
-    badge: "Best Seller",
   },
   {
     id: 18,
@@ -466,14 +431,12 @@ export const products: Product[] = [
       "Case-friendly charging depth",
       "USB-C cable included",
     ],
-    images: [pool.tech[3], pool.tech[1], pool.tech[0]],
+    images: [pool.techAccessories[0]],
     rating: 4.4,
     reviewCount: 105,
     stock: 48,
     colors: ["Black", "White"],
     tags: ["charger", "wireless", "desk"],
-    bestSeller: true,
-    badge: "Best Seller",
   },
   {
     id: 19,
@@ -489,7 +452,7 @@ export const products: Product[] = [
       "Full-grain leather handles",
       "14 x 10 x 10 in",
     ],
-    images: [pool.storage[3], pool.lifestyle[1], pool.home[0]],
+    images: [pool.storage[0]],
     rating: 4.5,
     reviewCount: 36,
     stock: 33,
@@ -511,15 +474,13 @@ export const products: Product[] = [
       "Ventilated shoe compartment",
       "Fits under most airline seats",
     ],
-    images: [pool.travel[0], pool.travel[4], pool.edc[1]],
+    images: [pool.travel[0]],
     rating: 4.7,
     reviewCount: 142,
     stock: 21,
     colors: ["Black", "Olive"],
     tags: ["duffel", "travel", "weekender"],
     featured: true,
-    bestSeller: true,
-    badge: "Best Seller",
   },
   {
     id: 21,
@@ -535,7 +496,7 @@ export const products: Product[] = [
       "Laser-etched scale",
       "Belt-clip case included",
     ],
-    images: [pool.tools[4], pool.tools[0], pool.edc[0]],
+    images: [pool.tools[0]],
     rating: 4.5,
     reviewCount: 48,
     stock: 40,
@@ -556,7 +517,7 @@ export const products: Product[] = [
       "Warm 2700K fixed color temperature",
       "Wall or shelf mountable",
     ],
-    images: [pool.lighting[1], pool.lighting[3], pool.lifestyle[2]],
+    images: [pool.lighting[0]],
     rating: 4.6,
     reviewCount: 57,
     stock: 24,
@@ -577,7 +538,7 @@ export const products: Product[] = [
       "50 x 70 in",
       "Dry clean recommended",
     ],
-    images: [pool.lifestyle[3], pool.lifestyle[0], pool.home[2]],
+    images: [pool.lifestyle[1]],
     rating: 4.8,
     reviewCount: 61,
     stock: 19,
@@ -598,7 +559,7 @@ export const products: Product[] = [
       "Slim top shelf for mail or sunglasses",
       "Concealed wall mount",
     ],
-    images: [pool.edc[4], pool.home[1], pool.lifestyle[4]],
+    images: [pool.everydayCarry[1]],
     rating: 4.5,
     reviewCount: 33,
     stock: 45,
@@ -619,14 +580,12 @@ export const products: Product[] = [
       "Fits 11–16 in laptops",
       "Silicone grip pads",
     ],
-    images: [pool.tech[2], pool.home[3], pool.tech[4]],
+    images: [pool.techAccessories[0]],
     rating: 4.7,
     reviewCount: 96,
     stock: 42,
     colors: ["Silver", "Space Gray"],
     tags: ["laptop", "stand", "desk"],
-    bestSeller: true,
-    badge: "Best Seller",
   },
   {
     id: 26,
@@ -643,7 +602,7 @@ export const products: Product[] = [
       "Reinforced corner brackets",
       "30 x 16 x 16 in",
     ],
-    images: [pool.storage[4], pool.storage[0], pool.tools[1]],
+    images: [pool.storage[0]],
     rating: 4.6,
     reviewCount: 27,
     stock: 12,
@@ -653,23 +612,16 @@ export const products: Product[] = [
   },
 ];
 
-export const getProductById = (id: number): Product | undefined => {
-  return products.find((p) => p.id === id);
-};
+export const getProductById = (id: number): Product | undefined =>
+  products.find((p) => p.id === id);
 
-export const getRelatedProducts = (
-  product: Product,
-  count?: number,
-): Product[] => {
-  return products
+export const getRelatedProducts = (product: Product, count = 4): Product[] =>
+  products
     .filter((p) => p.id !== product.id && p.category === product.category)
     .slice(0, count);
-};
 
 export const featuredProducts = products.filter((p) => p.featured);
-
 export const bestSellers = products.filter((p) => p.bestSeller);
-
 export const newArrivals = [...products]
   .filter((p) => p.isNew)
   .concat(products.filter((p) => !p.isNew))

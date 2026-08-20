@@ -47,7 +47,7 @@ const ProductDetails = () => {
         </Link>
         <ChevronRight className="h-3 w-3" />
         <Link
-          to={`/shop?category=${product?.category.toLowerCase().replace(/\s+/g, "")}`}
+          to={`/shop?category=${product?.category.toLowerCase().replace(/\s+/g, "-")}`}
           className="hover:text-orange"
         >
           {product?.category}

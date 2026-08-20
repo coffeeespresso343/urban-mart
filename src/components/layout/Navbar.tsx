@@ -12,6 +12,7 @@ const NAV_LINKS = [
   { label: "New Arrivals", to: "/shop?sort=newest" },
   { label: "Best Sellers", to: "/shop?filter=best-seller" },
   { label: "Deals", to: "/shop?filter=deals" },
+  { label: "Checkout", to: "/checkout" },
   { label: "About", to: "/about" },
 ];
 
