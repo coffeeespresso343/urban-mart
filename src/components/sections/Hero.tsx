@@ -1,81 +1,123 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, Package, ShieldCheck, Truck } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import ImageWithFallback from "../ui/ImageWithFallback";
 import hero from "../../assets/hero.avif";
 import { Button } from "../ui/Button";
+
+const ease = [0.16, 1, 0.3, 1] as const;
 
 const Hero = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative overflow-hidden bg-ink text-paper">
+    <section className="relative isolate overflow-hidden bg-ink text-paper">
+      <div className="absolute inset-0  bg-[radial-gradient(circle_at_15%_20%,rgba(208,106,58,0.14),transparent_30%)]" />
+      <div className="absolute inset-x-0 bottom-0 h-2 bg-linear-to-r from-transparent via-paper/10 to-transparent" />
       <div
         className="container-edge grid min-h-[58vh] grid-cols-1 items-center gap-10
-      py-20 lg:min-h-[90vh] lg:grid-cols-2 lg:py-0"
+      py-10 lg:min-h-[90vh] lg:grid-cols-2 lg:py-0"
       >
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 order-2 lg:order-1"
+          transition={{ duration: 0.7, ease: ease }}
+          className="relative z-10 order-2 max-w-2xl lg:order-1"
         >
-          <span className="label-tag mb-6 inline-block text-orange">
-            Urban-Mart / SS26 Collection
-          </span>
-          <h1
-            className="font-display text-5xl font-black leading-[0.95] tracking-tight
-          sm:text-6xl lg:text-7xl"
-          >
+          <div className="mb-6 flex items-center gap-3">
+            <span className="h-px w-4 bg-orange" />
+            <span className="label-tag  text-orange">
+              Curated essentials / SS26
+            </span>
+          </div>
+          <h1 className="font-display text-[clamp(3.5rem,8vw,7.5rem)] font-black leading-[0.98] tracking-[-0.055em]">
             Built for
             <br />
             <span className="text-orange">City Life</span>.
           </h1>
-          <p className="mt-6 max-w-md text-base text-stone-light">
-            Functional essentials designed for the way you move, work, travel,
-            and live.
+          <p className="mt-6 max-w-md text-base text-stone-light sm:text-lg">
+            Discover practical, considered products for work, travel, home, and
+            everything in between.
           </p>
-          <div className="mt-10 flex flex-wrap gap-4">
-            <Button variant="primary" onClick={() => navigate("/shop")}>
-              Shop Collection
+          <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <Button
+              variant="primary"
+              onClick={() => navigate("/shop")}
+              className="min-w-[10rem] justify-center px-6 py-3.5"
+            >
+              Shop now <ArrowRight className="h-4 w-4" />
             </Button>
             <Button
-              variant="secondary"
+              variant="outline"
               onClick={() => navigate("/shop?sort=newest")}
-              className="bg-ink-elevated"
+              className="min-w-[11rem] justify-center px-6 py-3.5 border-paper/15 text-paper hover:border-paper/30 hover:bg-paper/10"
             >
-              Explore New Arrivals
-              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              New Arrivals
             </Button>
-            {/* <Link
-              to="/shop"
-              className="label-tag rounded-lg inline-flex items-center justify-center bg-paper text-ink px-8 py-4 font-semibold transition-all duration-200
-               hover:bg-orange hover:text-paper active:scale-[0.98]"
-            >
-              Shop Collection
-            </Link>
-            <Link
-              to="/shop?sort=newest"
-              className="label-tag rounded-lg inline-flex items-center justify-center gap-2 border border-orange px-8 py-4 font-semibold text-paper transition-all duration-200 active:scale-[0.98] hover:border-paper"
-            >
-              Explore New Arrivals
-              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-            </Link> */}
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.6, ease: ease }}
+            className="mt-8  max-w-lg grid grid-cols-3 border-t border-white/10 pt-6"
+          >
+            <div className="flex gap-2">
+              <Truck className="mt-0.5 h-4 w-4 shrink-0 text-orange" />
+              <div>
+                <p className="label-tag text-paper">Fast</p>
+                <p className="mt-1 text-xs text-stone">Shipping</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-orange" />
+              <div>
+                <p className="label-tag text-paper">Secure</p>
+                <p className="mt-1 text-xs text-stone">Checkout</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Package className="mt-0.5 h-4 w-4 shrink-0 text-orange" />
+              <div>
+                <p className="label-tag text-paper">Curated</p>
+                <p className="mt-1 text-xs text-stone">Products</p>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 1.05 }}
+          initial={{ opacity: 0, scale: 1.04 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="relative order-1 rounded-2xl aspect-4/3 w-full overflow-hidden lg:order-2 lg:aspect-auto lg:h-[90vh]"
+          transition={{ duration: 1, ease: ease }}
+          className="relative order-1 rounded-2xl aspect-4/3 w-full overflow-hidden border border-paper/10 bg-ink-soft shadow-2xl lg:order-2 lg:aspect-auto lg:h-[76vh]"
         >
           <ImageWithFallback
             src={hero}
             alt="City street at dust, representing modern urban living"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover transition-transform duration-1000 hover:scale-[1.02]"
           />
-          <div className="absolute inset-0 bg-linear-to-t from-ink/40 lg:bg-linear-to-r lg:from-ink/60 lg:via-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-ink/55 via-transparent to-transparent lg:bg-linear-to-r lg:from-ink/60 lg:via-transparent" />
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.6, ease }}
+            className="absolute bottom-4 left-4 right-4 border border-white/15 bg-paper/5 p-4 shadow-xl
+          backdrop-blur-xl sm:bottom-6 sm:left-6 sm:right-auto rounded-xl"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <span className="label-tag text-orange">Featured drop</span>
+                <p className="mt-2 font-display text-lg font-bold">
+                  Everyday, upgraded.
+                </p>
+                <p className="mt-1 text-sm text-stone-light">
+                  New pieces for the way you move.
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

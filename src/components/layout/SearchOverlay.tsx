@@ -53,7 +53,7 @@ const SearchOverlay = () => {
         document.body.style.overflow = "";
       };
     }
-    // setQuery("");
+    setQuery("");
   }, [searchOpen]);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const SearchOverlay = () => {
       [trimmed, ...prev.filter((t) => t !== trimmed)].slice(0, MAX_RECENT),
     );
     closeSearch();
-    navigate(`/shop?search=${encodeURIComponent(trimmed)}`);
+    navigate(`/shop?search=${encodeURIComponent(trimmed).toLowerCase()}`);
   };
 
   return (

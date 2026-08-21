@@ -34,7 +34,7 @@ export const WishlistProvider = ({ children }: { children: ReactNode }) => {
     );
 
     if (alreadyWishlisted) {
-      showToast(`Removed ${product.name} from wishlist`, "info");
+      showToast(`Removed from wishlist - ${product.name}`, "info");
     } else {
       showToast(`Added to wishlist - ${product.name}`, "success");
     }

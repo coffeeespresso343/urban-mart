@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowRightCircle, Check, MapPin, Package, Truck } from "lucide-react";
+import { ArrowRight, Check, MapPin, Package, Truck } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Order } from "../types/Order";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -77,7 +77,7 @@ const OrderConfirmation = () => {
 
       <div className="mx-auto mt-8 max-w-lg grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="flex items-start gap-3 rounded-xl bg-paper-dim/50 p-4">
-          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-stone" />
+          <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-stone" />
           <div>
             <p className="label-tag text-stone">Shipping Address</p>
             <p className="mt-1 text-sm">
@@ -93,7 +93,7 @@ const OrderConfirmation = () => {
         </div>
 
         <div className="flex items-start gap-3 rounded-xl bg-paper-dim/50 p-4">
-          <Truck className="mt-0.5 h-4 w-4 shrink-0 text-stone" />
+          <Truck className="mt-0.5 h-5 w-5 shrink-0 text-stone" />
           <div>
             <p className="label-tag text-stone">Delivery</p>
             <p className="mt-1 text-sm">{order.shippingMethod}</p>
@@ -107,7 +107,7 @@ const OrderConfirmation = () => {
 
       <div className="mt-10 flex justify-center">
         <Button size="lg" variant="primary" onClick={() => navigate("/shop")}>
-          Contine Shopping <ArrowRightCircle className="h-4 w-4" />
+          Contine Shopping <ArrowRight className="h-4 w-4" />
         </Button>
       </div>
     </div>

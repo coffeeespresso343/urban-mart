@@ -272,9 +272,7 @@ const Checkout = () => {
                 className="flex flex-col gap-5"
               >
                 <h2 className="flex items-center gap-2 font-display text-xl text-orange font-bold tracking-tight">
-                  <span className="h-7 w-7 rounded-md  bg-orange/10 flex items-center justify-center">
-                    <Info className="h-5 w-5" />
-                  </span>
+                  <Info className="h-5 w-5" strokeWidth={2.5} />
                   Information
                 </h2>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -332,7 +330,7 @@ const Checkout = () => {
                 />
 
                 <Button size="lg" type="submit" className="mt-2 self-start">
-                  Continue to Shipping
+                  Continue to Shipping <ArrowRight className="h-4 w-4" />
                 </Button>
               </motion.form>
             ) : null}
@@ -348,9 +346,7 @@ const Checkout = () => {
                 className="flex flex-col gap-5"
               >
                 <h2 className="flex items-center gap-2 font-display text-xl text-orange font-bold tracking-tight">
-                  <span className="h-7 w-7 rounded-md  bg-orange/10 flex items-center justify-center">
-                    <Truck className="h-5 w-5" />
-                  </span>
+                  <Truck className="h-5 w-5" strokeWidth={2.5} />
                   Shipping
                 </h2>
                 <InputField
@@ -430,7 +426,7 @@ const Checkout = () => {
                     <ChevronLeft className="h-4 w-4" /> Back
                   </Button>
                   <Button size="lg" type="submit">
-                    Continue to Payment
+                    Continue to Payment <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>
               </motion.form>

@@ -67,7 +67,7 @@ const ProductInfo = ({ product }: { product: Product }) => {
         <span className="label-tag text-stone">{product.sku}</span>
       </div>
 
-      <h1 className="mt-3 font-display text-3xl font-bold uppercase leading-tight sm:text-4xl">
+      <h1 className="mt-3 font-display text-3xl font-bold leading-tight sm:text-4xl">
         {product.name}
       </h1>
 
@@ -103,7 +103,7 @@ const ProductInfo = ({ product }: { product: Product }) => {
                 key={c}
                 type="button"
                 onClick={() => setColor(c)}
-                className={`label-tag border px-3.5 py-2 transition-colors ${
+                className={`label-tag rounded-lg border px-3.5 py-2 transition-colors ${
                   color === c
                     ? "border-ink bg-ink text-paper"
                     : "border-line-light text-ink hover:border-ink"
@@ -176,7 +176,7 @@ const ProductInfo = ({ product }: { product: Product }) => {
             className="flex-1"
             disabled={outOfStock}
           >
-            <Share2 className="h-4 w-4" aria-hidden="true" />
+            <Share2 className="h-4 w-4 text-stone" aria-hidden="true" />
           </Button>
           <Button
             onClick={handleCopyLink}
@@ -185,16 +185,16 @@ const ProductInfo = ({ product }: { product: Product }) => {
             className="flex-1"
             disabled={outOfStock}
           >
-            <Clipboard className="h-4 w-4" aria-hidden="true" />
+            <Clipboard className="h-4 w-4 text-stone" aria-hidden="true" />
           </Button>
         </div>
       </div>
 
       <div className="mt-10 divide-y divide-line-light border-y border-line-light">
         <div className="flex items-start gap-3 py-4">
-          <span className="h-6 w-6 flex items-center justify-center bg-stone/10 border border-stone/5 rounded-md">
+          <span className="mt-0.5 h-7 w-7 flex items-center justify-center bg-stone/10  rounded-md">
             <Truck
-              className="mt-0.5 h-4 w-4 shrink-0 text-stone"
+              className=" h-4 w-4 shrink-0 text-stone"
               aria-hidden="true"
             />
           </span>
@@ -208,9 +208,9 @@ const ProductInfo = ({ product }: { product: Product }) => {
         </div>
 
         <div className="flex items-start gap-3 py-4">
-          <span className="h-6 w-6 flex items-center justify-center bg-stone/10 border border-stone/5 rounded-md">
+          <span className="mt-0.5 h-7 w-7 flex items-center justify-center bg-stone/10  rounded-md">
             <RotateCcw
-              className="mt-0.5 h-4 w-4 shrink-0 text-stone"
+              className=" h-4 w-4 shrink-0 text-stone"
               aria-hidden="true"
             />
           </span>
@@ -224,11 +224,8 @@ const ProductInfo = ({ product }: { product: Product }) => {
         </div>
 
         <div className="flex items-start gap-3 py-4">
-          <span className="h-6 w-6 flex items-center justify-center bg-stone/10 border border-stone/5 rounded-md">
-            <Check
-              className="mt-0.5 h-4 w-4 shrink-0 text-stone"
-              aria-hidden="true"
-            />
+          <span className="mt-0.5 h-7 w-7 flex items-center justify-center bg-stone/10  rounded-md">
+            <Check className="h-4 w-4 shrink-0 text-good" aria-hidden="true" />
           </span>
           <div>
             <p className="text-sm font-medium">Quality guarantee</p>

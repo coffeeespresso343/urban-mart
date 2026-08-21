@@ -58,7 +58,7 @@ const Shop = () => {
     if (filterParam === "deals") {
       setFilters((prev) => ({ ...prev, search }));
     }
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     setFilters((prev) => ({ ...prev, search: debouncedSearch }));

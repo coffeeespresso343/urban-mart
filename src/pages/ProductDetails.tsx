@@ -65,7 +65,7 @@ const ProductDetails = () => {
 
       {related.length > 0 ? (
         <section className="mt-24">
-          <h2 className="mb-8 font-display text-2xl font-bold uppercase tracking-tight">
+          <h2 className="mb-8 font-display text-2xl font-bold tracking-wide">
             You May Also Like
           </h2>
           <ProductGrid products={related} />
@@ -74,7 +74,7 @@ const ProductDetails = () => {
 
       {recentlyViewed.length > 0 ? (
         <section className="mt-24">
-          <h2 className="mb-8 font-display text-2xl font-bold uppercase tracking-tight">
+          <h2 className="mb-8 font-display text-2xl font-bold tracking-wide">
             Recently Viewed
           </h2>
           <ProductGrid products={recentlyViewed} />
