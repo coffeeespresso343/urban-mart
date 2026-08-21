@@ -7,6 +7,7 @@ const pool = {
   everydayCarry: [
     img("1605468424365-bac89e69cc4a"), // red and silver multi tool — Denise Jans
     img("1594299447935-e5b840f54b9b"), // black backpack on white box — I'M ZION
+    img("1455390582262-044cdead277a"),
   ],
   lighting: [
     img("1605194004886-56d82f482d53"), // white and red table lamp — George Bakos
@@ -16,15 +17,20 @@ const pool = {
   ],
   techAccessories: [
     img("1749048575579-c6f995615893"), // desk setup with tech accessories — Matúš Gocman
+    img("1587202372634-32705e3bf49c"),
+    img("1523206489230-c012c64b2b48"),
+    img("1587825140708-dfaf72ae4b04"),
   ],
   home: [
     img("1567416880385-6158327d05d6"), // books on floating shelf — Ekrulila
+    img("1519710164239-da123dc03ef4"),
   ],
   travel: [
     img("1448582649076-3981753123b5"), // brown duffel bag beside chair — Erol Ahmed
   ],
   tools: [
     img("1756027583186-a04a19e4f6ce"), // assorted tools: wrenches, pliers, hammer — Ruslan Ruslan
+    img("1572981779307-38b8cabb2407"),
   ],
   lifestyle: [
     img("1657040111323-0aa59a7af59d"), // pour-over coffee — Jamie Long
@@ -209,7 +215,7 @@ export const products: Product[] = [
       "Magnetic back and kickstand",
       "Audible bell at zero",
     ],
-    images: [pool.tools[0]],
+    images: [pool.tools[1]],
     rating: 4.6,
     reviewCount: 51,
     stock: 39,
@@ -232,7 +238,7 @@ export const products: Product[] = [
       "Internal elastic organization",
       "Fits inside most daypacks",
     ],
-    images: [pool.techAccessories[0]],
+    images: [pool.techAccessories[2]],
     rating: 4.5,
     reviewCount: 112,
     stock: 58,
@@ -255,7 +261,7 @@ export const products: Product[] = [
       "Two-compartment layout",
       "10.5 x 6 x 2 in",
     ],
-    images: [pool.home[0]],
+    images: [pool.home[1]],
     rating: 4.4,
     reviewCount: 44,
     stock: 71,
@@ -311,7 +317,7 @@ export const products: Product[] = [
   {
     id: 13,
     sku: "UM-TRV-418",
-    name: "Transit Packing Cubes (Set of 3)",
+    name: "Transit Packing Cubes",
     category: "Travel",
     price: 44,
     description:
@@ -410,7 +416,7 @@ export const products: Product[] = [
       "Elastic closure with pen loop",
       "Fits any back pocket",
     ],
-    images: [pool.everydayCarry[0]],
+    images: [pool.everydayCarry[2]],
     rating: 4.6,
     reviewCount: 84,
     stock: 66,
@@ -431,7 +437,7 @@ export const products: Product[] = [
       "Case-friendly charging depth",
       "USB-C cable included",
     ],
-    images: [pool.techAccessories[0]],
+    images: [pool.techAccessories[1]],
     rating: 4.4,
     reviewCount: 105,
     stock: 48,
@@ -559,7 +565,7 @@ export const products: Product[] = [
       "Slim top shelf for mail or sunglasses",
       "Concealed wall mount",
     ],
-    images: [pool.everydayCarry[1]],
+    images: [pool.everydayCarry[0]],
     rating: 4.5,
     reviewCount: 33,
     stock: 45,

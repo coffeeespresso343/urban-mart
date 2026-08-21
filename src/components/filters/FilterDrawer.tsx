@@ -3,6 +3,7 @@ import type { ProductFilters } from "../../utils/filters";
 import { X } from "lucide-react";
 import FilterSidebar from "./FilterSidebar";
 import { Button } from "../ui/Button";
+import { useEffect } from "react";
 
 const FilterDrawer = ({
   isOpen,
@@ -19,6 +20,16 @@ const FilterDrawer = ({
   onReset: () => void;
   resultCount: number;
 }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   return (
     <AnimatePresence>
       {isOpen ? (

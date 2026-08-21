@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useUIStore } from "../../hooks/uiStore";
 import { useCart } from "../../hooks/useCart";
-import { ShoppingBag, X } from "lucide-react";
+import { ArrowRight, ShoppingBag, X } from "lucide-react";
 import EmptyState from "../ui/EmptyState";
 import { Button } from "../ui/Button";
 import CartSummary from "./CartSummary";
@@ -51,7 +51,7 @@ const CartDrawer = () => {
           >
             <div className="flex items-center justify-between border-b border-line-light px-6 py-5">
               <h2 className="flex gap-2 items-center font-display text-md font-bold tracking-wider ">
-                <span className="h-7 w-7 text-orange flex items-center justify-center bg-orange/20 rounded-md">
+                <span className="h-7 w-7 text-orange flex items-center justify-center bg-orange/10 rounded-md">
                   <ShoppingBag className="h-4 w-4" />
                 </span>
                 Your Bag{" "}
@@ -73,7 +73,10 @@ const CartDrawer = () => {
                   title="Your bag is empty"
                   message="Look like you haven't been added anything yet."
                   action={
-                    <Button onClick={closeCart}>Continue Shopping</Button>
+                    <Button onClick={closeCart}>
+                      Continue Shopping{" "}
+                      <ArrowRight className="h-4 w-4 shrink-0" />
+                    </Button>
                   }
                 />
               </div>

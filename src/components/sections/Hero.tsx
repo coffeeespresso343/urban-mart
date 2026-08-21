@@ -103,19 +103,15 @@ const Hero = () => {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.6, ease }}
-            className="absolute bottom-4 left-4 right-4 border border-white/15 bg-paper/5 p-4 shadow-xl
-          backdrop-blur-xl sm:bottom-6 sm:left-6 sm:right-auto rounded-xl"
+            className="absolute bottom-4 left-4  border border-white/15 bg-paper/5 backdrop-blur-sm p-4 shadow-xl
+          sm:bottom-6 sm:left-6 sm:right-auto rounded-xl"
           >
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <span className="label-tag text-orange">Featured drop</span>
-                <p className="mt-2 font-display text-lg font-bold">
-                  Everyday, upgraded.
-                </p>
-                <p className="mt-1 text-sm text-stone-light">
-                  New pieces for the way you move.
-                </p>
-              </div>
+            <div className="flex flex-col">
+              <span className="label-tag text-orange">Featured drop</span>
+              <p className="mt-1 font-display text-sm">Everyday, upgraded.</p>
+              <p className="mt-1 text-xs text-stone-light">
+                New pieces for the way you move.
+              </p>
             </div>
           </motion.div>
         </motion.div>

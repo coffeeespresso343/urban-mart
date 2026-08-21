@@ -70,7 +70,7 @@ const Footer = () => {
             and live.
           </p>
 
-          <div className="mt-4 bg-orange/10 border border-orange/20 rounded-md p-3 flex flex-col items-center justify-center gap-2">
+          <div className="mt-4 bg-ink-soft border border-ink-elevated rounded-md p-3 flex flex-col items-center justify-center gap-2">
             <p className="max-w-xs text-stone text-[12px] text-center">
               Built with Heart and too much Coffee by Linn Khant
             </p>
@@ -79,7 +79,7 @@ const Footer = () => {
                 href="https://linnkhant.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-orange/10 border border-orange/20 rounded-md h-7 w-7 flex items-center justify-center"
+                className="bg-orange/10 border border-orange/5 rounded-md h-7 w-7 flex items-center justify-center"
               >
                 <Compass className="h-5 w-5 text-stone-light transition-colors duration-200 hover:text-orange/90" />
               </a>
@@ -89,7 +89,7 @@ const Footer = () => {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-orange/10 border border-orange/20 rounded-md h-7 w-7 flex items-center justify-center"
+                  className="bg-orange/10 border border-orange/5 rounded-md h-7 w-7 flex items-center justify-center"
                 >
                   <span className="">
                     <svg

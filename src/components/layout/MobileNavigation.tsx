@@ -34,13 +34,26 @@ const MobileNavigation = () => {
   const closeMobileMenu = useUIStore((s) => s.closeMobileMenu);
 
   const isActiveLink = (to: string) => {
-    const url = new URL(to, window.location.href);
+    const url = new URL(to, window.location.origin);
 
-    return (
-      location.pathname === url.pathname &&
-      location.search === url.search &&
-      location.hash === url.hash
-    );
+    if (location.pathname !== url.pathname) return false;
+
+    const linkParams = new URLSearchParams(url.search);
+    const currentParams = new URLSearchParams(location.search);
+
+    // if ([...linkParams.keys()].length === 0) return true;
+
+    if (url.search) {
+      return [...linkParams.entries()].every(
+        ([key, value]) => currentParams.get(key) === value,
+      );
+    }
+
+    if (to === "/shop") {
+      return !currentParams.has("sort") && !currentParams.has("filter");
+    }
+
+    return true;
   };
 
   useEffect(() => {

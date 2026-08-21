@@ -73,7 +73,7 @@ const Wishlist = () => {
                   e.preventDefault();
                   removeFromWishlist(product.id);
                 }}
-                className="absolute right-3 top-3 h-7 w-7 flex items-center justify-center rounded-full bg-paper/60 text-stone transition-transform hover:scale-110 active:scale-95"
+                className="absolute right-3 top-3 h-7 w-7 flex items-center justify-center rounded-full bg-ink/30 text-stone transition-transform hover:scale-110 active:scale-95"
               >
                 <X className="h-4 w-4" />
               </button>
