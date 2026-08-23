@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   CreditCard,
   Info,
+  Loader2,
   Lock,
   ShoppingBag,
   ShoppingCart,
@@ -146,7 +147,7 @@ const Checkout = () => {
     return Object.keys(next).length === 0;
   };
 
-  const goNext = (e: FormEvent) => {
+  const goNext = async (e: FormEvent) => {
     e.preventDefault();
     const current: StepName = STEPS[stepIndex];
 
@@ -157,7 +158,6 @@ const Checkout = () => {
       placeOrder();
       return;
     }
-
     setStepIndex((i) => Math.min(i + 1, STEPS.length - 1));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -190,7 +190,6 @@ const Checkout = () => {
         day: "numeric",
       }),
     };
-    console.log("Order: ", order);
 
     setTimeout(() => {
       localStorage.setItem("urban-mart-last-order", JSON.stringify(order));
@@ -330,7 +329,8 @@ const Checkout = () => {
                 />
 
                 <Button size="lg" type="submit" className="mt-2 self-start">
-                  Continue to Shipping <ArrowRight className="h-4 w-4" />
+                  Continue to Shipping
+                  <ArrowRight className="h-4 w-4" />
                 </Button>
               </motion.form>
             ) : null}
@@ -542,7 +542,7 @@ const Checkout = () => {
                     alt={item.product.name}
                     className="h-full w-full"
                   />
-                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange/80 text-[10px] text-paper font-semibold">
+                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-ink/60 text-[10px] text-paper font-semibold">
                     {item.quantity}
                   </span>
                 </div>

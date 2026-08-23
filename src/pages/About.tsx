@@ -12,6 +12,8 @@ import {
   Truck,
 } from "lucide-react";
 
+const ease = [0.16, 1, 0.3, 1] as const;
+
 const VALUES = [
   {
     icon: Hammer,
@@ -38,28 +40,73 @@ const VALUES = [
 const About = () => {
   return (
     <div>
-      <section className="relative overflow-hidden bg-ink text-paper">
-        <div className="container-edge relative z-10 py-24 sm:py-32">
+      <section className="relative isolate overflow-hidden bg-ink text-paper">
+        <div className="absolute inset-0">
+          <ImageWithFallback
+            src={Img}
+            alt="Urban city at might"
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-linear-to-r from-ink/95 to-ink/35" />
+          <div className="absoulte inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-ink to-transparent" />
+        </div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_35%,rgba(208,106,58,0.14),transparent_32%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-px bg-linear-to-r from-transparent via-white/15 to-transparent" />
+
+        <div className="container-edge relative z-10 flex min-h-[68svh] items-end py-20 sm:min-h-[68vh] sm:py-24 lg:min-h-[72vh] lg:py-28">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-2xl"
+            transition={{ duration: 0.7, ease: ease }}
+            className="max-w-4xl"
           >
-            <span className="label-tag text-orange">Our Story</span>
-            <h1 className="mt-4 font-display text-4xl font-black leading-[0.95] tracking-wide sm:text-6xl">
-              We believe everday products should be useful, durable, and
-              thoughtfully designed.
+            <motion.div
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: ease }}
+              className="mb-6 flex items-center gap-3"
+            >
+              <span className="h-px w-4 bg-orange" />
+              <span className="label-tag text-orange">About Urban-Mart</span>
+            </motion.div>
+
+            <h1 className="font-display text-[clamp(3rem,7vw,6.5rem)] font-black leading-[0.92] tracking-[0.045em] text-paper">
+              Better everyday
+              <br />
+              things for a
+              <br />
+              <span className="text-orange">better way to live.</span>
             </h1>
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="mt-7 max-w-xl text-base leading-7 text-stone-light sm:text-lg sm:leading-8"
+            >
+              We believe everyday products should be useful, durable, and
+              thoughtfully designed - made to support the way you work, move,
+              travel, and live.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="mt-10 flex items-center flex-wrap gap-x-6 gap-y-3 border-t border-paper/10 pt-5"
+            >
+              <span className="label-tag text-stone">
+                Curated for modern life
+              </span>
+              <span className="h-1 w-1  rounded-full bg-orange sm:block" />
+              <span className="label-tag text-stone">Designed to be used</span>
+              <span className="h-1 w-1  rounded-full bg-orange sm:block" />
+              <span className="label-tag text-stone">Built to last</span>
+            </motion.div>
           </motion.div>
         </div>
 
-        <div className="absolute inset-0 opacity-30">
-          <ImageWithFallback
-            src={Img}
-            alt="City skyline at night"
-            className="h-full w-full object-cover"
-          />
+        <div className="absolute hidden lg:block pointer-events-none right-[4vw] -translate-y-1/2 font-display text-[18rem] font-black leading-[0.08em] text-paper/10">
+          01
         </div>
       </section>
 

@@ -89,7 +89,7 @@ const BestSellers = () => {
         <button
           disabled={!canScrollPrev}
           onClick={() => scrollBy(-1)}
-          className="flex h-8 w-8 rounded-full items-center justify-center bg-ink/10 text-ink/80
+          className="flex h-8 w-8 rounded-full items-center justify-center bg-ink/5 text-ink/60
           transition-colors active:scale-95 hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronLeft className="h-5 w-5" />
@@ -106,7 +106,7 @@ const BestSellers = () => {
         <button
           disabled={!canScrollNext}
           onClick={() => scrollBy(1)}
-          className="flex h-8 w-8 rounded-full items-center justify-center bg-ink/10 text-ink/80
+          className="flex h-8 w-8 rounded-full items-center justify-center bg-ink/5 text-ink/60
           transition-colors active:scale-95 hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
         >
           <ChevronRight className="h-5 w-5" />

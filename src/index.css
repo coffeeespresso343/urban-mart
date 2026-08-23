@@ -27,7 +27,7 @@
 
     /* Semantic colors */
     --color-good: #3e8c62;
-    --color-warn: #f7b381;
+    --color-warn: #c78a30;
     --color-error: #d4695f;
 
     --font-display:
@@ -238,7 +238,7 @@
 
         font-variant-numeric: tabular-nums;
         letter-spacing: -0.02em;
-        color: var(--color-orange);
+        color: var(--color-ink);
     }
 
     .bracket::before {

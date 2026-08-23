@@ -12,7 +12,7 @@ const ICONS = {
 const ACCENTS = {
   success: "text-green-400",
   error: "text-red-400",
-  info: "text-orange-dark",
+  info: "text-warn",
 };
 
 const ToastItem = ({ toast }: { toast: ToastMessage }) => {

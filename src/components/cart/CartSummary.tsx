@@ -47,14 +47,14 @@ const CartSummary = ({
           </Button>
         </form>
       ) : (
-        <div className="flex items-center justify-between rounded-md bg-orange-light px-3 py-2.5">
-          <span className="label-tag text-orange">
-            Code {promoCode} applied
+        <div className="flex items-center justify-between rounded-md bg-good/10 border border-good/20 px-3 py-2.5">
+          <span className="label-tag text-good">
+            Code '{promoCode}' applied!
           </span>
           <button
             type="button"
             onClick={removePromoCode}
-            className=" text-orange-dark hover:text-ink"
+            className=" text-ink/50 hover:text-ink"
           >
             <X className="h-3.5 w-3.5" />
           </button>

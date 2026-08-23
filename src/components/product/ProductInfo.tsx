@@ -192,7 +192,7 @@ const ProductInfo = ({ product }: { product: Product }) => {
 
       <div className="mt-10 divide-y divide-line-light border-y border-line-light">
         <div className="flex items-start gap-3 py-4">
-          <span className="mt-0.5 h-7 w-7 flex items-center justify-center bg-stone/10  rounded-md">
+          <span className="mt-0.5 h-7 w-7 flex items-center justify-center bg-stone/10 rounded-md">
             <Truck
               className=" h-4 w-4 shrink-0 text-stone"
               aria-hidden="true"
