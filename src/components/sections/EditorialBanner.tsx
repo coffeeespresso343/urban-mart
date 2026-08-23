@@ -6,7 +6,7 @@ import company from "../../assets/company.avif";
 
 const EditorialBanner = () => {
   return (
-    <section className="container-edge py-20 sm:py-28">
+    <section className="container-edge bg-paper-dim py-20 sm:py-28">
       <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12">
         <motion.div
           initial={{ opacity: 0, x: -24 }}
@@ -42,7 +42,8 @@ const EditorialBanner = () => {
           </p>
 
           <Link
-            to="/about"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            to="/shop"
             className="label-tag mt-8 inline-flex items-center gap-2 border-b-2 border-ink pb-1
           font-semibold hover:text-orange hover:border-orange"
           >

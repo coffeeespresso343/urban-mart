@@ -48,7 +48,7 @@ const ToastItem = ({ toast }: { toast: ToastMessage }) => {
 
       <div className="flex min-w-0 flex-1 items-center gap-4 px-2 py-3.5">
         <div
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/6 ${accent}`}
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/20 ${accent}`}
         >
           <Icon
             className="h-4.5 w-4.5 shrink-0"

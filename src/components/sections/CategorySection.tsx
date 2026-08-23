@@ -17,7 +17,10 @@ const CategorySection = () => {
   const featured = categories.filter((c) => FEATURED_SLUG.includes(c.slug));
 
   return (
-    <section id="categories" className="container-edge py-20 sm:py-28">
+    <section
+      id="categories"
+      className="container-edge bg-paper-dim py-20 sm:py-28"
+    >
       <div className="mb-10 flex items-end justify-between">
         <div>
           <span className="label-tag text-orange">Browse</span>
@@ -37,6 +40,7 @@ const CategorySection = () => {
             transition={{ duration: 0.5, delay: index * 0.06 }}
           >
             <Link
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               to={`/shop?category=${category.slug}`}
               className="group relative block rounded-md aspect-4/3 overflow-hidden bg-ink"
             >

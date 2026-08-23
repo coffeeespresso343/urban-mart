@@ -34,7 +34,7 @@ const BestSellers = () => {
   };
 
   return (
-    <section className="py-20 bg-paper-dim sm:py-28">
+    <section className="py-20 sm:py-28">
       <div className="container-edge mb-8 flex items-end justify-between">
         <div>
           <span className="label-tag text-orange">Fan Favorites</span>

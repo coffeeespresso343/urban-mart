@@ -5,7 +5,7 @@ import {
   SlidersHorizontal,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { categories } from "../data/categories";
 import {
   defaultFilters,
@@ -105,7 +105,19 @@ const Shop = () => {
     });
   };
 
+  const activeCategoryRef = useRef<HTMLButtonElement>(null);
   const activeCategory = filters.categories[0];
+  const categorySlug = searchParams.get("category");
+
+  useEffect(() => {
+    if (!activeCategoryRef.current) return;
+
+    activeCategoryRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [activeCategory, categorySlug]);
 
   return (
     <div className="container-edge bg-paper py-10 sm:py-14">
@@ -147,24 +159,28 @@ const Shop = () => {
           >
             All
           </button>
-          {categories.map((cat) => (
-            <button
-              key={cat.slug}
-              onClick={() =>
-                updateFilter({
-                  ...filters,
-                  categories: [cat.name],
-                })
-              }
-              className={`label-tag shrink-0 border px-4 py-2 font-medium transition-colors duration-200 active:scale-95 rounded-2xl ${
-                activeCategory === cat.name
-                  ? "border-orange bg-orange text-ink"
-                  : "border-line-light hover:border-orange"
-              }`}
-            >
-              {cat.name}
-            </button>
-          ))}
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat.name;
+            return (
+              <button
+                ref={isActive ? activeCategoryRef : null}
+                key={cat.slug}
+                onClick={() =>
+                  updateFilter({
+                    ...filters,
+                    categories: [cat.name],
+                  })
+                }
+                className={`label-tag shrink-0 border px-4 py-2 font-medium transition-colors duration-200 active:scale-95 rounded-2xl ${
+                  activeCategory === cat.name
+                    ? "border-orange bg-orange text-ink"
+                    : "border-line-light hover:border-orange"
+                }`}
+              >
+                {cat.name}
+              </button>
+            );
+          })}
         </div>
       </div>
       <div className="flex items-center justify-between border-y border-line-light py-4">

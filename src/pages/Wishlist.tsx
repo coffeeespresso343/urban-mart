@@ -40,8 +40,11 @@ const Wishlist = () => {
 
   return (
     <div className="container-edge py-10">
-      <h1 className="mb-8 font-display text-3xl font-black tracking-wide sm:text-4xl">
-        Wishlist
+      <h1 className="mb-8 flex items-center gap-2 font-display text-3xl font-black tracking-wide sm:text-4xl">
+        <span className="h-8 w-8 bg-orange/10 rounded-full justify-center flex items-center">
+          <Heart className="h-5 w-5 shrink-0 text-orange" />
+        </span>
+        Your Wishlist
       </h1>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">

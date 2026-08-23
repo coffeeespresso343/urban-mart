@@ -73,7 +73,11 @@ const CartSummary = ({
         <div className="flex items-center justify-between text-stone">
           <span>Shipping</span>
           <span className="price text-ink">
-            {totals.shipping === 0 ? "Free" : formatPrice(totals.shipping)}
+            {totals.shipping === 0 ? (
+              <span className="text-good">Free</span>
+            ) : (
+              formatPrice(totals.shipping)
+            )}
           </span>
         </div>
 

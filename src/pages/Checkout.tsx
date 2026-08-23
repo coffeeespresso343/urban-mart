@@ -412,9 +412,11 @@ const Checkout = () => {
                           </span>
                         </span>
                         <span className="price text-sm font-semibold">
-                          {method.price === 0
-                            ? "Free"
-                            : formatPrice(method.price)}
+                          {method.price === 0 ? (
+                            <span className="text-good">Free</span>
+                          ) : (
+                            formatPrice(method.price)
+                          )}
                         </span>
                       </label>
                     ))}
@@ -570,7 +572,11 @@ const Checkout = () => {
             <div className="flex items-center justify-between text-stone">
               <span>Shipping</span>
               <span className="price text-ink">
-                {shippingCost === 0 ? "Free" : formatPrice(shippingCost)}
+                {shippingCost === 0 ? (
+                  <span className="text-good">Free</span>
+                ) : (
+                  formatPrice(shippingCost)
+                )}
               </span>
             </div>
 

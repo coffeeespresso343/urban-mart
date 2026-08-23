@@ -114,7 +114,7 @@ const About = () => {
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.4, delay: i * 0.5 }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
                 className="flex flex-col border border-white/9 p-3 rounded-xl bg-paper"
               >
                 <span className="h-7 w-7 flex items-center justify-center bg-orange/10 rounded-lg">
