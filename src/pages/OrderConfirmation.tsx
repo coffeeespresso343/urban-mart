@@ -23,6 +23,8 @@ const OrderConfirmation = () => {
   if (order === undefined) return null;
   if (order === null) return <Navigate to="/404" replace />;
 
+  console.log("ORDER: ", order);
+
   return (
     <div className="container-edge py-16 sm:py-24">
       <div className="mx-auto max-w-lg text-center">
@@ -41,7 +43,9 @@ const OrderConfirmation = () => {
         <p className="mt-3 text-sm text-stone">
           Thanks for your order, {order.shippingAddress.firstName}.
         </p>
-        <p className="label-tag mt-4 text-orange">Order #{order.id}</p>
+        <p className="label-tag mt-4 text-orange">
+          Order #{order.id.slice(0, 10)}
+        </p>
       </div>
 
       <div className="mx-auto mt-12 max-w-lg rounded-xl border border-line-light">

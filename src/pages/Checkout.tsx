@@ -31,6 +31,7 @@ import { formatPrice } from "../utils/currency";
 import { useCart } from "../hooks/useCart";
 import EmptyState from "../components/ui/EmptyState";
 import ImageWithFallback from "../components/ui/ImageWithFallback";
+import { useUIStore } from "../hooks/uiStore";
 
 const STEPS = ["Information", "Shipping", "Payment", "Confirmation"] as const;
 type StepName = (typeof STEPS)[number];
@@ -57,6 +58,8 @@ const Checkout = () => {
   const [processing, setProcessing] = useState(false);
   const navigate = useNavigate();
 
+  const showToast = useUIStore((s) => s.showToast);
+
   const [address, setAddress] = useState<ShippingAddress>({
     firstName: "",
     lastName: "",
@@ -65,7 +68,7 @@ const Checkout = () => {
     address: "",
     city: "",
     postalCode: "",
-    country: "United State",
+    country: "Myanmar",
   });
 
   const [card, setCard] = useState({
@@ -151,10 +154,19 @@ const Checkout = () => {
     e.preventDefault();
     const current: StepName = STEPS[stepIndex];
 
-    if (current === "Information" && !validateInformation()) return;
-    if (current === "Shipping" && !validateShipping()) return;
+    if (current === "Information" && !validateInformation()) {
+      showToast("Please fill the highlighted fields", "info");
+      return;
+    }
+    if (current === "Shipping" && !validateShipping()) {
+      showToast("Please fill the highlighted fields", "info");
+      return;
+    }
     if (current === "Payment") {
-      if (!validatePayment()) return;
+      if (!validatePayment()) {
+        showToast("Please fill the highlighted fields", "info");
+        return;
+      }
       placeOrder();
       return;
     }
@@ -445,9 +457,7 @@ const Checkout = () => {
                 className="flex flex-col gap-5"
               >
                 <h2 className="flex items-center gap-2 font-display text-xl text-orange font-bold tracking-tight">
-                  <span className="h-7 w-7 rounded-md  bg-orange/10 flex items-center justify-center">
-                    <CreditCard className="h-5 w-5" />
-                  </span>
+                  <CreditCard className="h-5 w-5" strokeWidth={2.5} />
                   Payment
                 </h2>
                 <p className="text-stone text-xs">

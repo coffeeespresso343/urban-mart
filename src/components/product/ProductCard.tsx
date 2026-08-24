@@ -54,7 +54,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             e.preventDefault();
             toggleWishlist(product);
           }}
-          className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-paper/50 text-ink backdrop-blur transition-transform hover:scale-110"
+          className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-paper/40 text-orange backdrop-blur transition-transform hover:scale-110"
         >
           <motion.span
             key={wishlisted ? "on" : "off"}
@@ -65,7 +65,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             <Heart
               strokeWidth={1.75}
               aria-hidden="true"
-              className={`h-4 w-4 ${wishlisted ? "fill-orange text-orange" : "text-ink"}`}
+              className={`h-4.5 w-4.5 ${wishlisted ? "fill-orange text-orange" : "text-ink"}`}
             />
           </motion.span>
         </button>
