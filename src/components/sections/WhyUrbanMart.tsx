@@ -37,14 +37,14 @@ const WhyUrbanMart = () => {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.4, delay: i * 0.05 }}
             className="flex items-start flex-col gap-3
-          border border-white/30 bg-white/40 rounded-lg p-4"
+          border border-white/30 bg-white/40 rounded-lg p-6"
           >
             <b.icon
-              className="h-5 w-5 text-orange shrink-0"
+              className="h-6 w-6 text-orange shrink-0"
               strokeWidth={2}
               aria-hidden="true"
             />
-            <div className="flex flex-col gap-3">
+            <div className="mt-2 flex flex-col gap-3">
               <h3 className="text-sm font-semibold">{b.ttile}</h3>
               <p className="text-xs leading-relaxed text-stone">
                 {b.description}

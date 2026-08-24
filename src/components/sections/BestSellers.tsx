@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { bestSellers } from "../../data/products";
 import ProductCard from "../product/ProductCard";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const BestSellers = () => {
   //   console.log("Best Sellers: ", bestSellers.length);
@@ -11,21 +11,52 @@ const BestSellers = () => {
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
   const [activePage, setActivePage] = useState(0);
-  const pageCount = Math.ceil(bestSellers.length);
+  const [pageCount, setPageCount] = useState(1);
   //   console.log("Page Count: ", pageCount);
 
-  const updateScrollState = () => {
+  const updateScrollState = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
+
+    const maxScrollLeft = el.scrollWidth - el.clientWidth;
+
     setCanScrollPrev(el.scrollLeft > 8);
-    setCanScrollNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
-    const cardWidth = el.scrollWidth / bestSellers.length;
-    setActivePage(Math.round(el.scrollLeft / cardWidth));
-  };
+    setCanScrollNext(el.scrollLeft < maxScrollLeft - 8);
+
+    if (maxScrollLeft <= 0) {
+      setActivePage(0);
+      setPageCount(1);
+      return;
+    }
+
+    const pageWidth = el.clientWidth * 0.8;
+    const totalPages = Math.ceil(maxScrollLeft / pageWidth + 1);
+
+    const currentPage = Math.min(
+      totalPages - 1,
+      Math.round(el.scrollLeft / pageWidth),
+    );
+
+    setPageCount(totalPages);
+    setActivePage(currentPage);
+  }, []);
 
   useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
     updateScrollState();
-  }, []);
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateScrollState();
+    });
+
+    resizeObserver.observe(el);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [updateScrollState]);
 
   const scrollBy = (direction: 1 | -1) => {
     const el = scrollRef.current;
@@ -74,8 +105,8 @@ const BestSellers = () => {
           {bestSellers.map((product) => (
             <motion.div
               key={product.id}
-              initial={{ opacity: 0, x: 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, scale: 0.98 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
               className="w-[72vw] shrink-0 snap-start sm:w-[45vw] lg:w-[23vw]"
             >

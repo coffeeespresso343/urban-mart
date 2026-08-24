@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Compass } from "lucide-react";
+import { ArrowLeft, Compass } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const NotFound = () => {
@@ -17,7 +17,7 @@ const NotFound = () => {
           404
         </span>
         <Compass
-          className="mx-auto -mt-6 h-8 w-8 text-cobalt"
+          className="mx-auto mt-6 h-8 w-8 text-cobalt"
           strokeWidth={1.5}
           aria-hidden="true"
         />
@@ -27,7 +27,11 @@ const NotFound = () => {
         <p className="mx-auto mt-3 max-w-sm text-sm text-stone">
           The page you are looking for doesn't exist.
         </p>
-        <Link to="/shop" className="mt-8 inline-block">
+        <Link
+          to="/shop"
+          className="mt-8 text-sm px-4 py-2 rounded-full bg-ink/5 flex items-center justify-center gap-1 active:scale-[0.98]"
+        >
+          <ArrowLeft className="h-4 w-4" />
           Back to Shop
         </Link>
       </motion.div>

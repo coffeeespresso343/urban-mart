@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import ImageWithFallback from "../components/ui/ImageWithFallback";
-import Img from "../assets/about-hero.jpg";
+import Img from "../assets/city-skyline.avif";
 import Img2 from "../assets/street-scene.avif";
 import {
   Building2,
@@ -67,7 +67,7 @@ const VALUES = [
 const About = () => {
   return (
     <div>
-      <section className="relative isolate  overflow-hidden bg-ink text-paper">
+      <section className="relative isolate overflow-hidden bg-ink text-paper">
         <div className="absolute inset-0">
           <ImageWithFallback
             src={Img}
@@ -80,7 +80,7 @@ const About = () => {
           <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.03),transparent_35%,rgba(0,0,0,0.15))]" />
         </div>
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-        <div className="container-edge relative z-10 flex min-h-[68svh] items-end py-20 sm:min-h-[68vh] sm:py-24 lg:min-h-[72vh] lg:py-28">
+        <div className="container-edge relative z-10 flex min-h-[65svh] items-end py-10 sm:min-h-[68vh] sm:py-15 lg:min-h-[72vh] lg:py-24">
           <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
@@ -97,7 +97,7 @@ const About = () => {
               <span className="label-tag text-orange">About Urban-Mart</span>
             </motion.div>
 
-            <h1 className="font-display text-[clamp(3.2rem,7.5vw,6.8rem)] font-black leading-[0.92] tracking-[0.045em] text-paper">
+            <h1 className="font-display text-[clamp(3rem,7vw,6rem)] font-black leading-[0.92] tracking-[0.045em] text-paper">
               Better everyday
               <br />
               things for a
@@ -118,20 +118,23 @@ const About = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.42, duration: 0.55 }}
+              transition={{ delay: 0.1, duration: 0.5, ease: ease }}
               className="mt-10 flex items-center flex-col lg:flex-row flex-wrap gap-x-6 gap-y-3 border-t border-paper/10 pt-6"
             >
               {[
                 "Curated for modern life",
                 "Designed to be used",
                 "Built to last",
-              ].map((item) => (
-                <span
+              ].map((item, i) => (
+                <motion.span
                   key={item}
-                  className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-medium tracking-[0.22em] text-white/80 backdrop-blur-md"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.2, ease: ease }}
+                  className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-medium tracking-[0.22em] text-orange/80 backdrop-blur-xs"
                 >
                   {item}
-                </span>
+                </motion.span>
               ))}
             </motion.div>
           </motion.div>
@@ -170,7 +173,7 @@ const About = () => {
               "Thoughtfully chosen",
               "Everyday durable",
               "Modern essentials",
-            ].map((item) => (
+            ].map((item, i) => (
               <span
                 key={item}
                 className="rounded-full border border-ink/10 bg-ink/[0.03] px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-ink/70"
@@ -215,8 +218,8 @@ const About = () => {
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.4, delay: i * 0.05 }}
-                className="group rounded-2xl border border-ink/8 bg-white/70 p-6 shadow-[0_8px_30px_rgba(0,0,0,0.03)] backdrop-blur-sm transition hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
+                transition={{ duration: 0.45, delay: i * 0.08, ease: ease }}
+                className="group rounded-2xl border border-ink/8 bg-white/70 p-6 shadow-[0_8px_30px_rgba(0,0,0,0.03)] backdrop-blur-sm  hover:shadow-[0_16px_40px_rgba(0,0,0,0.06)]"
               >
                 <span className="flex h-8 w-8 items-center justify-center rounded-2xl bg-orange/10">
                   <v.icon
@@ -247,7 +250,7 @@ const About = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.45 }}
+              transition={{ duration: 0.45, ease: ease }}
               className="rounded-2xl border border-ink/8 bg-white p-6 shadow-[0_10px_32px_rgba(0,0,0,0.04)]"
             >
               <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-orange text-white shadow-sm">

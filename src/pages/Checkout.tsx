@@ -207,7 +207,7 @@ const Checkout = () => {
       localStorage.setItem("urban-mart-last-order", JSON.stringify(order));
       clearCart();
       navigate("/order-confirmation");
-    }, 1600);
+    }, 2600);
   };
 
   return (
@@ -494,6 +494,7 @@ const Checkout = () => {
                       setCard({ ...card, expiry: formatExpiry(v) })
                     }
                     placeholder="04 / 28"
+                    inputMode="numeric"
                     error={cardErrors.expiry}
                   />
                   <InputField
