@@ -53,7 +53,7 @@ const ProductInfo = ({ product }: { product: Product }) => {
 
   const handleCopyLink = async () => {
     await navigator.clipboard.writeText(window.location.href);
-    showToast("Link copied to clipboard", "info");
+    showToast("Link copied to clipboard", "success");
   };
 
   return (

@@ -84,9 +84,7 @@ const CartSummary = ({
         {totals.discount > 0 ? (
           <div className="flex items-center justify-between text-stone">
             <span>Discount</span>
-            <span className="price text-ink">
-              {formatPrice(totals.discount)}
-            </span>
+            <span className="price">-{formatPrice(totals.discount)}</span>
           </div>
         ) : null}
 

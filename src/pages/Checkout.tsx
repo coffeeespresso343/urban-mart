@@ -5,7 +5,6 @@ import {
   ChevronLeft,
   CreditCard,
   Info,
-  Loader2,
   Lock,
   ShoppingBag,
   ShoppingCart,
@@ -592,7 +591,7 @@ const Checkout = () => {
             </div>
 
             {totals.discount > 0 ? (
-              <div className="flex items-center justify-between text-good">
+              <div className="flex items-center justify-between text-stone">
                 <span>Discount</span>
                 <span className="price">-{formatPrice(totals.discount)}</span>
               </div>

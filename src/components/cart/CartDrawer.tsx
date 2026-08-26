@@ -73,8 +73,8 @@ const CartDrawer = () => {
                   title="Your bag is empty"
                   message="Look like you haven't been added anything yet."
                   action={
-                    <Button onClick={closeCart}>
-                      Continue Shopping{" "}
+                    <Button onClick={closeCart} variant="outline">
+                      Continue Shopping
                       <ArrowRight className="h-4 w-4 shrink-0" />
                     </Button>
                   }

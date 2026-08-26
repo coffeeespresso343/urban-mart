@@ -93,6 +93,7 @@ const MobileNavigation = () => {
             <div className="relative flex items-center justify-between border-b border-line-light/80 px-5 py-5">
               <Link
                 to="/"
+                onClick={closeMobileMenu}
                 className="flex items-center gap-0.5 font-body text-lg font-black tracking-tight sm:text-xl"
               >
                 Urban <span className="text-orange">Mart</span>

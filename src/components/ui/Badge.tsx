@@ -33,7 +33,7 @@ const Badge = ({
   const icon = badgeIcon[label];
   return (
     <span
-      className={`label-tag rounded-2xl backdrop-blur-sm inline-flex items-center gap-1 px-2.5 py-1 font-semibold ${
+      className={`label-tag rounded-2xl backdrop-blur-sm inline-flex items-center gap-1 px-2 py-1 font-semibold ${
         toneClasses[tone]
       } ${className}`}
     >

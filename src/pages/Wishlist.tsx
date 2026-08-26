@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Heart, PlusCircle, ShoppingBag, X } from "lucide-react";
+import { ArrowRight, Heart, PlusCircle, ShoppingBag, X } from "lucide-react";
 import EmptyState from "../components/ui/EmptyState";
 import { Link } from "react-router-dom";
 import { Button } from "../components/ui/Button";
@@ -28,8 +28,8 @@ const Wishlist = () => {
           message="Save products you like and they'll show up here."
           action={
             <Link to="/shop">
-              <Button size="lg" variant="secondary">
-                Discover Products
+              <Button size="md" variant="outline">
+                Discover Products <ArrowRight className="h-4 w-4 shrink-0" />
               </Button>
             </Link>
           }

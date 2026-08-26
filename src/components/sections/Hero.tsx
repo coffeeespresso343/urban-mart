@@ -66,8 +66,8 @@ const Hero = () => {
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.6, ease: ease }}
-            className="mt-8  max-w-lg grid grid-cols-3  pt-6"
+            transition={{ delay: 0.4, duration: 0.6, ease: ease }}
+            className="mt-8 max-w-lg flex items-center justify-between pt-6"
           >
             <div className="flex gap-3">
               <Truck className="mt-0.5 h-4 w-4 shrink-0 text-orange" />
@@ -127,7 +127,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.55, ease }}
-            className="absolute right-4 top-4 rounded-full border border-white/12 bg-ink/35 px-4 py-2 text-xs text-paper backdrop-blur-md sm:right-6 sm:top-6"
+            className="absolute right-4 top-4 rounded-full border border-white/12 bg-ink/35 px-3 py-1.5 text-xs text-paper backdrop-blur-md sm:right-6 sm:top-6"
           >
             Premium essentials • curated for the city
           </motion.div>

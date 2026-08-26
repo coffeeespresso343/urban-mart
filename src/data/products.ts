@@ -596,6 +596,8 @@ export const products: Product[] = [
     stock: 42,
     colors: ["Silver", "Space Gray"],
     tags: ["laptop", "stand", "desk"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 26,

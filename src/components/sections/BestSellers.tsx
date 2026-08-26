@@ -5,7 +5,7 @@ import ProductCard from "../product/ProductCard";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const BestSellers = () => {
-  //   console.log("Best Sellers: ", bestSellers.length);
+  // console.log("Best Sellers: ", bestSellers.length);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -79,7 +79,7 @@ const BestSellers = () => {
             onClick={() => scrollBy(-1)}
             disabled={!canScrollPrev}
             aria-label="Previous products"
-            className="flex h-10 w-10 items-center justify-center border border-line text-ink
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-line-light text-ink
           transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
           >
             <ChevronLeft />
@@ -88,7 +88,7 @@ const BestSellers = () => {
             onClick={() => scrollBy(1)}
             disabled={!canScrollNext}
             aria-label="Next products"
-            className="flex h-10 w-10 items-center justify-center border border-line text-ink
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-line-light text-ink
           transition-colors hover:border-ink disabled:cursor-not-allowed disabled:opacity-30"
           >
             <ChevronRight />
@@ -105,10 +105,10 @@ const BestSellers = () => {
           {bestSellers.map((product) => (
             <motion.div
               key={product.id}
-              initial={{ opacity: 0, scale: 0.98 }}
+              initial={{ opacity: 0, scale: 0.97 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
-              className="w-[72vw] shrink-0 snap-start sm:w-[45vw] lg:w-[23vw]"
+              className="w-[72vw] shrink-0 snap-center sm:w-[45vw] lg:w-[23vw]"
             >
               <ProductCard product={product} />
             </motion.div>
