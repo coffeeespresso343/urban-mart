@@ -11,8 +11,12 @@ export interface ShippingAddress {
   country: string;
 }
 
+export type OrderStatus = "processing" | "shipped" | "delivered" | "cancelled";
+
 export interface Order {
   id: string;
+  orderNumber: string;
+  userId?: string | null;
   items: CartItem[];
   totals: CartTotals;
   shippingAddress: ShippingAddress;

@@ -43,3 +43,5 @@ export const formatExpiry = (value: string): string => {
   if (digits.length <= 2) return digits;
   return `${digits.slice(0, 2)} / ${digits.slice(2)}`;
 };
+
+export const isValidPassword = (value: string) => value.length >= 8;
