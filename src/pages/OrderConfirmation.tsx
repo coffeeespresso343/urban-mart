@@ -2,28 +2,57 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check, MapPin, Package, Truck } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Order } from "../types/Order";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import ImageWithFallback from "../components/ui/ImageWithFallback";
 import { formatPrice } from "../utils/currency";
 import { Button } from "../components/ui/Button";
+import { fetchOrderByNumber, getLastLocalOrder } from "../lib/Orders";
 
 const OrderConfirmation = () => {
-  const [order, setOrder] = useState<Order | null | undefined>(undefined);
+  const [searchParams] = useSearchParams();
+  const orderNumber = searchParams.get("order");
+  const [order, setOrder] = useState<Order | undefined>(undefined);
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("urban-mart-last-order");
-      setOrder(raw ? (JSON.parse(raw) as Order) : null);
-    } catch {
-      setOrder(null);
+    let cancelled = false;
+
+    async function load() {
+      const local = getLastLocalOrder();
+
+      if (local && (!orderNumber || local.orderNumber === orderNumber)) {
+        if (!cancelled) setOrder(local);
+        return;
+      }
+
+      if (orderNumber) {
+        const remote = await fetchOrderByNumber(orderNumber);
+        if (!cancelled) setOrder(remote);
+        return;
+      }
+
+      if (!cancelled) setOrder(null);
     }
-  }, []);
 
-  if (order === undefined) return null;
+    void load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [orderNumber]);
+
+  if (order === undefined) {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <span
+          className="h-8 w-8 animate-spin rounded-full border-2 border-ink border-t-transparent"
+          aria-hidden="true"
+        />
+      </div>
+    );
+  }
+
   if (order === null) return <Navigate to="/404" replace />;
-
-  console.log("ORDER: ", order);
 
   return (
     <div className="container-edge py-16 sm:py-24">
@@ -43,9 +72,7 @@ const OrderConfirmation = () => {
         <p className="mt-3 text-sm text-stone">
           Thanks for your order, {order.shippingAddress.firstName}.
         </p>
-        <p className="label-tag mt-4 text-orange">
-          Order #{order.id.slice(0, 10)}
-        </p>
+        <p className="label-tag mt-4 text-orange">Order #{order.orderNumber}</p>
       </div>
 
       <div className="mx-auto mt-12 max-w-lg rounded-xl border border-line-light">
@@ -103,7 +130,11 @@ const OrderConfirmation = () => {
             <p className="mt-1 text-sm">{order.shippingMethod}</p>
             <p className="mt-1 flex items-center gap-1.5 text-sm text-stone">
               <Package className="h-3.5 w-3.5" />
-              Estimated {order.estimatedDelivery}
+              Estimated{" "}
+              {new Date(order.estimatedDelivery).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+              })}
             </p>
           </div>
         </div>

@@ -13,7 +13,7 @@ import {
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import InputField from "../components/checkout/InputField";
-import type { Order, ShippingAddress } from "../types/Order";
+import type { ShippingAddress } from "../types/Order";
 import { Button } from "../components/ui/Button";
 import {
   formatCardNumber,
@@ -31,6 +31,8 @@ import { useCart } from "../hooks/useCart";
 import EmptyState from "../components/ui/EmptyState";
 import ImageWithFallback from "../components/ui/ImageWithFallback";
 import { useUIStore } from "../hooks/uiStore";
+import { useAuth } from "../hooks/useAuth";
+import { createOrder } from "../lib/Orders";
 
 const STEPS = ["Information", "Shipping", "Payment", "Confirmation"] as const;
 type StepName = (typeof STEPS)[number];
@@ -52,6 +54,7 @@ const SHIPPING_METHODS = [
 type Errors = Partial<Record<keyof ShippingAddress, string>>;
 
 const Checkout = () => {
+  const { user } = useAuth();
   const { items, totals, clearCart } = useCart();
   const [stepIndex, setStepIndex] = useState(0);
   const [processing, setProcessing] = useState(false);
@@ -178,34 +181,28 @@ const Checkout = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const placeOrder = () => {
+  const placeOrder = async () => {
     setProcessing(true);
     setStepIndex(3);
 
     const DAY_IN_MS = 24 * 60 * 60 * 1000;
     const deliveryDays = shippingMethod === "express" ? 2 : 5;
+    const deliveryDate = new Date(Date.now() + deliveryDays * DAY_IN_MS);
 
-    const order: Order = {
-      id: `UM-${crypto.randomUUID()}`,
+    const order = await createOrder({
       items,
       totals: { ...totals, shipping: shippingCost, total: grandTotal },
       shippingAddress: address,
       shippingMethod:
         SHIPPING_METHODS.find((m) => m.id === shippingMethod)?.label ??
         "Standard Shipping",
-      placeAt: new Date().toISOString(),
-      estimatedDelivery: new Date(
-        Date.now() + deliveryDays * DAY_IN_MS,
-      ).toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-      }),
-    };
+      estimatedDelivery: deliveryDate.toISOString().slice(0, 10),
+      userId: user?.id ?? null,
+    });
 
     setTimeout(() => {
-      localStorage.setItem("urban-mart-last-order", JSON.stringify(order));
       clearCart();
-      navigate("/order-confirmation");
+      navigate(`/order-confirmation?order=${order.orderNumber}`);
     }, 2600);
   };
 

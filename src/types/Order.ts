@@ -21,6 +21,7 @@ export interface Order {
   totals: CartTotals;
   shippingAddress: ShippingAddress;
   shippingMethod: string;
-  placeAt: string;
+  status: OrderStatus;
+  placedAt: string;
   estimatedDelivery: string;
 }

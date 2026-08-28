@@ -7,6 +7,8 @@ import {
   Heart,
   Home,
   Info,
+  ListOrdered,
+  LogIn,
   PercentDiamond,
   ShoppingCart,
   Sparkle,
@@ -15,6 +17,7 @@ import {
 import { useEffect } from "react";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCart } from "../../hooks/useCart";
+import { useAuth } from "../../hooks/useAuth";
 
 const LINKS = [
   { Icon: Home, label: "Home", to: "/" },
@@ -28,6 +31,7 @@ const LINKS = [
 ];
 
 const MobileNavigation = () => {
+  const { user, isConfigured } = useAuth();
   const { productIds } = useWishlist();
   const { totals } = useCart();
   const mobileMenuOpen = useUIStore((s) => s.mobileMenuOpen);
@@ -65,6 +69,11 @@ const MobileNavigation = () => {
       document.body.style.overflow = "";
     };
   }, [mobileMenuOpen]);
+
+  const accountLink =
+    !isConfigured || !user
+      ? { Icon: LogIn, label: "Sign In", to: "/login" }
+      : { Icon: ListOrdered, label: "My Orders", to: "/account/orders" };
 
   return (
     <AnimatePresence>
@@ -114,8 +123,8 @@ const MobileNavigation = () => {
                 />
               </button>
             </div>
-            <ul className="flex flex-col gap-1 px-4 py-4">
-              {LINKS.map((link) => {
+            <ul className="flex flex-col gap-1 px-4 py-4 overflow-y-auto">
+              {[...LINKS, accountLink].map((link) => {
                 const isActive = isActiveLink(link.to);
                 const wishlistDot =
                   productIds.length > 0 && link.label === "Wishlist";
@@ -136,7 +145,7 @@ const MobileNavigation = () => {
                     >
                       <>
                         <div className="relative z-10 flex items-center gap-3">
-                          <span>{<link.Icon className="h-5 w-5" />}</span>{" "}
+                          <span>{<link.Icon className="h-5 w-5" />}</span>
                           <span className="absolute top-0 left-3.5 flex items-center justify-center">
                             {wishlistDot ? (
                               <span className="h-1.5 w-1.5 bg-orange rounded-full" />

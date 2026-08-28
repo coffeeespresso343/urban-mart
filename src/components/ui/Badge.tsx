@@ -4,11 +4,12 @@ import type { ReactNode } from "react";
 type Tone = "ink" | "orange" | "warn" | "good" | "stone";
 
 const toneClasses: Record<Tone, string> = {
-  ink: "bg-ink/10 text-orange",
-  orange: "bg-paper/60 text-orange",
-  warn: "bg-warn/70 text-paper",
-  good: "bg-paper/70 text-orange",
-  stone: "bg-paper-dim/50 text-error border border-line-light",
+  ink: "bg-ink/90 text-paper border border-ink",
+  orange:
+    "bg-orange/[0.08] text-orange border border-orange/5 backdrop-blur-sm",
+  warn: "bg-warn/10 text-warn border border-warn/10",
+  good: "bg-paper/10 text-ink border border-good/20",
+  stone: "bg-paper-dim/70 text-orange border border-line-light",
 };
 
 const badgeIcon: Record<string, ReactNode> = {

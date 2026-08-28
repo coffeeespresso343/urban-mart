@@ -4,6 +4,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { useUIStore } from "../../hooks/uiStore";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCart } from "../../hooks/useCart";
+import AccountMenu from "./AccountMenu";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
@@ -128,6 +129,7 @@ const Navbar = () => {
               </span>
             ) : null}
           </button>
+          <AccountMenu />
         </div>
       </div>
     </header>
