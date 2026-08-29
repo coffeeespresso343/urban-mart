@@ -111,7 +111,6 @@ const Login = () => {
 
         if (authError) {
           setErrors({ form: authError });
-
           showToast(authError, "error");
         } else {
           setMagicLinkSent(true);
@@ -133,6 +132,7 @@ const Login = () => {
           setErrors({
             form: authError,
           });
+          showToast(`Login Failed! ${authError}`, "error");
         } else {
           navigate(redirectTo, { replace: true });
           showToast(
@@ -150,6 +150,7 @@ const Login = () => {
         setErrors({
           form: authError,
         });
+        showToast(`Login Failed! ${authError}`, "error");
       } else {
         navigate(redirectTo, { replace: true });
 
@@ -295,6 +296,12 @@ const Login = () => {
                 )}
               </div>
             ) : null}
+            {errors.form && (
+              <p className="mt-0.5 flex items-center gap-1 text-xs text-error">
+                <AlertCircle className="h-3 w-3 shrink-0" />
+                {errors.form}
+              </p>
+            )}
 
             <Button
               type="submit"
