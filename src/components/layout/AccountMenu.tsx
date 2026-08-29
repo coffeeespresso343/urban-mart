@@ -1,14 +1,23 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { LogOut, Package, User2 } from "lucide-react";
+import { Loader2, LogOut, Package, User2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const AccountMenu = () => {
   const { user, profile, signOut, isConfigured } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    await signOut();
+    setIsLoading(false);
+    setOpen(false);
+    navigate("/");
+  };
 
   useEffect(() => {
     if (!open) return;
@@ -84,14 +93,20 @@ const AccountMenu = () => {
               <Package className="h-3.5 w-3.5" /> Order History
             </Link>
             <button
-              onClick={async () => {
-                setOpen(false);
-                await signOut();
-                navigate("/");
-              }}
-              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-warn hover:bg-paper-dim"
+              disabled={isLoading}
+              onClick={handleSignOut}
+              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-error hover:bg-paper-dim disabled:opacity-40"
             >
-              <LogOut className="h-3.5 w-3.5" /> Sign Out
+              {isLoading ? (
+                <>
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" /> Signing
+                  out...
+                </>
+              ) : (
+                <>
+                  <LogOut className="h-3.5 w-3.5" /> Sign Out
+                </>
+              )}
             </button>
           </motion.div>
         ) : null}

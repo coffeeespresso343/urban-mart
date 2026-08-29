@@ -48,3 +48,33 @@ export const OrderGridSkeleton = ({ count = 2 }: { count?: number }) => {
     </div>
   );
 };
+
+export const OrderDetailsSkeleton = () => {
+  return (
+    <div className="flex items-center justify-between">
+      <Skeleton className="rounded-md h-20 w-24" />
+      <div className="-ml-10 flex flex-col gap-2">
+        <Skeleton className="h-3 w-19 rounded-xl" />
+        <Skeleton className="h-3 w-10 rounded-xl" />
+      </div>
+      <Skeleton className="h-3 w-19 rounded-xl" />
+    </div>
+  );
+};
+
+export const OrderDetailsGridSkeleton = ({ count = 3 }: { count?: number }) => {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-14">
+      <div className="flex flex-col gap-5">
+        {Array.from({ length: count }).map((_, i) => (
+          <OrderDetailsSkeleton key={i} />
+        ))}
+      </div>
+      <div className="flex flex-col gap-5">
+        <Skeleton className="mb-5 rounded-md h-35 w-full" />
+        <Skeleton className="rounded-md h-30 w-full" />
+        <Skeleton className="rounded-md h-30 w-full" />
+      </div>
+    </div>
+  );
+};

@@ -67,12 +67,12 @@ const CartSummary = ({
       <div className="flex flex-col gap-2 border-t border-line-light pt-3 text-sm">
         <div className="flex items-center justify-between text-stone">
           <span>Subtotal</span>
-          <span className="price text-ink">{formatPrice(totals.subtotal)}</span>
+          <span className="price">{formatPrice(totals.subtotal)}</span>
         </div>
 
         <div className="flex items-center justify-between text-stone">
           <span>Shipping</span>
-          <span className="price text-ink">
+          <span className=" text-ink">
             {totals.shipping === 0 ? (
               <span className="text-good">Free</span>
             ) : (
@@ -82,9 +82,9 @@ const CartSummary = ({
         </div>
 
         {totals.discount > 0 ? (
-          <div className="flex items-center justify-between text-stone">
+          <div className="flex items-center justify-between text-good">
             <span>Discount</span>
-            <span className="price">-{formatPrice(totals.discount)}</span>
+            <span className="font-mono">-{formatPrice(totals.discount)}</span>
           </div>
         ) : null}
 

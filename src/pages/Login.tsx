@@ -5,8 +5,19 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button";
 import { useAuth } from "../hooks/useAuth";
 import { isValidEmail, isValidPassword, required } from "../utils/validation";
+import { useUIStore } from "../hooks/uiStore";
 
 type Mode = "sign-in" | "sign-up" | "magic-link";
+
+type FieldName = "email" | "password" | "firstName" | "lastName";
+
+type FiledErrors = {
+  email?: string;
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+  form?: string;
+};
 
 const Login = () => {
   const {
@@ -17,12 +28,14 @@ const Login = () => {
     signInWithMagicLink,
   } = useAuth();
 
+  const showToast = useUIStore((s) => s.showToast);
+
   const [mode, setMode] = useState<Mode>("sign-in");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<FiledErrors>({});
   const [magicLinkSent, setMagicLinkSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -39,55 +52,112 @@ const Login = () => {
     return <Navigate to={redirectTo} replace />;
   }
 
+  const handleChange = (field: FieldName, value: string) => {
+    const setters = {
+      email: setEmail,
+      password: setPassword,
+      firstName: setFirstName,
+      lastName: setLastName,
+    };
+
+    setters[field](value);
+
+    setErrors((prev) => ({
+      ...prev,
+      [field]: undefined,
+    }));
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError(null);
+    setErrors({});
 
-    if (!isValidEmail(email)) {
-      setError("Please enter a valid email address.");
+    const newErrors: FiledErrors = {};
+
+    if (!required(email)) {
+      newErrors.email = "Valid email address is required.";
+    } else if (!isValidEmail(email)) {
+      newErrors.email = "Please enter a valid email address.";
+    }
+
+    if (mode !== "magic-link") {
+      if (!required(password)) {
+        newErrors.password = "Password is required.";
+      } else if (!isValidPassword(password)) {
+        newErrors.password = "Password must be at least 8 characters.";
+      }
+    }
+
+    if (mode === "sign-up") {
+      if (!required(firstName)) {
+        newErrors.firstName = "First name is required.";
+      }
+
+      if (!required(lastName)) {
+        newErrors.lastName = "Last name is required.";
+      }
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
     setIsSubmitting(true);
 
-    if (mode === "magic-link") {
-      const { error: authError } = await signInWithMagicLink(email);
-      setIsSubmitting(false);
-      if (authError) setError(authError);
-      else setMagicLinkSent(true);
-      return;
-    }
+    try {
+      if (mode === "magic-link") {
+        const { error: authError } = await signInWithMagicLink(email);
 
-    if (!isValidPassword(password)) {
-      setError("Password must be at least 8 characters.");
-      setIsSubmitting(false);
-      return;
-    }
+        if (authError) {
+          setErrors({ form: authError });
 
-    if (mode === "sign-up") {
-      if (!required(firstName) || !required(lastName)) {
-        setError("First and last name are required.");
-        setIsSubmitting(false);
+          showToast(authError, "error");
+        } else {
+          setMagicLinkSent(true);
+          showToast(`Check ${email} for a sign-in link`, "success");
+        }
+
         return;
       }
 
-      const { error: authError } = await signUpWithPassword(
-        email,
-        password,
-        firstName,
-        lastName,
-      );
+      if (mode === "sign-up") {
+        const { error: authError } = await signUpWithPassword(
+          email,
+          password,
+          firstName,
+          lastName,
+        );
 
+        if (authError) {
+          setErrors({
+            form: authError,
+          });
+        } else {
+          navigate(redirectTo, { replace: true });
+          showToast(
+            "Account created successfully. Welcome to Urban-Mart!",
+            "success",
+          );
+        }
+
+        return;
+      }
+
+      const { error: authError } = await signInWithPassword(email, password);
+
+      if (authError) {
+        setErrors({
+          form: authError,
+        });
+      } else {
+        navigate(redirectTo, { replace: true });
+
+        showToast("Login successful! Welcome back to Urban-Mart.", "success");
+      }
+    } finally {
       setIsSubmitting(false);
-      if (authError) setError(authError);
-      else navigate(redirectTo, { replace: true });
-      return;
     }
-
-    const { error: authError } = await signInWithPassword(email, password);
-    setIsSubmitting(false);
-    if (authError) setError(authError);
-    else navigate(redirectTo, { replace: true });
   };
 
   return (
@@ -118,11 +188,18 @@ const Login = () => {
         </div>
 
         {magicLinkSent ? (
-          <div className="mt-8 flex items-start gap-3 rounded-lg border border-good/30 bg-good/10 p-4">
-            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-good" />
+          <div className="mt-8 flex flex-col items-center gap-3 rounded-lg border border-good/30 bg-good/10 p-4">
+            <motion.span
+              initial={{ opacity: 0, scale: 0.6, rotate: 95 }}
+              animate={{ opacity: 1, scale: 1, rotate: 360 }}
+              transition={{ type: "spring", stiffness: 260, damping: 18 }}
+            >
+              <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-good" />
+            </motion.span>
             <p className="text-sm text-good">
-              Check <strong>{email}</strong> for a sign-in link
+              Sign-in link sent to <strong>{email}</strong>
             </p>
+            <p className="text-sm text-good">Please check your inbox.</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
@@ -134,12 +211,20 @@ const Login = () => {
                   </label>
                   <input
                     type="text"
-                    id="first-name"
+                    id="firstName"
                     value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
+                    onChange={(e) => handleChange("firstName", e.target.value)}
                     placeholder="Kyaw"
-                    className="border border-line-light rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink"
+                    className={`border rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink ${
+                      errors.firstName ? "border-error" : "border-line-light"
+                    }`}
                   />
+                  {errors.firstName && (
+                    <p className="mt-0.5 flex items-center gap-1 text-xs text-error">
+                      <AlertCircle className="h-3 w-3 shrink-0" />
+                      {errors.firstName}
+                    </p>
+                  )}
                 </div>
                 <div className="flex flex-col gap-1.5">
                   <label htmlFor="first-name" className="label-tag text-stone">
@@ -147,12 +232,20 @@ const Login = () => {
                   </label>
                   <input
                     type="text"
-                    id="last-name"
+                    id="lastName"
                     value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
+                    onChange={(e) => handleChange("lastName", e.target.value)}
                     placeholder="Gyi"
-                    className="border border-line-light rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink"
+                    className={`border rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink ${
+                      errors.lastName ? "border-error" : "border-line-light"
+                    }`}
                   />
+                  {errors.lastName && (
+                    <p className="mt-0.5 flex items-center gap-1 text-xs text-error">
+                      <AlertCircle className="h-3 w-3 shrink-0" />
+                      {errors.lastName}
+                    </p>
+                  )}
                 </div>
               </div>
             ) : null}
@@ -165,10 +258,18 @@ const Login = () => {
                 type="email"
                 id="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => handleChange("email", e.target.value)}
                 placeholder="you@example.com"
-                className="border border-line-light rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink"
+                className={`border rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink ${
+                  errors.email ? "border-error" : "border-line-light"
+                }`}
               />
+              {errors.email && (
+                <p className="mt-0.5 flex items-center gap-1 text-xs text-error">
+                  <AlertCircle className="h-3 w-3 shrink-0" />
+                  {errors.email}
+                </p>
+              )}
             </div>
 
             {mode !== "magic-link" ? (
@@ -182,16 +283,17 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 8 characters."
-                  className="border border-line-light rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink"
+                  className={`border rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink ${
+                    errors.password ? "border-error" : "border-line-light"
+                  }`}
                 />
+                {errors.password && (
+                  <p className="mt-0.5 flex items-center gap-1 text-xs text-error">
+                    <AlertCircle className="h-3 w-3 shrink-0" />
+                    {errors.password}
+                  </p>
+                )}
               </div>
-            ) : null}
-
-            {error ? (
-              <p className="flex items-start gap-1 text-xs text-warn">
-                <AlertCircle className=" h-3.5 w-3.5 shrink-0" />
-                {error}
-              </p>
             ) : null}
 
             <Button
@@ -212,7 +314,7 @@ const Login = () => {
                 type="button"
                 onClick={() => {
                   setMode("magic-link");
-                  setError(null);
+                  setErrors({});
                 }}
                 className="label-tag mt-2 flex items-center justify-center gap-1.5 text-stone hover:text-ink"
               >
@@ -228,7 +330,10 @@ const Login = () => {
             <>
               Already have an account?{" "}
               <button
-                onClick={() => setMode("sign-in")}
+                onClick={() => {
+                  setMode("sign-in");
+                  setMagicLinkSent(false);
+                }}
                 className="font-medium text-ink underline"
               >
                 Sign In
@@ -238,7 +343,10 @@ const Login = () => {
             <>
               New to Urban-Mart?{" "}
               <button
-                onClick={() => setMode("sign-up")}
+                onClick={() => {
+                  setMode("sign-up");
+                  setMagicLinkSent(false);
+                }}
                 className="font-medium text-ink underline"
               >
                 Create an Account
