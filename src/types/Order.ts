@@ -7,7 +7,7 @@ export interface ShippingAddress {
   phone: string;
   address: string;
   city: string;
-  postalCode: string;
+  postalCode?: string | null;
   country: string;
 }
 

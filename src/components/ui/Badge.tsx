@@ -8,7 +8,7 @@ const toneClasses: Record<Tone, string> = {
   orange:
     "bg-orange/[0.08] text-orange border border-orange/5 backdrop-blur-sm",
   warn: "bg-warn/10 text-warn border border-warn/10",
-  good: "bg-paper/10 text-ink border border-good/20",
+  good: "bg-good/10 text-ink border border-good/5 ",
   stone: "bg-paper-dim/70 text-orange border border-line-light",
 };
 
@@ -34,7 +34,7 @@ const Badge = ({
   const icon = badgeIcon[label];
   return (
     <span
-      className={`label-tag rounded-2xl backdrop-blur-sm inline-flex items-center gap-1 px-2 py-1 font-semibold ${
+      className={`label-tag rounded-2xl backdrop-blur-sm inline-flex items-center gap-1 px-2.5 py-1 font-semibold ${
         toneClasses[tone]
       } ${className}`}
     >

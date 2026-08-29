@@ -77,12 +77,14 @@ const AccountMenu = () => {
             className="absolute right-0 top-full mt-3 w-60 rounded-b-lg  bg-paper py-2 shadow-xl"
           >
             <div className="border-b border-line-light px-4 pb-2 pt-1">
-              <p className="truncate text-sm font-medium">
-                {profile?.firstName
-                  ? `${profile?.firstName} ${profile?.lastName}`
-                  : "Account"}
-              </p>
-              <p className="truncate text-xs text-stone">{user.email}</p>
+              <Link to="/account" onClick={() => setOpen(false)}>
+                <p className="truncate text-sm font-medium">
+                  {profile?.firstName
+                    ? `${profile?.firstName} ${profile?.lastName}`
+                    : "Account"}
+                </p>
+                <p className="truncate text-xs text-stone">{user.email}</p>
+              </Link>
             </div>
 
             <Link

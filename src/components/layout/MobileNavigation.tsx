@@ -7,8 +7,7 @@ import {
   Heart,
   Home,
   Info,
-  ListOrdered,
-  LogIn,
+  Package,
   PercentDiamond,
   ShoppingCart,
   Sparkle,
@@ -39,7 +38,7 @@ const LINKS: NavLinkItem[] = [
 const YOU_LINKS: NavLinkItem[] = [
   { Icon: Heart, label: "Wishlist", to: "/wishlist" },
   { Icon: ShoppingCart, label: "Checkout", to: "/checkout" },
-  { Icon: ListOrdered, label: "Orders", to: "/account/orders" },
+  { Icon: Package, label: "Orders", to: "/account/orders" },
 ];
 
 function NavGroup({

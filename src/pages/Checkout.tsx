@@ -23,7 +23,6 @@ import {
   isValidEmail,
   isValidExpiry,
   isValidPhone,
-  isValidPostalCode,
   required,
 } from "../utils/validation";
 import { formatPrice } from "../utils/currency";
@@ -130,8 +129,7 @@ const Checkout = () => {
 
     if (!required(address.address)) next.address = "Your address is required";
     if (!required(address.city)) next.city = "Your city is required";
-    if (!isValidPostalCode(address.postalCode))
-      next.postalCode = "Please enter a valid postal code";
+
     setErrors(next);
 
     return Object.keys(next).length === 0;
@@ -182,6 +180,8 @@ const Checkout = () => {
   };
 
   const placeOrder = async () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
     setProcessing(true);
     setStepIndex(3);
 
@@ -371,13 +371,6 @@ const Checkout = () => {
                     value={address.city}
                     onChange={(v) => setAddress({ ...address, city: v })}
                     error={errors.city}
-                  />
-                  <InputField
-                    label="Postal Code"
-                    placeholder="Enter postal code"
-                    value={address.postalCode}
-                    onChange={(v) => setAddress({ ...address, postalCode: v })}
-                    error={errors.postalCode}
                   />
                 </div>
                 <InputField
@@ -588,9 +581,11 @@ const Checkout = () => {
             </div>
 
             {totals.discount > 0 ? (
-              <div className="flex items-center justify-between text-stone">
+              <div className="flex items-center justify-between text-good">
                 <span>Discount</span>
-                <span className="price">-{formatPrice(totals.discount)}</span>
+                <span className="font-mono text-sm">
+                  -{formatPrice(totals.discount)}
+                </span>
               </div>
             ) : null}
 

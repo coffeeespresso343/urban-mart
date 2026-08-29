@@ -1,12 +1,21 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { ArrowRight, LogOut, Mail, Package } from "lucide-react";
+import { ArrowRight, Loader2, LogOut, Mail, Package } from "lucide-react";
 import { Button } from "../components/ui/Button";
+import { useState } from "react";
 
 const Account = () => {
   const { user, profile, signOut } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    await signOut();
+    setIsLoading(false);
+    navigate("/");
+  };
 
   return (
     <div className="container-edge py-10 sm:py-14">
@@ -29,14 +38,21 @@ const Account = () => {
           <Button
             size="sm"
             variant="outline"
-            onClick={async () => {
-              await signOut();
-              navigate("/");
-            }}
+            disabled={isLoading}
+            onClick={handleSignOut}
             className="mt-6"
           >
-            <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
-            Sign Out
+            {isLoading ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />{" "}
+                SigningOut...
+              </>
+            ) : (
+              <>
+                <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
+                Sign Out
+              </>
+            )}
           </Button>
         </div>
 

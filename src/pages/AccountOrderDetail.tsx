@@ -184,9 +184,7 @@ const AccountOrderDetail = () => {
                 {order.shippingAddress.firstName}{" "}
                 {order.shippingAddress.lastName}
                 <br />
-                {order.shippingAddress.city}, {order.shippingAddress.postalCode}{" "}
-                <br />
-                {order.shippingAddress.country}
+                {order.shippingAddress.city}, {order.shippingAddress.country}
                 <br />
                 {order.shippingAddress.phone}
               </p>
