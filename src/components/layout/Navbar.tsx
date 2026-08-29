@@ -68,7 +68,7 @@ const Navbar = () => {
         <button
           onClick={openMobileMenu}
           aria-label="Open menu"
-          className="text-ink lg:hidden"
+          className="text-ink lg:hidden active:scale-[0.97]"
         >
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>
@@ -103,13 +103,13 @@ const Navbar = () => {
           <button
             onClick={openSearch}
             aria-label="Search"
-            className="text-ink transition-colors hover:text-orange"
+            className="text-ink transition-colors hover:text-orange active:scale-[0.98]"
           >
             <Search className="h-5 w-5" aria-hidden="true" />
           </button>
           <Link
             to="/wishlist"
-            className="relative text-ink transition-colors hover:text-orange sm:block"
+            className="relative text-ink transition-colors hover:text-orange sm:block active:scale-[0.97]"
           >
             <Heart className="h-5 w-5" aria-hidden="true" />
             {productIds.length > 0 ? (
@@ -120,7 +120,7 @@ const Navbar = () => {
           </Link>
           <button
             onClick={openCart}
-            className="relative text-ink transition-colors hover:text-orange sm:block"
+            className="relative text-ink transition-colors hover:text-orange sm:block active:scale-[0.97]"
           >
             <ShoppingBag className="h-5 w-5" aria-hidden="true" />
             {totals.itemCount > 0 ? (

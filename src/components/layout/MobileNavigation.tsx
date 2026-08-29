@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useUIStore } from "../../hooks/uiStore";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   ArrowUpRight,
   Flame,
@@ -12,30 +12,120 @@ import {
   PercentDiamond,
   ShoppingCart,
   Sparkle,
+  User2,
   X,
+  type LucideIcon,
 } from "lucide-react";
 import { useEffect } from "react";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../hooks/useAuth";
 
-const LINKS = [
+interface NavLinkItem {
+  Icon: LucideIcon;
+  label: string;
+  to: string;
+}
+
+const LINKS: NavLinkItem[] = [
   { Icon: Home, label: "Home", to: "/" },
   { Icon: ShoppingCart, label: "Shop", to: "/shop" },
   { Icon: Sparkle, label: "New Arrivals", to: "/shop?sort=newest" },
   { Icon: Flame, label: "Best Sellers", to: "/shop?filter=best-sellers" },
   { Icon: PercentDiamond, label: "Deals", to: "/shop?filter=deals" },
-  { Icon: Heart, label: "Wishlist", to: "/wishlist" },
-  { Icon: ShoppingCart, label: "Checkout", to: "/checkout" },
   { Icon: Info, label: "About", to: "/about" },
 ];
 
+const YOU_LINKS: NavLinkItem[] = [
+  { Icon: Heart, label: "Wishlist", to: "/wishlist" },
+  { Icon: ShoppingCart, label: "Checkout", to: "/checkout" },
+  { Icon: ListOrdered, label: "Orders", to: "/account/orders" },
+];
+
+function NavGroup({
+  label,
+  links,
+  onNavigate,
+  isActiveLink,
+  wishlistCount,
+  cartCount,
+}: {
+  label: string;
+  links: NavLinkItem[];
+  onNavigate: () => void;
+  isActiveLink: (to: string) => boolean;
+  wishlistCount: number;
+  cartCount: number;
+}) {
+  return (
+    <div className="px-4 py-4">
+      <span className="label-tag mb-2 block px-2 text-stone">{label}</span>
+      <ul className="flex flex-col gap-1">
+        {links.map((link) => {
+          const isActive = isActiveLink(link.to);
+          const wishlistDot = wishlistCount > 0 && link.label === "Wishlist";
+          const cartDot = cartCount > 0 && link.label === "Checkout";
+
+          return (
+            <li key={link.label}>
+              <NavLink
+                onClick={onNavigate}
+                to={link.to}
+                className={`group relative flex items-center justify-between overflow-hidden rounded-md px-4 py-3.5 font-display text-[14px]
+                  font-bold tracking-tight transition-all duration-300 ${
+                    isActive
+                      ? "bg-white/45 text-orange shadow-lg shadow-ink/10"
+                      : "text-ink hover:bg-white/45 hover:text-orange"
+                  }`}
+              >
+                <>
+                  <div className="relative z-10 flex items-center gap-3">
+                    <span className="relative">
+                      <link.Icon className="h-5 w-5" aria-hidden="true" />
+                      {wishlistDot || cartDot ? (
+                        <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-orange" />
+                      ) : null}
+                    </span>
+                    {link.label}
+                  </div>
+                  <ArrowUpRight
+                    className={`relative z-10 h-5 w-5 transition-all duration-300 ${
+                      isActive
+                        ? "translate-x-0 opacity-100"
+                        : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
+                    }`}
+                    aria-hidden="true"
+                  />
+                  {!isActive && (
+                    <span className="absolute inset-0 -z-0 translate-x-[-101%] bg-orange-light/70 transition-transform duration-500 ease-out group-hover:translate-x-0" />
+                  )}
+                </>
+              </NavLink>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
 const MobileNavigation = () => {
-  const { user, isConfigured } = useAuth();
+  const { user, profile, isConfigured } = useAuth();
   const { productIds } = useWishlist();
   const { totals } = useCart();
   const mobileMenuOpen = useUIStore((s) => s.mobileMenuOpen);
   const closeMobileMenu = useUIStore((s) => s.closeMobileMenu);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   const isActiveLink = (to: string) => {
     const url = new URL(to, window.location.origin);
@@ -60,20 +150,20 @@ const MobileNavigation = () => {
     return true;
   };
 
-  useEffect(() => {
-    if (!mobileMenuOpen) return;
+  const signedIn = isConfigured && Boolean(user);
+  const initial = (
+    profile?.firstName?.[0] ??
+    user?.email?.[0] ??
+    "U"
+  ).toUpperCase();
+  const displayName = profile?.firstName
+    ? `${profile.firstName} ${profile.lastName ?? ""}`.trim()
+    : "Account";
 
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileMenuOpen]);
-
-  const accountLink =
-    !isConfigured || !user
-      ? { Icon: LogIn, label: "Sign In", to: "/login" }
-      : { Icon: ListOrdered, label: "My Orders", to: "/account/orders" };
+  const goToAccount = () => {
+    closeMobileMenu();
+    navigate(signedIn ? "/account" : "/login");
+  };
 
   return (
     <AnimatePresence>
@@ -123,54 +213,60 @@ const MobileNavigation = () => {
                 />
               </button>
             </div>
-            <ul className="flex flex-col gap-1 px-4 py-4 overflow-y-auto">
-              {[...LINKS, accountLink].map((link) => {
-                const isActive = isActiveLink(link.to);
-                const wishlistDot =
-                  productIds.length > 0 && link.label === "Wishlist";
-                const cartDot =
-                  totals.itemCount > 0 && link.label === "Checkout";
+            <div className="flex-1 divide-y divide-line-light overflow-y-auto">
+              <NavGroup
+                label="Shop"
+                links={LINKS}
+                onNavigate={closeMobileMenu}
+                isActiveLink={isActiveLink}
+                wishlistCount={productIds.length}
+                cartCount={totals.itemCount}
+              />
+              <NavGroup
+                label="You"
+                links={YOU_LINKS}
+                onNavigate={closeMobileMenu}
+                isActiveLink={isActiveLink}
+                wishlistCount={productIds.length}
+                cartCount={totals.itemCount}
+              />
+            </div>
 
-                return (
-                  <li key={link.label}>
-                    <NavLink
-                      onClick={closeMobileMenu}
-                      to={link.to}
-                      className={`group relative flex items-center justify-between overflow-hidden rounded-md px-4 py-3.5 font-display text-[14px]
-                    font-bold tracking-tight transition-all duration-300 ${
-                      isActive
-                        ? "bg-white/45 text-orange shadow-lg shadow-ink/10"
-                        : "text-ink hover:bg-white/45 hover:text-orange"
-                    }`}
-                    >
-                      <>
-                        <div className="relative z-10 flex items-center gap-3">
-                          <span>{<link.Icon className="h-5 w-5" />}</span>
-                          <span className="absolute top-0 left-3.5 flex items-center justify-center">
-                            {wishlistDot ? (
-                              <span className="h-1.5 w-1.5 bg-orange rounded-full" />
-                            ) : cartDot ? (
-                              <span className="h-1.5 w-1.5 bg-orange rounded-full" />
-                            ) : null}
-                          </span>
-                          {link.label}
-                        </div>
-                        <ArrowUpRight
-                          className={`relative z-10 h-5 w-5 transition-all duration-300 ${
-                            isActive
-                              ? "translate-x-0 opacity-100"
-                              : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
-                          }`}
-                        />
-                        {!isActive && (
-                          <span className="absolute inset-0 -z-0 translate-x-[-101%] bg-orange-light/70 transition-transform duration-500 ease-out group-hover:translate-x-0" />
-                        )}
-                      </>
-                    </NavLink>
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="border-t border-line-light px-4 py-4">
+              <span className="label-tag mb-2 block px-2 text-stone">
+                Account
+              </span>
+              <button
+                type="button"
+                onClick={goToAccount}
+                className="flex w-full items-center gap-3 rounded-md px-4 py-3.5 text-left transition-colors duration-300 hover:bg-white/10"
+              >
+                {signedIn ? (
+                  <>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-semibold text-orange">
+                      {initial}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-medium text-ink">
+                        {displayName}
+                      </span>
+                      <span className="block truncate text-xs text-stone">
+                        {user?.email}
+                      </span>
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-semibold text-orange">
+                      <User2 className="h-5 w-5" />
+                    </span>
+                    <span className="text-sm font-medium text-ink">
+                      Sign In
+                    </span>
+                  </>
+                )}
+              </button>
+            </div>
           </motion.nav>
         </div>
       ) : null}
