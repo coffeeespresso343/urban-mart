@@ -11,7 +11,7 @@ import { fetchOrderByNumber, getLastLocalOrder } from "../lib/Orders";
 const OrderConfirmation = () => {
   const [searchParams] = useSearchParams();
   const orderNumber = searchParams.get("order");
-  const [order, setOrder] = useState<Order | undefined>(undefined);
+  const [order, setOrder] = useState<Order | null | undefined>(undefined);
   const navigate = useNavigate();
 
   useEffect(() => {

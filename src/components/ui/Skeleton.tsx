@@ -52,7 +52,7 @@ export const OrderGridSkeleton = ({ count = 2 }: { count?: number }) => {
 export const OrderDetailsSkeleton = () => {
   return (
     <div className="flex items-center justify-between">
-      <Skeleton className="rounded-md h-20 w-24" />
+      <Skeleton className="rounded-md h-20 w-28" />
       <div className="-ml-10 flex flex-col gap-2">
         <Skeleton className="h-3 w-19 rounded-xl" />
         <Skeleton className="h-3 w-10 rounded-xl" />

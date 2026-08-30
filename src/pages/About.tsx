@@ -173,7 +173,7 @@ const About = () => {
               "Thoughtfully chosen",
               "Everyday durable",
               "Modern essentials",
-            ].map((item, i) => (
+            ].map((item) => (
               <span
                 key={item}
                 className="rounded-full border border-ink/10 bg-ink/[0.03] px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-ink/70"

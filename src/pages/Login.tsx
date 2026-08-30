@@ -20,13 +20,8 @@ type FiledErrors = {
 };
 
 const Login = () => {
-  const {
-    user,
-    isConfigured,
-    signInWithPassword,
-    signUpWithPassword,
-    signInWithMagicLink,
-  } = useAuth();
+  const { user, signInWithPassword, signUpWithPassword, signInWithMagicLink } =
+    useAuth();
 
   const showToast = useUIStore((s) => s.showToast);
 

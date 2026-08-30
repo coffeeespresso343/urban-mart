@@ -2,7 +2,6 @@ import type { ProductFilters } from "../../utils/filters";
 import { categories } from "../../data/categories";
 import type { ProductCategory } from "../../types/Product";
 import ProductRating from "../product/ProductRating";
-import { useEffect } from "react";
 
 const RATING_OPTIONS = [4, 3, 2];
 
