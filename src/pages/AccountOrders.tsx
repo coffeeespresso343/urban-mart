@@ -70,7 +70,7 @@ const AccountOrders = () => {
       </header>
 
       {orders === null ? (
-        <div className="mt-10 py-4 sm:mt-10">
+        <div className="mt-5 py-4 sm:mt-10">
           <OrderGridSkeleton count={4} />
         </div>
       ) : orders.length === 0 ? (
@@ -88,7 +88,7 @@ const AccountOrders = () => {
           />
         </div>
       ) : (
-        <div className="mt-8 sm:mt-10">
+        <div className="mt-4 sm:mt-10">
           <div className="space-y-5">
             {orders.map((order) => (
               <Link
@@ -142,7 +142,7 @@ const AccountOrders = () => {
                             sm:h-16 sm:w-16
                           "
                           style={{
-                            marginLeft: index === 0 ? 0 : "-14px",
+                            marginLeft: index === 0 ? 0 : "-18px",
                             zIndex: 3 - index,
                           }}
                         >

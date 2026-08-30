@@ -231,14 +231,14 @@ const MobileNavigation = () => {
               />
             </div>
 
-            <div className="border-t border-line-light px-4 py-4">
+            <div className="border-t border-line px-4 py-4">
               <span className="label-tag mb-2 block px-2 text-stone">
                 Account
               </span>
               <button
                 type="button"
                 onClick={goToAccount}
-                className="flex w-full items-center gap-3 rounded-md px-4 py-3.5 text-left transition-colors duration-300 hover:bg-white/10"
+                className="flex w-full items-center gap-3 rounded-md px-4 py-3.5 text-left transition-colors duration-300 bg-white/20 hover:bg-white/10"
               >
                 {signedIn ? (
                   <>
