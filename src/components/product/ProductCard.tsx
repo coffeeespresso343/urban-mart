@@ -149,9 +149,9 @@ const ProductCard = ({ product }: { product: Product }) => {
 
         <div
           className="
-        pointer-events-none absolute inset-x-3 bottom-3
+        absolute inset-x-3 bottom-3
         translate-y-2 opacity-100 sm:opacity-0
-        transition-all duration-300 ease-out
+        transition-all duration-200 ease-out
         sm:group-hover:pointer-events-auto
         sm:group-hover:translate-y-0
         sm:group-hover:opacity-100
@@ -183,7 +183,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           hover:bg-orange
           hover:text-paper
           hover:shadow-[0_10px_30px_rgba(0,0,0,0.16)]
-          active:scale-[0.98]
+          active:scale-[0.97]
           disabled:cursor-not-allowed
           disabled:border-transparent
           disabled:bg-stone-light/90
@@ -195,7 +195,7 @@ const ProductCard = ({ product }: { product: Product }) => {
               <ShoppingCart
                 className="
               h-4 w-4
-              transition-transform duration-300
+              transition-transform duration-200
               group-hover:-translate-y-px
             "
                 strokeWidth={2.1}
@@ -205,7 +205,7 @@ const ProductCard = ({ product }: { product: Product }) => {
               <PlusCircle
                 className="
               h-4 w-4
-              transition-transform duration-300
+              transition-transform duration-200
               group-hover:-translate-y-px
             "
                 strokeWidth={2.1}
