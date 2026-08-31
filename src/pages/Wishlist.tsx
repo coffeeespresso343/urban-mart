@@ -40,9 +40,9 @@ const Wishlist = () => {
 
   return (
     <div className="container-edge py-10">
-      <h1 className="mb-8 flex items-center gap-2 font-display text-3xl font-black tracking-wide sm:text-4xl">
-        <span className="h-8 w-8 bg-orange/10 rounded-full justify-center flex items-center">
-          <Heart className="h-5 w-5 shrink-0 text-orange" />
+      <h1 className="mb-8 flex items-center gap-2 font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-line-light bg-paper-dim sm:h-11 sm:w-11">
+          <Heart className="h-5 w-5 text-orange" />
         </span>
         Your Wishlist
       </h1>
@@ -98,7 +98,7 @@ const Wishlist = () => {
                 </span>
 
                 <Button
-                  size="sm"
+                  size="md"
                   className="mt-4 w-full"
                   disabled={outOfStock}
                   onClick={(e) => {

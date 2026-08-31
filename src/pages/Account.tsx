@@ -1,6 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { ArrowRight, Loader2, LogOut, Mail, Package } from "lucide-react";
+import {
+  ArrowRight,
+  Loader2,
+  LogOut,
+  Mail,
+  Package,
+  User2,
+} from "lucide-react";
 import { Button } from "../components/ui/Button";
 import { useState } from "react";
 
@@ -19,7 +26,10 @@ const Account = () => {
 
   return (
     <div className="container-edge py-10 sm:py-14">
-      <h1 className="font-display text-4xl font-semibold tracking-wide sm:text-5xl">
+      <h1 className="mt-4 flex items-center gap-2 font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
+        <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-line-light bg-paper-dim sm:h-11 sm:w-11">
+          <User2 className="h-5 w-5 text-orange" />
+        </span>
         Account
       </h1>
       <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">

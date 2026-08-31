@@ -28,6 +28,13 @@ const COLUMNS = [
       { label: "Contact", to: "/about#contact" },
     ],
   },
+  {
+    title: "Account",
+    links: [
+      { label: "My Account", to: "/account" },
+      { label: "Orders", to: "/account/orders" },
+    ],
+  },
 ];
 
 const SOCIAL_LINKS = [
@@ -56,7 +63,7 @@ const SOCIAL_LINKS = [
 const Footer = () => {
   return (
     <footer className="border-t border-line-light bg-ink text-paper">
-      <div className="container-edge grid grid-cols-2 gap-10 py-16 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="container-edge grid grid-cols-2 gap-10 py-16 sm:grid-cols-2 lg:grid-cols-6">
         <div className="col-span-2 flex flex-col gap-4 lg:col-span-2">
           <Link
             to="/"

@@ -50,14 +50,14 @@ const CartDrawer = () => {
             className="absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-paper-dim shadow-2xl"
           >
             <div className="flex items-center justify-between border-b border-line-light px-6 py-5">
-              <h2 className="flex gap-2 items-center font-display text-md font-bold tracking-wider ">
-                <span className="h-7 w-7 text-orange flex items-center justify-center bg-orange/10 rounded-md">
-                  <ShoppingBag className="h-4 w-4" />
+              <h1 className="flex gap-2 items-center font-display text-md font-bold tracking-wider ">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-paper bg-paper sm:h-11 sm:w-11">
+                  <ShoppingBag className="h-5 w-5 text-orange" />
                 </span>
                 Your Bag{" "}
                 {items.length > 0 &&
                   `(${items.length}) ${items.length === 1 ? "Item" : "Items"}`}
-              </h2>
+              </h1>
               <button
                 onClick={closeCart}
                 className="h-7 w-7 flex items-center justify-center bg-orange/5 rounded-full text-stone transition-colors hover:text-ink"

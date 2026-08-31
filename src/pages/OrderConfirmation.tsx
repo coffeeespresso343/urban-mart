@@ -107,39 +107,52 @@ const OrderConfirmation = () => {
       </div>
 
       <div className="mx-auto mt-8 max-w-lg grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="flex items-start gap-3 rounded-xl bg-paper-dim/50 p-4">
-          <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-stone" />
-          <div>
-            <p className="label-tag text-stone">Shipping Address</p>
-            <p className="mt-1 text-sm">
+        <div className="flex items-start gap-3 border border-line-light rounded-xl bg-paper-dim/50 p-5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-paper-dim text-stone">
+            <MapPin className="h-4 w-4" />
+          </span>
+
+          <div className="min-w-0">
+            <p className="label-tag text-stone"> Shipping address </p>
+            <p className="mt-2 text-sm font-semibold text-ink">
               {order.shippingAddress.firstName} {order.shippingAddress.lastName}
-              <br />
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-stone">
               {order.shippingAddress.city}, {order.shippingAddress.country}
-              <br />
-              {order.shippingAddress.phone}
+              <br /> {order.shippingAddress.phone}
             </p>
           </div>
         </div>
 
-        <div className="flex items-start gap-3 rounded-xl bg-paper-dim/50 p-4">
-          <Truck className="mt-0.5 h-5 w-5 shrink-0 text-stone" />
-          <div>
-            <p className="label-tag text-stone">Delivery</p>
-            <p className="mt-1 text-sm">{order.shippingMethod}</p>
-            <p className="mt-1 flex items-center gap-1.5 text-sm text-stone">
-              <Package className="h-3.5 w-3.5" />
-              Estimated{" "}
-              {new Date(order.estimatedDelivery).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-              })}
+        <div className="flex items-start border border-line-light gap-3 rounded-xl bg-paper-dim/50 p-5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-paper-dim text-stone">
+            <Truck className="h-4 w-4" />
+          </span>
+          <div className="min-w-0">
+            <p className="label-tag text-stone"> Delivery </p>
+            <p className="mt-2 text-sm font-semibold text-ink">
+              {order.shippingMethod}
             </p>
+            <div className="mt-2 flex items-center gap-1.5 text-xs text-stone">
+              <Package className="h-3.5 w-3.5 shrink-0" />
+              <span>
+                Estimated{" "}
+                {new Date(order.estimatedDelivery).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-10 flex justify-center">
-        <Button size="lg" variant="primary" onClick={() => navigate("/shop")}>
+      <div className="mt-10 mx-auto max-w-lg flex items-center justify-between">
+        <Button size="md" onClick={() => navigate("/account/orders")}>
+          <Package className="h-4 w-4" />
+          Your Orders
+        </Button>
+        <Button size="md" variant="outline" onClick={() => navigate("/shop")}>
           Contine Shopping <ArrowRight className="h-4 w-4" />
         </Button>
       </div>

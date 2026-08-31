@@ -190,14 +190,12 @@ const ProductInfo = ({ product }: { product: Product }) => {
         </div>
       </div>
 
-      <div className="mt-10 divide-y divide-line-light border-y border-line-light">
-        <div className="flex items-start gap-3 py-4">
-          <span className="mt-0.5 h-7 w-7 flex items-center justify-center bg-stone/10 rounded-md">
-            <Truck
-              className=" h-4 w-4 shrink-0 text-stone"
-              aria-hidden="true"
-            />
-          </span>
+      <div className="mt-10 flex flex-col gap-4 ">
+        <div className="flex items-start bg-paper-dim gap-3 py-6 px-3 rounded-2xl">
+          <Truck
+            className="mt-0.5 h-5 w-5 shrink-0 text-orange"
+            aria-hidden="true"
+          />
           <div>
             <p className="text-sm font-medium">Shipping</p>
             <p className="mt-1 text-sm text-stone">
@@ -207,13 +205,11 @@ const ProductInfo = ({ product }: { product: Product }) => {
           </div>
         </div>
 
-        <div className="flex items-start gap-3 py-4">
-          <span className="mt-0.5 h-7 w-7 flex items-center justify-center bg-stone/10  rounded-md">
-            <RotateCcw
-              className=" h-4 w-4 shrink-0 text-stone"
-              aria-hidden="true"
-            />
-          </span>
+        <div className="flex items-start bg-paper-dim gap-3 py-6 px-3 rounded-2xl">
+          <RotateCcw
+            className="mt-0.5 h-5 w-5 shrink-0 text-orange"
+            aria-hidden="true"
+          />
           <div>
             <p className="text-sm font-medium">Returns</p>
             <p className="mt-1 text-sm text-stone">
@@ -223,10 +219,11 @@ const ProductInfo = ({ product }: { product: Product }) => {
           </div>
         </div>
 
-        <div className="flex items-start gap-3 py-4">
-          <span className="mt-0.5 h-7 w-7 flex items-center justify-center bg-stone/10  rounded-md">
-            <Check className="h-4 w-4 shrink-0 text-good" aria-hidden="true" />
-          </span>
+        <div className="flex items-start bg-paper-dim gap-3 py-6 px-3 rounded-2xl">
+          <Check
+            className="mt-0.5 h-5 w-5 shrink-0 text-orange"
+            aria-hidden="true"
+          />
           <div>
             <p className="text-sm font-medium">Quality guarantee</p>
             <p className="mt-1 text-sm text-stone">

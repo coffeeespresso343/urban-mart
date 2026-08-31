@@ -131,6 +131,7 @@ export const products: Product[] = [
     colors: ["Black", "Olive"],
     tags: ["travel", "organizer", "cables"],
     featured: true,
+    badge: "Limited",
   },
   {
     id: 5,
@@ -294,6 +295,7 @@ export const products: Product[] = [
     stock: 26,
     colors: ["Oak", "Walnut"],
     tags: ["shelf", "wood", "home"],
+    badge: "Limited",
   },
   {
     id: 12,
@@ -361,6 +363,7 @@ export const products: Product[] = [
     stock: 37,
     colors: ["Black"],
     tags: ["tools", "driver", "workshop"],
+    badge: "Limited",
   },
   {
     id: 15,
@@ -382,6 +385,8 @@ export const products: Product[] = [
     stock: 52,
     colors: ["Black", "Silver"],
     tags: ["light", "clip", "portable"],
+    isNew: true,
+    badge: "New",
   },
   {
     id: 16,
@@ -426,6 +431,8 @@ export const products: Product[] = [
     stock: 66,
     colors: ["Black", "Sand"],
     tags: ["notebook", "pen", "everyday carry"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 18,
@@ -468,6 +475,7 @@ export const products: Product[] = [
     stock: 33,
     colors: ["Olive", "Charcoal"],
     tags: ["storage", "canvas", "bin"],
+    featured: true,
   },
   {
     id: 20,
@@ -491,6 +499,7 @@ export const products: Product[] = [
     colors: ["Black", "Olive"],
     tags: ["duffel", "travel", "weekender"],
     featured: true,
+    badge: "Best Seller",
   },
   {
     id: 21,
@@ -512,6 +521,7 @@ export const products: Product[] = [
     stock: 40,
     colors: ["Steel"],
     tags: ["wrench", "tools", "workshop"],
+    badge: "Limited",
   },
   {
     id: 22,
@@ -533,6 +543,7 @@ export const products: Product[] = [
     stock: 24,
     colors: ["White", "Black"],
     tags: ["ambient", "light", "home"],
+    badge: "Limited",
   },
   {
     id: 23,
@@ -554,6 +565,7 @@ export const products: Product[] = [
     stock: 19,
     colors: ["Charcoal Houndstooth", "Oat"],
     tags: ["blanket", "wool", "home"],
+    badge: "New",
   },
   {
     id: 24,
@@ -575,6 +587,8 @@ export const products: Product[] = [
     stock: 45,
     colors: ["Walnut"],
     tags: ["entryway", "keys", "home"],
+    bestSeller: true,
+    badge: "Best Seller",
   },
   {
     id: 25,

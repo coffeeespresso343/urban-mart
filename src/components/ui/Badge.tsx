@@ -7,7 +7,7 @@ const toneClasses: Record<Tone, string> = {
   ink: "bg-ink/90 text-paper border border-ink",
   orange:
     "bg-orange/[0.08] text-orange border border-orange/5 backdrop-blur-sm",
-  warn: "bg-warn/10 text-warn border border-warn/10",
+  warn: "bg-warn/10 text-ink border border-warn/10",
   good: "bg-good/10 text-ink border border-good/5 ",
   stone: "bg-paper-dim/70 text-orange border border-line-light",
 };

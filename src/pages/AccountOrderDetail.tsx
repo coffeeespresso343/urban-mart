@@ -43,7 +43,7 @@ const AccountOrderDetail = () => {
 
   if (order === undefined) {
     return (
-      <div className="container-edge py-14 sm:py-20">
+      <div className="container-edge py-20 sm:py-24">
         <OrderDetailsGridSkeleton count={4} />
       </div>
     );
@@ -153,7 +153,7 @@ const AccountOrderDetail = () => {
           <div className="mb-4 flex items-end justify-between">
             <p className="label-tag text-orange">Your items</p>
             <h2 className="mt-1 font-display text-sm font-bold text-stone ">
-              {order.totals.itemCount}
+              {order.totals.itemCount}{" "}
               {order.totals.itemCount === 1 ? "item" : "items"}
             </h2>
           </div>
@@ -195,7 +195,6 @@ const AccountOrderDetail = () => {
         </section>
 
         <aside className="flex flex-col gap-4 lg:sticky lg:top-20 lg:self-start">
-          {/* Order summary */}
           <section className="overflow-hidden rounded-2xl border border-ink/10 bg-ink/[0.035]">
             <div className="border-b border-line-light px-5 py-4">
               <p className="label-tag text-stone"> Order summary </p>
@@ -251,7 +250,7 @@ const AccountOrderDetail = () => {
               </div>
             </div>
           </section>
-          {/* Delivery */}
+
           <section className="rounded-2xl border border-line-light bg-paper p-5">
             <div className="flex items-start gap-3">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-paper-dim text-stone">
@@ -264,7 +263,7 @@ const AccountOrderDetail = () => {
                 </p>
                 <div className="mt-2 flex items-center gap-1.5 text-xs text-stone">
                   <Package className="h-3.5 w-3.5 shrink-0" />
-                  <span> Estimated delivery {formattedDeliveryDate} </span>
+                  <span> Estimated {formattedDeliveryDate} </span>
                 </div>
               </div>
             </div>

@@ -224,47 +224,57 @@ const Checkout = () => {
         </div>
       </div>
 
-      <ol className="mb-10 flex  items-center gap-2 sm:gap-4">
-        {STEPS.map((step, index) => {
-          const isComplete =
-            index < stepIndex || (index === stepIndex && processing);
-          const isActive = index === stepIndex;
+      <section className="mb-10 bg-paper-dim/40 p-4 rounded-xl">
+        <div className="mb-5 flex items-center justify-between">
+          <p className="label-tag text-stone">Checkout Progress</p>
+          <span className="text-xs font-medium text-stone">
+            {stepIndex >= 0 ? `${stepIndex + 1} of ${STEPS.length}` : ""}
+          </span>
+        </div>
+        <ol className="flex  items-center gap-2 sm:gap-4">
+          {STEPS.map((step, index) => {
+            const isComplete =
+              index < stepIndex || (index === stepIndex && processing);
+            const isActive = index === stepIndex;
 
-          return (
-            <li key={step} className="flex flex-1 items-center gap-2 sm:gap-4">
-              <div className="flex items-center gap-2">
-                <span
-                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
-                    isComplete
-                      ? "bg-orange text-paper"
-                      : isActive
-                        ? "border-2 border-orange text-ink"
-                        : "border border-line-light text-stone"
-                  }`}
-                >
-                  {isComplete ? <Check className="h-3.5 w-3.5" /> : index + 1}
-                </span>
-                <span
-                  className={`label-tag font-medium hidden sm:inline ${
-                    isActive || isComplete ? "text-ink" : "text-stone"
-                  }`}
-                >
-                  {step}
-                </span>
-              </div>
+            return (
+              <li
+                key={step}
+                className="flex flex-1 items-center gap-2 sm:gap-4"
+              >
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
+                      isComplete
+                        ? "bg-orange  ring-4 ring-orange/10 text-paper"
+                        : isActive
+                          ? "border-2 border-orange text-ink"
+                          : "border border-line-light text-stone"
+                    }`}
+                  >
+                    {isComplete ? <Check className="h-3.5 w-3.5" /> : index + 1}
+                  </span>
+                  <span
+                    className={`label-tag font-medium hidden sm:inline ${
+                      isActive || isComplete ? "text-ink" : "text-stone"
+                    }`}
+                  >
+                    {step}
+                  </span>
+                </div>
 
-              {index < STEPS.length - 1 ? (
-                <div
-                  className={`h-px flex-1 ${
-                    isComplete ? "bg-orange" : "bg-line-light"
-                  }`}
-                />
-              ) : null}
-            </li>
-          );
-        })}
-      </ol>
-
+                {index < STEPS.length - 1 ? (
+                  <div
+                    className={`h-px flex-1 ${
+                      isComplete ? "bg-orange" : "bg-line-light"
+                    }`}
+                  />
+                ) : null}
+              </li>
+            );
+          })}
+        </ol>
+      </section>
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_400px]">
         <div>
           <AnimatePresence mode="wait">
@@ -528,7 +538,7 @@ const Checkout = () => {
           </AnimatePresence>
         </div>
 
-        <div className="h-fit rounded-xl border border-line-light p-4">
+        <div className="h-fit rounded-xl border border-ink/10 bg-ink/[0.035] p-4">
           <h3 className="label-tag mb-4 font-semibold">Order Summary</h3>
           <div className="max-h-72  divide-y divide-line-light overflow-y-auto scrollbar-none">
             {items.map((item) => (

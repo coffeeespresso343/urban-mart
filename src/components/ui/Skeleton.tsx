@@ -26,9 +26,9 @@ export const ProductGridSkeleton = ({ count = 8 }: { count?: number }) => {
 
 export const OrderSkeleton = () => {
   return (
-    <div className="flex items-center justify-between">
-      <Skeleton className="rounded-md h-15 w-28" />
-      <div className="-ml-8 flex flex-col gap-2">
+    <div className="flex py-10 px-4 bg-paper-dim/30 rounded-xl items-center justify-between">
+      <Skeleton className="rounded-xl h-16 w-28" />
+      <div className="flex flex-col gap-2">
         <Skeleton className="h-3 w-16  rounded-xl" />
         <Skeleton className="h-3 w-20 rounded-xl" />
         <Skeleton className="h-3 w-12 rounded-xl" />
@@ -41,7 +41,7 @@ export const OrderSkeleton = () => {
 
 export const OrderGridSkeleton = ({ count = 2 }: { count?: number }) => {
   return (
-    <div className="flex flex-col gap-15">
+    <div className="flex flex-col gap-10">
       {Array.from({ length: count }).map((_, i) => (
         <OrderSkeleton key={i} />
       ))}
@@ -53,7 +53,7 @@ export const OrderDetailsSkeleton = () => {
   return (
     <div className="flex items-center justify-between">
       <Skeleton className="rounded-md h-20 w-28" />
-      <div className="-ml-10 flex flex-col gap-2">
+      <div className=" flex flex-col gap-2">
         <Skeleton className="h-3 w-19 rounded-xl" />
         <Skeleton className="h-3 w-10 rounded-xl" />
       </div>
@@ -64,8 +64,15 @@ export const OrderDetailsSkeleton = () => {
 
 export const OrderDetailsGridSkeleton = ({ count = 3 }: { count?: number }) => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-14">
-      <div className="flex flex-col gap-5">
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-16">
+      <div className="flex flex-col gap-10">
+        <div className="flex gap-3 flex-col">
+          <Skeleton className="rounded-md h-4 w-20" />
+          <Skeleton className="rounded-xl h-4 w-32" />
+          <Skeleton className="rounded-md h-4 w-24" />
+          <Skeleton className="rounded-md h-4 w-20" />
+        </div>
+
         {Array.from({ length: count }).map((_, i) => (
           <OrderDetailsSkeleton key={i} />
         ))}
@@ -75,6 +82,38 @@ export const OrderDetailsGridSkeleton = ({ count = 3 }: { count?: number }) => {
         <Skeleton className="rounded-md h-30 w-full" />
         <Skeleton className="rounded-md h-30 w-full" />
       </div>
+    </div>
+  );
+};
+
+export const ProductInfoSkeleton = () => {
+  return (
+    <div className="flex flex-col">
+      <div
+        className="mb-6 h-4 w-48 rounded-xl animate-pulse bg-paper-dim"
+        aria-hidden="true"
+      />
+      <div
+        className="mb-6 h-4 w-full rounded-xl animate-pulse bg-paper-dim"
+        aria-hidden="true"
+      />
+      <div
+        className="mb-6 h-10 w-50 rounded-xl animate-pulse bg-paper-dim"
+        aria-hidden="true"
+      />
+      <div
+        className="mb-6 h-4 w-48 rounded-xl animate-pulse bg-paper-dim"
+        aria-hidden="true"
+      />
+      <div
+        className="mb-6 h-10 w-full rounded-xl animate-pulse bg-paper-dim"
+        aria-hidden="true"
+      />
+
+      <div
+        className="h-20 w-full rounded-xl animate-pulse bg-paper-dim"
+        aria-hidden="true"
+      />
     </div>
   );
 };

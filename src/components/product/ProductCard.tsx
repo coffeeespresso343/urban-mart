@@ -19,21 +19,55 @@ const ProductCard = ({ product }: { product: Product }) => {
   const added = isAdded(product.id, product.colors?.[0]);
 
   return (
-    <div className="group bg-white/60 pb-2 rounded-md relative flex flex-col">
+    <div
+      className="
+    group relative flex flex-col
+    overflow-hidden rounded-xl
+    bg-paper border border-line-light
+    transition-all duration-300
+    hover:-translate-y-0.5
+  "
+    >
       <Link
         to={`/product/${product.id}`}
-        className="relative block rounded-t-md aspect-4/5 overflow-hidden bg-paper-dim"
+        className="
+      relative block aspect-4/5
+      overflow-hidden rounded-t-xl
+      bg-paper-dim
+    "
       >
         <ImageWithFallback
           src={product.images[0]}
           alt={product.name}
           aria-label={product.name}
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          className="
+        h-full w-full object-cover
+        transition-transform duration-700
+        ease-out
+        group-hover:scale-[1.045]
+      "
         />
-        <div className="absolute left-3 top-3 flex flex-col gap-1.5">
+
+        <div
+          className="
+        pointer-events-none absolute inset-0
+        bg-linear-to-t
+        from-ink/10 via-transparent to-transparent
+        opacity-0 transition-opacity duration-500
+        group-hover:opacity-100
+      "
+        />
+
+        <div className="absolute left-3 top-3 flex max-w-[75%] flex-wrap gap-1.5">
           {product.badge ? (
             <Badge
-              className="w-fit"
+              className="
+            rounded-full border border-paper/30
+            px-2.5 py-1
+            text-[9px] font-bold uppercase
+            tracking-[0.08em]
+            shadow-sm backdrop-blur-md
+          "
               tone={
                 product.badge === "Limited"
                   ? "warn"
@@ -45,95 +79,192 @@ const ProductCard = ({ product }: { product: Product }) => {
               {product.badge}
             </Badge>
           ) : null}
-          {outOfStock ? <Badge tone="stone">Sold out</Badge> : null}
+
+          {outOfStock ? (
+            <Badge
+              tone="stone"
+              className="
+            rounded-full border border-paper/30
+            px-2.5 py-1
+            text-[9px] font-bold uppercase
+            tracking-[0.08em]
+            shadow-sm backdrop-blur-md
+          "
+            >
+              Sold out
+            </Badge>
+          ) : null}
         </div>
 
         <button
           type="button"
+          aria-label={
+            wishlisted
+              ? `Remove ${product.name} from wishlist`
+              : `Add ${product.name} to wishlist`
+          }
+          aria-pressed={wishlisted}
           onClick={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             toggleWishlist(product);
           }}
-          className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-paper/40 text-orange backdrop-blur transition-transform hover:scale-110"
+          className="
+        absolute right-3 top-3
+        flex h-8 w-8 items-center justify-center
+        rounded-full
+        border border-paper/50
+        bg-paper/65
+        text-ink
+        shadow-sm
+        backdrop-blur-md
+        transition-all duration-300
+        hover:scale-105
+        hover:border-orange/30
+        hover:bg-paper
+        active:scale-95
+      "
         >
           <motion.span
             key={wishlisted ? "on" : "off"}
-            initial={{ scale: 0.6 }}
+            initial={{ scale: 0.65 }}
             animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 15,
+            }}
           >
             <Heart
-              strokeWidth={1.75}
+              strokeWidth={1.8}
               aria-hidden="true"
-              className={`h-4.5 w-4.5 ${wishlisted ? "fill-orange text-orange" : "text-ink"}`}
+              className={`
+            h-[17px] w-[17px]
+            transition-colors duration-200
+            ${wishlisted ? "fill-orange text-orange" : "text-ink"}
+          `}
             />
           </motion.span>
         </button>
 
         <div
-          className="pointer-events-auto absolute inset-x-0 bottom-0 translate-y-0 
-          bg-linear-to-t from-ink/85 to-transparent p-3 pt-7
-        sm:translate-y-full sm:opacity-0 sm:transition-all sm:duration-300 sm:group-hover:translate-y-0 sm:group-hover:opacity-100"
+          className="
+        pointer-events-none absolute inset-x-3 bottom-3
+        translate-y-2 opacity-100 sm:opacity-0
+        transition-all duration-300 ease-out
+        sm:group-hover:pointer-events-auto
+        sm:group-hover:translate-y-0
+        sm:group-hover:opacity-100
+      "
         >
           <button
             type="button"
             onClick={(e) => {
               e.preventDefault();
-              if (!outOfStock) addItem(product, 1, product.colors?.[0]);
+              e.stopPropagation();
+
+              if (!outOfStock) {
+                addItem(product, 1, product.colors?.[0]);
+              }
             }}
             disabled={outOfStock}
-            className="label-tag rounded-md border border-white/20 flex w-full items-center justify-center bg-paper/95 gap-1.5 px-4 py-2 sm:py-2.5 font-semibold
-            text-ink shadow-lg backdrop-blur-none transition-all duration-300 active:scale-[0.98] hover:border-orange hover:bg-orange hover:text-paper hover:shadow-xl disabled:border-transparent
-             disabled:bg-stone-light/80 disabled:text-stone-dark disabled:cursor-not-allowed disabled:opacity-70
-            "
+            className="
+          label-tag flex w-full
+          items-center justify-center gap-2
+          rounded-lg
+          border border-paper/60
+          bg-paper/95
+          px-4 py-2.5
+          font-semibold text-ink
+          shadow-[0_8px_25px_rgba(0,0,0,0.12)]
+          backdrop-blur-md
+          transition-all duration-300
+          hover:border-orange
+          hover:bg-orange
+          hover:text-paper
+          hover:shadow-[0_10px_30px_rgba(0,0,0,0.16)]
+          active:scale-[0.98]
+          disabled:cursor-not-allowed
+          disabled:border-transparent
+          disabled:bg-stone-light/90
+          disabled:text-stone-dark
+          disabled:opacity-80
+        "
           >
-            {outOfStock ? "Unavailable" : added ? "Add more" : "Quick Add"}
-
-            {!added ? (
+            {!added && !outOfStock ? (
               <ShoppingCart
-                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                strokeWidth={2.2}
+                className="
+              h-4 w-4
+              transition-transform duration-300
+              group-hover:-translate-y-px
+            "
+                strokeWidth={2.1}
                 aria-hidden="true"
               />
-            ) : !outOfStock ? (
+            ) : added && !outOfStock ? (
               <PlusCircle
-                className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                strokeWidth={2.2}
+                className="
+              h-4 w-4
+              transition-transform duration-300
+              group-hover:-translate-y-px
+            "
+                strokeWidth={2.1}
                 aria-hidden="true"
               />
             ) : null}
+
+            {outOfStock ? "Unavailable" : added ? "Add More" : "Quick Add"}
           </button>
         </div>
       </Link>
 
-      <div className="mt-3 px-2 flex flex-col gap-1">
-        <span className="label-tag text-stone">{product.category}</span>
+      <div className="flex flex-1 flex-col px-1.5 pb-2 pt-4 sm:px-2">
+        <span className="label-tag text-[9px] text-stone">
+          {product.category}
+        </span>
+
         <Link
           to={`/product/${product.id}`}
-          className="text-sm font-medium leading-snug text-ink hover:text-orange"
+          className="
+        mt-1.5 line-clamp-2
+        text-[13px] font-semibold
+        leading-snug tracking-[-0.01em]
+        text-ink
+        transition-colors duration-200
+        hover:text-orange
+        sm:text-sm
+      "
         >
           {product.name}
         </Link>
 
-        <ProductRating
-          rating={product.rating}
-          reviewCount={product.reviewCount}
-        />
+        <div className="mt-2">
+          <ProductRating
+            rating={product.rating}
+            reviewCount={product.reviewCount}
+          />
+        </div>
 
-        <div className="mt-1 flex items-baseline gap-2">
-          <span className="price text-xs font-semibold text-ink">
+        <div className="mt-2 flex items-baseline gap-2">
+          <span className="price text-sm font-bold text-ink sm:text-[15px]">
             {formatPrice(product.price)}
           </span>
+
           {product.compareAtPrice ? (
-            <span className="price text-xs text-stone line-through">
+            <span className="price text-[11px] text-stone line-through">
               {formatPrice(product.compareAtPrice)}
             </span>
           ) : null}
         </div>
-        {lowStock ? (
-          <span className="label-tag flex items-center justify-center text-warn">
-            Only {product.stock} left
-          </span>
+
+        {lowStock && !outOfStock ? (
+          <div className="mt-2 flex items-center gap-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-warn" />
+
+            <span className="text-[10px] font-medium text-warn">
+              Only {product.stock} left
+            </span>
+          </div>
         ) : null}
       </div>
     </div>

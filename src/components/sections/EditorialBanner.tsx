@@ -30,10 +30,8 @@ const EditorialBanner = () => {
           className="col-span-1 lg:col-span-5 lg:pl-8"
         >
           <span className="label-tag text-orange">The Philosophy</span>
-          <h2 className="mt-3 font-display text-4xl font-black uppercase leading-[0.95] tracking-tight sm:text-5xl">
-            Essentials
-            <br />
-            <span className="text-orange">Refined</span>
+          <h2 className="mt-3 font-display text-4xl font-black leading-[0.95] tracking-tight sm:text-5xl">
+            Essentials <span className="text-orange">Refined</span>
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-stone">
             Every product in the catalog earns its place through use, not trend.

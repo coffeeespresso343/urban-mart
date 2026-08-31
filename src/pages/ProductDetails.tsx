@@ -2,12 +2,16 @@ import { motion } from "framer-motion";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { getProductById, getRelatedProducts, products } from "../data/products";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import ProductReviews from "../components/product/ProductReviews";
 import ProductGallery from "../components/product/ProductGallery";
 import ProductInfo from "../components/product/ProductInfo";
 import ProductGrid from "../components/product/ProductGrid";
+import {
+  ProductGridSkeleton,
+  ProductInfoSkeleton,
+} from "../components/ui/Skeleton";
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -15,11 +19,19 @@ const ProductDetails = () => {
 
   const { ids: recentIds, trackView } = useRecentlyViewed();
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     if (product) {
       trackView(product.id);
       window.scrollTo({ top: 0 });
     }
+    setIsLoading(true);
+
+    const timeout = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    return () => clearTimeout(timeout);
   }, [product?.id]);
 
   if (!product) {
@@ -32,6 +44,31 @@ const ProductDetails = () => {
     .map((rid) => products.find((p) => p.id === rid))
     .filter((p): p is NonNullable<typeof p> => Boolean(p))
     .slice(0, 4);
+
+  if (isLoading) {
+    return (
+      <div className="container-edge py-10 sm:py-14">
+        <div
+          className="mb-6 h-4 w-48 rounded-xl animate-pulse bg-paper-dim"
+          aria-hidden="true"
+        />
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+          <div
+            className="mb-6 aspect-4/3 rounded-xl animate-pulse bg-paper-dim"
+            aria-hidden="true"
+          />
+          <ProductInfoSkeleton />
+        </div>
+        <div className="mt-24">
+          <div
+            className="mb-8 h-6 w-56 rounded-xl animate-pulse bg-paper-dim"
+            aria-hidden="true"
+          />
+          <ProductGridSkeleton count={2} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <motion.div

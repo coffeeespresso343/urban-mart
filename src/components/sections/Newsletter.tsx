@@ -45,7 +45,7 @@ const Newsletter = () => {
           <form
             onSubmit={handleSubmit}
             noValidate
-            className="mx-auto mt-8 flex max-w-sm gap-1 sm:flex-row"
+            className="mx-auto mt-8 flex max-w-sm gap-2 sm:flex-row"
           >
             <label htmlFor="newsletter-email" className="sr-only">
               Email address
@@ -59,15 +59,14 @@ const Newsletter = () => {
                 if (status === "error") setStatus("idle");
               }}
               placeholder="you@email.com"
-              className="font-mono text-xs flex-1 rounded-md border border-paper/10 bg-transparent px-4 py-3.5 text-paper placeholder:text-stone "
+              className="font-mono text-xs flex-1 rounded-full  bg-ink-elevated px-5 py-3.5 text-paper placeholder:text-stone "
             />
             <button
               type="submit"
               disabled={status === "loading"}
-              className="label-tag rounded-md flex items-center justify-center gap-2 bg-paper-dim px-4 py-3.5
-              font-semibold text-ink transition-colors hover:bg-orange hover:text-paper disabled:opacity-60 active:scale-97"
+              className="label-tag rounded-full flex items-center justify-center gap-2 bg-orange px-4 py-3.5
+              font-semibold text-ink transition-colors hover:bg-paper-dim disabled:opacity-60 active:scale-97"
             >
-              {status === "loading" ? "Subscribing..." : "Subscribe"}
               {status === "loading" ? (
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
               ) : (

@@ -42,7 +42,7 @@ const CategorySection = () => {
             <Link
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               to={`/shop?category=${category.slug}`}
-              className="group relative block rounded-md aspect-4/3 overflow-hidden bg-ink"
+              className="group relative block rounded-xl aspect-4/3 overflow-hidden bg-ink"
             >
               <ImageWithFallback
                 src={category.image}

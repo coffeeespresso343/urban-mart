@@ -74,9 +74,9 @@ const AccountMenu = () => {
             initial={{ opacity: 0, y: -8, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-3 w-60 rounded-b-lg  bg-paper py-2 shadow-xl"
+            className="absolute right-0 top-full mt-4.5 w-60 rounded-b-lg  bg-paper py-2 shadow-xl"
           >
-            <div className="border-b border-line-light px-4 pb-2 pt-1">
+            <div className="bg-paper-dim border-b border-line-light px-4 pb-2 pt-1">
               <Link to="/account" onClick={() => setOpen(false)}>
                 <p className="truncate text-sm font-medium">
                   {profile?.firstName

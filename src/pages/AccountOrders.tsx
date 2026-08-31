@@ -105,7 +105,7 @@ const AccountOrders = () => {
                   hover:border-orange/30
                   hover:bg-paper-dim
                   hover:shadow-[0_12px_35px_rgba(0,0,0,0.06)]
-                  active:translate-y-0
+                  active:-translate-y-1
                   sm:p-5
                   lg:p-6
                 "
@@ -133,7 +133,7 @@ const AccountOrders = () => {
                     <div className="flex shrink-0 items-center pl-1">
                       {order.items.slice(0, 3).map((item, index) => (
                         <div
-                          key={item.product.id}
+                          key={`${item.product.id}${item.color ?? ""}`}
                           className="
                             relative h-14 w-14 overflow-hidden
                             rounded-xl border-2 border-paper

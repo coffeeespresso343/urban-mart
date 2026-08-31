@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
-import { AlertCircle, CheckCircle2, Mail, ShoppingCart } from "lucide-react";
+import {
+  AlertCircle,
+  ArrowRight,
+  CheckCircle2,
+  Info,
+  Mail,
+  ShoppingCart,
+} from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/Button";
@@ -181,10 +188,14 @@ const Login = () => {
               ? "Save addresses and track orders across devices."
               : "Access your order history and saved details."}
           </p>
+          <p className="mt-3 text-orange flex items-center gap-1 p-2 rounded-lg text-xs bg-orange/5 border border-orange/10">
+            <Info className="h-3.5 w-3.5" /> Please use VPN to connect your
+            account
+          </p>
         </div>
 
         {magicLinkSent ? (
-          <div className="mt-8 flex flex-col items-center gap-3 rounded-lg border border-good/30 bg-good/10 p-4">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 rounded-lg border border-good/30 bg-good/10 p-4">
             <motion.span
               initial={{ opacity: 0, scale: 0.6, rotate: 95 }}
               animate={{ opacity: 1, scale: 1, rotate: 360 }}
@@ -210,8 +221,8 @@ const Login = () => {
                     id="firstName"
                     value={firstName}
                     onChange={(e) => handleChange("firstName", e.target.value)}
-                    placeholder="Kyaw"
-                    className={`border rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink ${
+                    placeholder="Aung"
+                    className={`border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
                       errors.firstName ? "border-error" : "border-line-light"
                     }`}
                   />
@@ -231,8 +242,8 @@ const Login = () => {
                     id="lastName"
                     value={lastName}
                     onChange={(e) => handleChange("lastName", e.target.value)}
-                    placeholder="Gyi"
-                    className={`border rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink ${
+                    placeholder="Kyaw"
+                    className={`border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
                       errors.lastName ? "border-error" : "border-line-light"
                     }`}
                   />
@@ -256,7 +267,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => handleChange("email", e.target.value)}
                 placeholder="you@example.com"
-                className={`border rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink ${
+                className={`border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
                   errors.email ? "border-error" : "border-line-light"
                 }`}
               />
@@ -279,7 +290,7 @@ const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 8 characters."
-                  className={`border rounded-lg bg-paper px-3.5 py-2 outline-none text-sm focus:border-ink ${
+                  className={`border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
                     errors.password ? "border-error" : "border-line-light"
                   }`}
                 />
@@ -358,8 +369,11 @@ const Login = () => {
         </p>
 
         <p className="mt-4 text-center">
-          <Link to="/shop" className="label-tag text-stone hover:text-ink">
-            Continue as Guest
+          <Link
+            to="/shop"
+            className="label-tag flex items-center justify-center gap-1 text-stone hover:text-ink"
+          >
+            Continue as Guest <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </p>
       </motion.div>
