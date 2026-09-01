@@ -8,19 +8,21 @@ import {
   Package,
   User2,
 } from "lucide-react";
-import { Button } from "../components/ui/Button";
 import { useState } from "react";
+import { useUIStore } from "../hooks/uiStore";
 
 const Account = () => {
   const { user, profile, signOut } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const showToast = useUIStore((s) => s.showToast);
 
   const handleSignOut = async () => {
     setIsLoading(true);
     await signOut();
     setIsLoading(false);
+    showToast("Successfully signed out! See you again.", "success");
     navigate("/");
   };
 
@@ -45,17 +47,15 @@ const Account = () => {
             {user?.email}
           </p>
 
-          <Button
-            size="sm"
-            variant="outline"
+          <button
             disabled={isLoading}
             onClick={handleSignOut}
-            className="mt-6"
+            className="mt-6 rounded-2xl text-sm border border-error flex items-center gap-1 text-error px-3 py-1 hover:bg-error/10 transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />{" "}
-                SigningOut...
+                Signing Out...
               </>
             ) : (
               <>
@@ -63,7 +63,7 @@ const Account = () => {
                 Sign Out
               </>
             )}
-          </Button>
+          </button>
         </div>
 
         <Link

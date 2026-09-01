@@ -5,7 +5,6 @@ import {
   CheckCircle2,
   Info,
   Mail,
-  ShoppingCart,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -13,6 +12,8 @@ import { Button } from "../components/ui/Button";
 import { useAuth } from "../hooks/useAuth";
 import { isValidEmail, isValidPassword, required } from "../utils/validation";
 import { useUIStore } from "../hooks/uiStore";
+import ImageWithFallback from "../components/ui/ImageWithFallback";
+import Logo from "../assets/Logo.png";
 
 type Mode = "sign-in" | "sign-up" | "magic-link";
 
@@ -172,14 +173,13 @@ const Login = () => {
         className="w-full max-w-sm"
       >
         <div className="flex flex-col items-center">
-          <Link
-            to="/"
-            className="flex items-center justify-center gap-0.5 font-body text-lg font-black tracking-tight sm:text-xl"
-          >
-            Urban <span className="text-orange">Mart</span>
-            <ShoppingCart className="h-5 w-5 text-orange" strokeWidth={2.5} />
+          <Link to="/" className="flex items-center h-full w-36 lg:w-40">
+            <ImageWithFallback
+              src={Logo}
+              alt="Urban-Mart-Logo"
+              className="h-auto w-full object-contain"
+            />
           </Link>
-
           <h1 className="mt-6 font-display text-2xl font-bold">
             {mode === "sign-up" ? "Create Account" : "Sign In"}
           </h1>

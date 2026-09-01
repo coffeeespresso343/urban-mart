@@ -24,7 +24,7 @@ const ProductCard = ({ product }: { product: Product }) => {
     group relative flex flex-col
     overflow-hidden rounded-xl
     bg-paper border border-line-light
-    transition-all duration-300
+    transition-all duration-200
     hover:-translate-y-0.5
   "
     >
@@ -58,16 +58,9 @@ const ProductCard = ({ product }: { product: Product }) => {
       "
         />
 
-        <div className="absolute left-3 top-3 flex max-w-[75%] flex-wrap gap-1.5">
+        <div className="absolute left-2 top-2 flex max-w-[75%] flex-wrap gap-1.5">
           {product.badge ? (
             <Badge
-              className="
-            rounded-full border border-paper/30
-            px-2.5 py-1
-            text-[9px] font-bold uppercase
-            tracking-[0.08em]
-            shadow-sm backdrop-blur-md
-          "
               tone={
                 product.badge === "Limited"
                   ? "warn"
@@ -80,20 +73,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             </Badge>
           ) : null}
 
-          {outOfStock ? (
-            <Badge
-              tone="stone"
-              className="
-            rounded-full border border-paper/30
-            px-2.5 py-1
-            text-[9px] font-bold uppercase
-            tracking-[0.08em]
-            shadow-sm backdrop-blur-md
-          "
-            >
-              Sold out
-            </Badge>
-          ) : null}
+          {outOfStock ? <Badge tone="stone">Sold out</Badge> : null}
         </div>
 
         <button
@@ -110,7 +90,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             toggleWishlist(product);
           }}
           className="
-        absolute right-3 top-3
+        absolute right-2 top-2
         flex h-8 w-8 items-center justify-center
         rounded-full
         border border-paper/50

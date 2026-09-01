@@ -77,8 +77,8 @@ const Footer = () => {
             and live.
           </p>
 
-          <div className="mt-4 bg-ink-soft border border-ink-elevated rounded-md p-3 flex flex-col items-center justify-center gap-2">
-            <p className="max-w-xs text-stone text-[12px] text-center">
+          <div className="mt-4 bg-ink-soft border border-ink-elevated rounded-md p-4 flex flex-col items-center justify-center gap-2">
+            <p className="mb-2 max-w-xs text-stone text-[12px] text-center">
               Built with Heart and too much Coffee by Linn Khant
             </p>
             <div className="flex items-center gap-3">

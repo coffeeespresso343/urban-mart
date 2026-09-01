@@ -3,19 +3,23 @@ import { useAuth } from "../../hooks/useAuth";
 import { Loader2, LogOut, Package, User2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useUIStore } from "../../hooks/uiStore";
 
 const AccountMenu = () => {
-  const { user, profile, signOut, isConfigured } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
+  const { user, profile, signOut, isConfigured, isLoading } = useAuth();
+  const [isSignOutLoading, setISignOutLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
+  const showToast = useUIStore((s) => s.showToast);
+
   const handleSignOut = async () => {
-    setIsLoading(true);
+    setISignOutLoading(true);
     await signOut();
-    setIsLoading(false);
+    setISignOutLoading(false);
     setOpen(false);
+    showToast("Successfully signed out! See you again.", "success");
     navigate("/");
   };
 
@@ -42,11 +46,22 @@ const AccountMenu = () => {
     );
   }
 
+  if (isLoading) {
+    return (
+      <Link
+        to="/login"
+        className="h-7 w-7 flex items-center justify-center rounded-full bg-ink text-xs font-semibold text-orange transition-opacity hover:opacity-80 active:scale-[0.97]"
+      >
+        <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+      </Link>
+    );
+  }
+
   if (!user) {
     return (
       <Link
         to="/login"
-        className="text-ink transition-colors hover:text-orange"
+        className="h-7 w-7 flex items-center justify-center rounded-full bg-ink text-xs font-semibold text-orange transition-opacity hover:opacity-80 active:scale-[0.97]"
       >
         <User2 className="h-5 w-5" aria-hidden="true" />
       </Link>
@@ -63,7 +78,7 @@ const AccountMenu = () => {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="h-7 w-7 flex items-center justify-center rounded-full bg-ink text-xs font-semibold text-paper transition-opacity hover:opacity-80 active:scale-[0.97]"
+        className="h-7 w-7 flex items-center justify-center rounded-full bg-ink text-xs font-semibold text-orange transition-opacity hover:opacity-80 active:scale-[0.97]"
       >
         {initial}
       </button>
@@ -95,11 +110,11 @@ const AccountMenu = () => {
               <Package className="h-3.5 w-3.5" /> Order History
             </Link>
             <button
-              disabled={isLoading}
+              disabled={isSignOutLoading}
               onClick={handleSignOut}
               className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-error hover:bg-paper-dim disabled:opacity-40"
             >
-              {isLoading ? (
+              {isSignOutLoading ? (
                 <>
                   <Loader2 className="h-3.5 w-3.5 animate-spin" /> Signing
                   out...

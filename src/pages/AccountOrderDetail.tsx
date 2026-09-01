@@ -81,7 +81,7 @@ const AccountOrderDetail = () => {
       </Link>
 
       <header className="mt-6 border-b border-line-light pb-7 sm:mt-7 sm:pb-8">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex gap-5 flex-row items-end justify-between">
           <div>
             <p className="label-tag text-orange">Order details</p>
             <h1 className="mt-2 font-display text-2xl font-black tracking-tight text-ink sm:text-3xl lg:text-4xl">
@@ -93,7 +93,7 @@ const AccountOrderDetail = () => {
           </div>
           <Badge
             tone={STATUS_TONE[order.status]}
-            className="w-fit px-3.5 py-1.5 text-[10px] font-bold"
+            className="w-fit px-3.5 py-1.5 text-[12px] uppercase font-bold"
           >
             {STATUS_LABEL[order.status]}
           </Badge>

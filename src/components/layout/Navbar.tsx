@@ -1,10 +1,12 @@
-import { Heart, Menu, Search, ShoppingBag, ShoppingCart } from "lucide-react";
+import { Heart, Menu, Search, ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useUIStore } from "../../hooks/uiStore";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCart } from "../../hooks/useCart";
 import AccountMenu from "./AccountMenu";
+import Logo from "../../assets/Logo.png";
+import ImageWithFallback from "../ui/ImageWithFallback";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
@@ -73,12 +75,12 @@ const Navbar = () => {
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>
 
-        <Link
-          to="/"
-          className="flex items-center gap-0.5 font-body text-lg font-black tracking-tight sm:text-xl"
-        >
-          Urban <span className="text-orange">Mart</span>
-          <ShoppingCart className="h-5 w-5 text-orange" strokeWidth={2.5} />
+        <Link to="/" className="flex items-center h-full w-36 lg:w-40">
+          <ImageWithFallback
+            src={Logo}
+            alt="Urban-Mart-Logo"
+            className="h-auto w-full object-contain"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">

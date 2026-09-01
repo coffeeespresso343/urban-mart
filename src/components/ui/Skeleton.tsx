@@ -5,7 +5,7 @@ export const Skeleton = ({ className = "" }: { className: string }) => {
 export const ProductCardSkeleton = () => {
   return (
     <div className="flex flex-col gap-2">
-      <Skeleton className="rounded-md aspect-[4/5] w-full" />
+      <Skeleton className="rounded-xl aspect-[4/5] w-full" />
       <Skeleton className="rounded-xl h-3 w-3/4" />
       <Skeleton className="rounded-xl h-3 w-14" />
       <Skeleton className="rounded-xl h-3 w-16" />
@@ -52,7 +52,7 @@ export const OrderGridSkeleton = ({ count = 2 }: { count?: number }) => {
 export const OrderDetailsSkeleton = () => {
   return (
     <div className="flex items-center justify-between">
-      <Skeleton className="rounded-md h-20 w-28" />
+      <Skeleton className="rounded-xl h-20 w-28" />
       <div className=" flex flex-col gap-2">
         <Skeleton className="h-3 w-19 rounded-xl" />
         <Skeleton className="h-3 w-10 rounded-xl" />
@@ -66,11 +66,13 @@ export const OrderDetailsGridSkeleton = ({ count = 3 }: { count?: number }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-16">
       <div className="flex flex-col gap-10">
-        <div className="flex gap-3 flex-col">
-          <Skeleton className="rounded-md h-4 w-20" />
-          <Skeleton className="rounded-xl h-4 w-32" />
-          <Skeleton className="rounded-md h-4 w-24" />
-          <Skeleton className="rounded-md h-4 w-20" />
+        <div className="flex gap-5 flex-row items-end justify-between">
+          <div className="flex gap-5 flex-col">
+            <Skeleton className="rounded-xl h-4 w-20" />
+            <Skeleton className="rounded-xl h-4 w-32" />
+            <Skeleton className="rounded-xl h-4 w-24" />
+          </div>
+          <Skeleton className="rounded-xl h-4 w-20" />
         </div>
 
         {Array.from({ length: count }).map((_, i) => (
@@ -78,9 +80,9 @@ export const OrderDetailsGridSkeleton = ({ count = 3 }: { count?: number }) => {
         ))}
       </div>
       <div className="flex flex-col gap-5">
-        <Skeleton className="mb-5 rounded-md h-35 w-full" />
-        <Skeleton className="rounded-md h-30 w-full" />
-        <Skeleton className="rounded-md h-30 w-full" />
+        <Skeleton className="mb-5 rounded-xl h-35 w-full" />
+        <Skeleton className="rounded-xl h-30 w-full" />
+        <Skeleton className="rounded-xl h-30 w-full" />
       </div>
     </div>
   );

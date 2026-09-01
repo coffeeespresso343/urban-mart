@@ -382,14 +382,14 @@ const Checkout = () => {
                     onChange={(v) => setAddress({ ...address, city: v })}
                     error={errors.city}
                   />
+                  <InputField
+                    label="Country"
+                    placeholder="Enter your country"
+                    value={address.country}
+                    onChange={(v) => setAddress({ ...address, country: v })}
+                    error={errors.country}
+                  />
                 </div>
-                <InputField
-                  label="Country"
-                  placeholder="Enter your country"
-                  value={address.country}
-                  onChange={(v) => setAddress({ ...address, country: v })}
-                  error={errors.country}
-                />
 
                 <fieldset className="mt-2">
                   <legend className="label-tag mb-3 text-stone">
@@ -459,7 +459,8 @@ const Checkout = () => {
                   <CreditCard className="h-5 w-5" strokeWidth={2.5} />
                   Payment
                 </h2>
-                <p className="text-stone text-xs">
+                <p className="text-warn text-xs flex items-center gap-1">
+                  <Info className="h-3 w-3" />
                   This is a simulated checkout - no real payment is processed.
                 </p>
                 <InputField

@@ -19,6 +19,8 @@ import { useEffect } from "react";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../hooks/useAuth";
+import ImageWithFallback from "../ui/ImageWithFallback";
+import Logo from "../../assets/Logo.png";
 
 interface NavLinkItem {
   Icon: LucideIcon;
@@ -192,12 +194,12 @@ const MobileNavigation = () => {
               <Link
                 to="/"
                 onClick={closeMobileMenu}
-                className="flex items-center gap-0.5 font-body text-lg font-black tracking-tight sm:text-xl"
+                className="flex items-center h-full w-36 lg:w-40"
               >
-                Urban <span className="text-orange">Mart</span>
-                <ShoppingCart
-                  className="h-5 w-5 text-orange"
-                  strokeWidth={2.5}
+                <ImageWithFallback
+                  src={Logo}
+                  alt="Urban-Mart-Logo"
+                  className="h-auto w-full object-contain"
                 />
               </Link>
               <button
