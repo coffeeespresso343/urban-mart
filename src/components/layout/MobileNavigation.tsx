@@ -19,7 +19,6 @@ import { useEffect } from "react";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../hooks/useAuth";
-import ImageWithFallback from "../ui/ImageWithFallback";
 import Logo from "../../assets/Logo.png";
 
 interface NavLinkItem {
@@ -194,9 +193,9 @@ const MobileNavigation = () => {
               <Link
                 to="/"
                 onClick={closeMobileMenu}
-                className="flex items-center h-full w-36 lg:w-40"
+                className="flex items-center h-full w-30 lg:w-34"
               >
-                <ImageWithFallback
+                <img
                   src={Logo}
                   alt="Urban-Mart-Logo"
                   className="h-auto w-full object-contain"

@@ -1,4 +1,4 @@
-import { Compass, ShoppingCart } from "lucide-react";
+import { Compass } from "lucide-react";
 import { Link } from "react-router-dom";
 import { siFacebook, siGithub, siInstagram, siTelegram } from "simple-icons";
 
@@ -67,10 +67,9 @@ const Footer = () => {
         <div className="col-span-2 flex flex-col gap-4 lg:col-span-2">
           <Link
             to="/"
-            className="flex items-center gap-0.5 font-body text-xl font-black tracking-tight"
+            className="flex items-center text-orange gap-0.5 font-body text-xl font-black tracking-tight"
           >
-            Urban <span className="text-orange">Mart</span>
-            <ShoppingCart className="h-5 w-5 text-orange" strokeWidth={2.5} />
+            Urban <span className="text-paper">Mart</span>
           </Link>
           <p className="max-w-xs text-sm text-stone-light">
             Functional essentials designed for the way you move, work, travel

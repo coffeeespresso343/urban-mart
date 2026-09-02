@@ -1,3 +1,5 @@
+import { type LucideIcon } from "lucide-react";
+
 const InputField = ({
   label,
   value,
@@ -6,6 +8,7 @@ const InputField = ({
   type = "text",
   placeholder,
   inputMode,
+  Icon,
 }: {
   label: string;
   value: string;
@@ -14,6 +17,7 @@ const InputField = ({
   type?: string;
   placeholder?: string;
   inputMode?: "text" | "numeric" | "tel";
+  Icon?: LucideIcon;
 }) => {
   const id = `field-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
@@ -22,19 +26,24 @@ const InputField = ({
       <label htmlFor={id} className="label-tag text-stone">
         {label}
       </label>
-      <input
-        type={type}
-        id={id}
-        inputMode={inputMode}
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={`border bg-paper rounded-md px-3.5 py-3 text-sm outline-none transition-colors ${
-          error ? "border-warn" : "border-line-light focus:border-orange"
-        }`}
-      />
+      <div className="relative min-w-0">
+        {Icon && (
+          <Icon className="pointer-events-none absolute text-stone h-4 w-4 left-2 top-1/2 -translate-y-1/2" />
+        )}
+        <input
+          type={type}
+          id={id}
+          inputMode={inputMode}
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className={`border bg-paper w-full rounded-md px-8 py-3 text-sm outline-none transition-colors ${
+            error ? "border-warn" : "border-line-light focus:border-orange"
+          }`}
+        />
+      </div>
       {error ? (
-        <p id={`${id}-error`} role="alert" className="text-xs text-red-400">
+        <p id={`${id}-error`} role="alert" className="text-xs text-error">
           {error}
         </p>
       ) : null}

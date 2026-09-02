@@ -6,7 +6,6 @@ import { useWishlist } from "../../hooks/useWishlist";
 import { useCart } from "../../hooks/useCart";
 import AccountMenu from "./AccountMenu";
 import Logo from "../../assets/Logo.png";
-import ImageWithFallback from "../ui/ImageWithFallback";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
@@ -75,8 +74,8 @@ const Navbar = () => {
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>
 
-        <Link to="/" className="flex items-center h-full w-36 lg:w-40">
-          <ImageWithFallback
+        <Link to="/" className="flex items-center h-full w-30 lg:w-34">
+          <img
             src={Logo}
             alt="Urban-Mart-Logo"
             className="h-auto w-full object-contain"

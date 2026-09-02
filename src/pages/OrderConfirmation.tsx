@@ -147,12 +147,12 @@ const OrderConfirmation = () => {
         </div>
       </div>
 
-      <div className="mt-10 mx-auto max-w-lg flex items-center justify-between">
-        <Button size="md" onClick={() => navigate("/account/orders")}>
+      <div className="mt-10 mx-auto max-w-lg flex items-center justify-between gap-2">
+        <Button size="sm" onClick={() => navigate("/account/orders")}>
           <Package className="h-4 w-4" />
           Your Orders
         </Button>
-        <Button size="md" variant="outline" onClick={() => navigate("/shop")}>
+        <Button size="sm" variant="outline" onClick={() => navigate("/shop")}>
           Contine Shopping <ArrowRight className="h-4 w-4" />
         </Button>
       </div>

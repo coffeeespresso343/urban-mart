@@ -203,8 +203,9 @@ const Login = () => {
             >
               <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-good" />
             </motion.span>
-            <p className="text-sm text-good">
-              Sign-in link sent to <strong>{email}</strong>
+            <p className="text-[13px] text-good text-center">
+              Sign-in link sent to <br />
+              <strong>{email}</strong>
             </p>
             <p className="text-sm text-good">Please check your inbox.</p>
           </div>

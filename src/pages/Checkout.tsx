@@ -1,14 +1,22 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
+  CalendarCheck,
   Check,
   ChevronLeft,
   CreditCard,
+  Flag,
   Info,
+  LocateFixed,
   Lock,
+  LockKeyhole,
+  Mail,
+  MapPin,
+  Phone,
   ShoppingBag,
-  ShoppingCart,
   Truck,
+  User2,
+  UserCheck2,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -32,6 +40,7 @@ import ImageWithFallback from "../components/ui/ImageWithFallback";
 import { useUIStore } from "../hooks/uiStore";
 import { useAuth } from "../hooks/useAuth";
 import { createOrder } from "../lib/Orders";
+import Logo from "../assets/Logo.png";
 
 const STEPS = ["Information", "Shipping", "Payment", "Confirmation"] as const;
 type StepName = (typeof STEPS)[number];
@@ -94,7 +103,7 @@ const Checkout = () => {
           message="Add something to your bag before checking out."
           action={
             <Link to="/shop">
-              <Button>
+              <Button variant="outline">
                 Continue Shopping
                 <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.5} />
               </Button>
@@ -209,22 +218,22 @@ const Checkout = () => {
   return (
     <div className="container-edge py-10 sm:py-24">
       <div className="mb-10 flex items-center justify-between">
-        <Link
-          to="/"
-          className="flex items-center gap-0.5 text-lg font-black tracking-tight sm:text-xl"
-        >
-          Urban <span className="text-orange">Mart</span>
-          <ShoppingCart className="h-5 w-5 text-orange" strokeWidth={2.5} />
+        <Link to="/" className="flex items-center h-full w-30 lg:w-34">
+          <img
+            src={Logo}
+            alt="Urban-Mart-Logo"
+            className="h-auto w-full object-contain"
+          />
         </Link>
         <div className="flex items-center gap-1.5 text-good">
-          <span className="h-6 w-6 bg-good/10 rounded-md flex items-center justify-center">
+          <span className="h-6 w-6 bg-good/10 rounded-full flex items-center justify-center">
             <Lock className="h-4 w-4" />
           </span>
           <span className="label-tag">Secure Checkout</span>
         </div>
       </div>
 
-      <section className="mb-10 bg-paper-dim/40 p-4 rounded-xl">
+      <section className="mb-10 bg-paper-dim/40 border border-good/40 p-4 rounded-xl">
         <div className="mb-5 flex items-center justify-between">
           <p className="label-tag text-stone">Checkout Progress</p>
           <span className="text-xs font-medium text-stone">
@@ -304,6 +313,7 @@ const Checkout = () => {
                       })
                     }
                     error={errors.firstName}
+                    Icon={User2}
                   />
 
                   <InputField
@@ -317,6 +327,7 @@ const Checkout = () => {
                       })
                     }
                     error={errors.lastName}
+                    Icon={User2}
                   />
                 </div>
                 <InputField
@@ -331,11 +342,12 @@ const Checkout = () => {
                     })
                   }
                   error={errors.email}
+                  Icon={Mail}
                 />
                 <InputField
                   label="Phone"
                   type="tel"
-                  placeholder="Enter your phone number"
+                  placeholder="+95 9 123 458 869"
                   value={address.phone}
                   onChange={(v) =>
                     setAddress({
@@ -344,6 +356,7 @@ const Checkout = () => {
                     })
                   }
                   error={errors.phone}
+                  Icon={Phone}
                 />
 
                 <Button size="lg" type="submit" className="mt-2 self-start">
@@ -373,6 +386,7 @@ const Checkout = () => {
                   value={address.address}
                   onChange={(v) => setAddress({ ...address, address: v })}
                   error={errors.address}
+                  Icon={MapPin}
                 />
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <InputField
@@ -381,6 +395,7 @@ const Checkout = () => {
                     value={address.city}
                     onChange={(v) => setAddress({ ...address, city: v })}
                     error={errors.city}
+                    Icon={LocateFixed}
                   />
                   <InputField
                     label="Country"
@@ -388,6 +403,7 @@ const Checkout = () => {
                     value={address.country}
                     onChange={(v) => setAddress({ ...address, country: v })}
                     error={errors.country}
+                    Icon={Flag}
                   />
                 </div>
 
@@ -459,7 +475,7 @@ const Checkout = () => {
                   <CreditCard className="h-5 w-5" strokeWidth={2.5} />
                   Payment
                 </h2>
-                <p className="text-warn text-xs flex items-center gap-1">
+                <p className="text-warn text-xs flex items-center gap-1 p-2 bg-warn/5 border border-warn/10 rounded-md">
                   <Info className="h-3 w-3" />
                   This is a simulated checkout - no real payment is processed.
                 </p>
@@ -472,6 +488,7 @@ const Checkout = () => {
                   placeholder="1234 4567 7899 1011"
                   inputMode="numeric"
                   error={cardErrors.number}
+                  Icon={CreditCard}
                 />
                 <InputField
                   label="Name on Card"
@@ -484,6 +501,7 @@ const Checkout = () => {
                     })
                   }
                   error={cardErrors.name}
+                  Icon={UserCheck2}
                 />
 
                 <div className="grid grid-cols-2 gap-4">
@@ -496,6 +514,7 @@ const Checkout = () => {
                     placeholder="04 / 28"
                     inputMode="numeric"
                     error={cardErrors.expiry}
+                    Icon={CalendarCheck}
                   />
                   <InputField
                     label="CVC"
@@ -509,6 +528,7 @@ const Checkout = () => {
                     placeholder="123"
                     error={cardErrors.cvc}
                     inputMode="numeric"
+                    Icon={LockKeyhole}
                   />
                 </div>
                 <div className="mt-2 flex gap-3">
@@ -547,13 +567,13 @@ const Checkout = () => {
                 key={`${item.product.id}-${item.color ?? ""}`}
                 className="flex gap-3 py-3"
               >
-                <div className="relative h-16 w-16 rounded-sm shrink-0 overflow-hidden bg-paper-dim">
+                <div className="relative h-16 w-16 rounded-lg shrink-0 overflow-hidden bg-paper-dim">
                   <ImageWithFallback
                     src={item.product.images[0]}
                     alt={item.product.name}
                     className="h-full w-full"
                   />
-                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-ink/60 text-[10px] text-paper font-semibold">
+                  <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-white/80 text-[10px] text-ink font-semibold">
                     {item.quantity}
                   </span>
                 </div>

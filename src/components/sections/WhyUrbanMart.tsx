@@ -28,7 +28,7 @@ const BENEFITS = [
 const WhyUrbanMart = () => {
   return (
     <section className="border-y bg-paper-dim border-line py-16">
-      <div className="container-edge grid grid-cols-1 gap-8 sm:grid-cols-2">
+      <div className="container-edge grid grid-cols-1 gap-5 sm:grid-cols-2">
         {BENEFITS.map((b, i) => (
           <motion.div
             key={b.ttile}
@@ -37,16 +37,18 @@ const WhyUrbanMart = () => {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.4, delay: i * 0.05 }}
             className="flex items-start flex-col gap-3
-          border border-white/30 bg-white/40 rounded-lg p-6"
+          border border-white/30 bg-white/40 rounded-xl p-6"
           >
-            <b.icon
-              className="h-6 w-6 text-orange shrink-0"
-              strokeWidth={2}
-              aria-hidden="true"
-            />
+            <span className="h-10 w-10 bg-ink/5 flex items-center justify-center rounded-xl">
+              <b.icon
+                className="h-5 w-5 text-orange shrink-0"
+                strokeWidth={2}
+                aria-hidden="true"
+              />
+            </span>
             <div className="mt-2 flex flex-col gap-3">
-              <h3 className="text-sm font-semibold">{b.ttile}</h3>
-              <p className="text-xs leading-relaxed text-stone">
+              <h3 className="text-lg text-ink font-semibold">{b.ttile}</h3>
+              <p className="text-sm leading-relaxed text-stone">
                 {b.description}
               </p>
             </div>

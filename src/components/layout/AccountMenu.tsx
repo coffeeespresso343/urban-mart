@@ -89,9 +89,9 @@ const AccountMenu = () => {
             initial={{ opacity: 0, y: -8, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 top-full mt-4.5 w-60 rounded-b-lg  bg-paper py-2 shadow-xl"
+            className="absolute right-0 top-full mt-4.5 lg:mt-6.5 w-60 rounded-b-xl border border-white/30 bg-paper py-2 shadow-[0_25px_80px_rgba(23,22,20,0.22)] backdrop-blur-2xl"
           >
-            <div className="bg-paper-dim border-b border-line-light px-4 pb-2 pt-1">
+            <div className="bg-paper/90 border-b border-line-light px-4 pb-2 pt-1">
               <Link to="/account" onClick={() => setOpen(false)}>
                 <p className="truncate text-sm font-medium">
                   {profile?.firstName
@@ -103,16 +103,23 @@ const AccountMenu = () => {
             </div>
 
             <Link
+              to="/account"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm transition-all duration-200 hover:bg-paper-dim active:scale-98"
+            >
+              <User2 className="h-3.5 w-3.5" /> Account
+            </Link>
+            <Link
               to="/account/orders"
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2.5 px-4 py-2.5 text-sm hover:bg-paper-dim"
+              className="flex items-center gap-2.5 px-4 py-2.5 text-sm transition-all duration-200 hover:bg-paper-dim active:scale-98"
             >
               <Package className="h-3.5 w-3.5" /> Order History
             </Link>
             <button
               disabled={isSignOutLoading}
               onClick={handleSignOut}
-              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-error hover:bg-paper-dim disabled:opacity-40"
+              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-error border-t border-line-light hover:bg-paper-dim disabled:opacity-40"
             >
               {isSignOutLoading ? (
                 <>
