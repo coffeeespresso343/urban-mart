@@ -17,6 +17,9 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Account from "./pages/Account";
 import AccountOrders from "./pages/AccountOrders";
 import AccountOrderDetail from "./pages/AccountOrderDetail";
+import AdminLayout from "./components/layout/AdminLayout";
+import AdminOverview from "./pages/admin/AdminOverview";
+import AdminRoute from "./components/auth/AdminRoute";
 
 function App() {
   return (
@@ -32,6 +35,7 @@ function App() {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/checkout" element={<Checkout />} />
+
                 <Route
                   path="/order-confirmation"
                   element={<OrderConfirmation />}
@@ -68,6 +72,20 @@ function App() {
 
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
+              </Route>
+
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminLayout />
+                  </AdminRoute>
+                }
+              >
+                <Route index element={<AdminOverview />} />
+                {/* <Route path="users" />
+                <Route path="orders" />
+                <Route path="products" /> */}
               </Route>
             </Routes>
           </BrowserRouter>

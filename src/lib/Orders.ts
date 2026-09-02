@@ -11,10 +11,11 @@ interface CreateOrderInput {
   userId?: string | null;
 }
 
-interface OrderRow {
+export interface OrderRow {
   id: string;
   order_number: string;
   user_id: string | null;
+  email: string;
   items: CartItem[];
   subtotal: number;
   shipping: number;
@@ -30,7 +31,7 @@ interface OrderRow {
 const generateOrderNumber = () =>
   `UM-${Math.floor(100000 + Math.random() * 900000)}`;
 
-function mapRowToOrder(row: OrderRow): Order {
+export function mapRowToOrder(row: OrderRow): Order {
   return {
     id: row.id,
     orderNumber: row.order_number,
@@ -50,6 +51,14 @@ function mapRowToOrder(row: OrderRow): Order {
     estimatedDelivery: row.estimated_delivery ?? "",
   };
 }
+
+/**
+ * Creates an order. Writes to Supabase when configured and always keeps a local copy
+ * so the confirmation page can render immediately without waiting on a network.
+ * If the Supabase inset fails for any reasons (project not configured, RLS misconfiguration, offline),
+ * checkout still succeeds with the local copy - it just won't show up in account order history
+ * until that's fixed.
+ */
 
 export async function createOrder(input: CreateOrderInput): Promise<Order> {
   const orderNumber = generateOrderNumber();

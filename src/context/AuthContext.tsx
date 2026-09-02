@@ -1,4 +1,3 @@
-import type { Session, User } from "@supabase/supabase-js";
 import {
   createContext,
   useContext,
@@ -6,6 +5,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import type { Session, User } from "@supabase/supabase-js";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
 
 interface Profile {
@@ -24,6 +24,8 @@ interface AuthContextValue {
   profile: Profile | null;
   isLoading: boolean;
   isConfigured: boolean;
+  isAdmin: boolean;
+  isAdminLoading: boolean;
   signUpWithPassword: (
     email: string,
     password: string,
@@ -43,6 +45,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdminLoading, setIsAdminLoading] = useState(true);
 
   //   Load the existing session on mount, then keep it in sync with Supabase's auth events
   useEffect(() => {
@@ -68,7 +72,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   //   Fetch the profile row whenever the sigined-in user changes.
-
   useEffect(() => {
     if (!user || !isSupabaseConfigured) {
       setProfile(null);
@@ -89,6 +92,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             firstName: data.first_name as string | null,
             lastName: data.last_name as string | null,
           });
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
+  // Check the admin role via the has_role() Postgres function
+  useEffect(() => {
+    if (!user || !isSupabaseConfigured) {
+      setIsAdmin(false);
+      setIsAdminLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+    setIsAdminLoading(true);
+
+    supabase
+      .rpc("has_role", { check_user_id: user.id, role_name: "admin" })
+      .then(({ data }) => {
+        if (!cancelled) {
+          setIsAdmin(Boolean(data));
+          setIsAdminLoading(false);
         }
       });
 
@@ -145,6 +173,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     profile,
     isLoading,
     isConfigured: isSupabaseConfigured,
+    isAdmin,
+    isAdminLoading,
     signUpWithPassword,
     signInWithPassword,
     signInWithMagicLink,
