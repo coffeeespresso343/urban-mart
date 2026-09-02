@@ -1,7 +1,7 @@
 // Product Data Access Layer
 
 import type { Product, ProductBadge, ProductCategory } from "../types/Product";
-import { product as staticProducts } from "../data/products";
+import { products as staticProducts } from "../data/products";
 import { isSupabaseConfigured, supabase } from "./supabase";
 
 interface ProductRow {
