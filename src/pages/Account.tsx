@@ -6,13 +6,15 @@ import {
   LogOut,
   Mail,
   Package,
+  ShieldCheck,
   User2,
 } from "lucide-react";
 import { useState } from "react";
 import { useUIStore } from "../hooks/uiStore";
+import Badge from "../components/ui/Badge";
 
 const Account = () => {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut, isAdmin } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -37,33 +39,55 @@ const Account = () => {
       <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="border border-line-light rounded-xl p-6">
           <p className="label-tag text-stone">Signed in as</p>
-          <p className="mt-2 text-lg font-medium">
-            {profile?.firstName
-              ? `${profile.firstName} ${profile.lastName}`
-              : "Urban-Mart Customer"}
-          </p>
+          <div className="flex items-center gap-3">
+            <p className="mt-2 text-lg font-medium">
+              {profile?.firstName
+                ? `${profile.firstName} ${profile.lastName}`
+                : "Urban-Mart Customer"}
+            </p>
+            {isAdmin && (
+              <Badge tone="orange">
+                <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2.5} />
+                Admin
+              </Badge>
+            )}
+          </div>
           <p className="mt-1 flex items-center gap-1.5 text-sm text-stone">
             <Mail className="h-3.5 w-3.5" aria-hidden="true" />
             {user?.email}
           </p>
 
-          <button
-            disabled={isLoading}
-            onClick={handleSignOut}
-            className="mt-6 rounded-2xl text-sm border border-error flex items-center gap-1 text-error px-3 py-1 hover:bg-error/10 transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />{" "}
-                Signing Out...
-              </>
-            ) : (
-              <>
-                <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
-                Sign Out
-              </>
+          <div className="flex items-center justify-between gap-2">
+            <button
+              disabled={isLoading}
+              onClick={handleSignOut}
+              className="mt-6 rounded-2xl text-sm border border-error flex items-center gap-1 text-error px-3 py-1 hover:bg-error/10 transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />{" "}
+                  Signing Out...
+                </>
+              ) : (
+                <>
+                  <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
+                  Sign Out
+                </>
+              )}
+            </button>
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="mt-6 text-xs font-mono font-semibold border border-ink/10 rounded-full px-3 py-1.5
+              transition-all duration-200 bg-paper-dim/50 hover:bg-paper-dim hover:text-orange active:scale-98"
+              >
+                <span className="flex items-center gap-1 group-hover:text-orange">
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  Admin Dashboard
+                </span>
+              </Link>
             )}
-          </button>
+          </div>
         </div>
 
         <Link

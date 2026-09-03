@@ -14,7 +14,7 @@ function MertricCard({
   value: string;
 }) {
   return (
-    <div className="border border-line-light p-5">
+    <div className="border border-white/10 rounded-xl bg-white/80 p-5">
       <Icon className="h-5 w-5 text-orange" />
       <p className="label-tag mt-4 text-stone">{label}</p>
       <p className="price mt-1 text-2xl font-semibold">{value}</p>
@@ -72,8 +72,8 @@ const AdminOverview = () => {
         />
       </div>
       <div className="mt-10">
-        <h3 className="label-tag mb-4 font-semibold text-stone">
-          Top Projucts by Revenue
+        <h3 className="label-tag mb-4 font-semibold text-orange">
+          Top Products by Revenue
         </h3>
         {metrics.topProducts.length === 0 ? (
           <p className="text-sm text-stone">

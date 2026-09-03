@@ -23,10 +23,12 @@ import SortSelect from "../components/filters/SortSelect";
 import FilterSidebar from "../components/filters/FilterSidebar";
 import FilterDrawer from "../components/filters/FilterDrawer";
 import { ProductGridSkeleton } from "../components/ui/Skeleton";
+import { useProducts } from "../hooks/useProducts";
 
 const PAGE_SIZE = 12;
 
 const Shop = () => {
+  const { products, isLoading: productLoading } = useProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState("");
   const [filters, setFilters] = useState<ProductFilters>(defaultFilters);
@@ -74,19 +76,9 @@ const Shop = () => {
     if (dealsOnly) list = list.filter((p) => p.compareAtPrice);
     if (bestSellersOnly) list = list.filter((p) => p.bestSeller);
     return sortProducts(list, sort);
-  }, [filters, sort, dealsOnly, bestSellersOnly]);
+  }, [products, filters, sort, dealsOnly, bestSellersOnly]);
 
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setIsLoading(true);
-
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 350);
-
-    return () => clearTimeout(timeout);
-  }, [filters, sort, dealsOnly, bestSellersOnly]);
+  useEffect(() => {}, [filters, sort, dealsOnly, bestSellersOnly]);
 
   const visibleProducts = filteredProducts.slice(0, visibleCount);
 
@@ -214,7 +206,7 @@ const Shop = () => {
         </aside>
 
         <div>
-          {isLoading ? (
+          {productLoading ? (
             <ProductGridSkeleton
               count={Math.min(visibleProducts.length || PAGE_SIZE, PAGE_SIZE)}
             />

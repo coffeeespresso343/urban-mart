@@ -20,6 +20,9 @@ import AccountOrderDetail from "./pages/AccountOrderDetail";
 import AdminLayout from "./components/layout/AdminLayout";
 import AdminOverview from "./pages/admin/AdminOverview";
 import AdminRoute from "./components/auth/AdminRoute";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminProducts from "./pages/admin/AdminProducts";
 
 function App() {
   return (
@@ -72,20 +75,20 @@ function App() {
 
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
-              </Route>
 
-              <Route
-                path="/admin"
-                element={
-                  <AdminRoute>
-                    <AdminLayout />
-                  </AdminRoute>
-                }
-              >
-                <Route index element={<AdminOverview />} />
-                {/* <Route path="users" />
-                <Route path="orders" />
-                <Route path="products" /> */}
+                <Route
+                  path="/admin"
+                  element={
+                    <AdminRoute>
+                      <AdminLayout />
+                    </AdminRoute>
+                  }
+                >
+                  <Route index element={<AdminOverview />} />
+                  <Route path="users" element={<AdminUsers />} />
+                  <Route path="orders" element={<AdminOrders />} />
+                  <Route path="products" element={<AdminProducts />} />
+                </Route>
               </Route>
             </Routes>
           </BrowserRouter>

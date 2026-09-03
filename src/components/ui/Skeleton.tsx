@@ -119,3 +119,35 @@ export const ProductInfoSkeleton = () => {
     </div>
   );
 };
+
+export const AdminUsersSkeleton = ({ count = 4 }: { count?: number }) => {
+  return (
+    <div>
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-6 w-20 rounded-md" />
+        <Skeleton className="mt-2 h-4 w-24 rounded-md" />
+      </div>
+      <div className="mt-6 overflow-hidden rounded-2xl border border-line-light">
+        <div className="divide-y divide-line-light">
+          {Array.from({ length: count }).map((_, i) => (
+            <div
+              key={i}
+              className="flex flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-4 w-28 rounded-md" />
+                  <Skeleton className="h-5 w-14 rounded-full" />
+                </div>
+                <Skeleton className="mt-2 h-3 w-50 rounded-md" />
+                <Skeleton className="mt-2 h-4 w-44 rounded-md" />
+                <Skeleton className="mt-2 h-3 w-34 rounded-md" />
+              </div>
+              <Skeleton className="h-9 w-full rounded-lg sm:w-32" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};

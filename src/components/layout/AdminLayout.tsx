@@ -11,22 +11,22 @@ const NAV_ITEMS = [
 const AdminLayout = () => {
   return (
     <div className="container-edge grid grid-cols-1 gap-8 py-10 sm:py-14 lg:grid-cols-[220px_1fr]">
-      <aside>
+      <aside className="lg:sticky lg:top-24 lg:self-start">
         <h1 className="font-display text-2xl font-black uppercase tracking-tight">
           Admin
         </h1>
         <nav className="mt-6">
-          <ul className="flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible">
+          <ul className="flex gap-2 overflow-x-auto scrollbar-none lg:flex-col lg:overflow-visible lg:gap-3">
             {NAV_ITEMS.map((item) => (
               <li key={item.label}>
                 <NavLink
                   to={item.to}
                   end={item.end}
                   className={({ isActive }) =>
-                    `label-tag flex shrink-0 items-center gap-2.5 px-3 py-2.5 font-semibold transition-colors ${
+                    `label-tag flex shrink-0 border rounded-full lg:rounded-lg items-center gap-2 px-3 py-2.5 font-semibold transition-all duration-200 active:scale-97 ${
                       isActive
-                        ? "bg-ink text-paper"
-                        : "text-ink hover:bg-paper-dim"
+                        ? "bg-ink text-orange border-white"
+                        : "text-ink bg-paper-dim/50 border-paper/5 hover:bg-paper-dim hover:text-orange"
                     }`
                   }
                 >

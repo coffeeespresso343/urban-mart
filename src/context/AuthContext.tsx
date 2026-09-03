@@ -102,6 +102,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Check the admin role via the has_role() Postgres function
   useEffect(() => {
+    if (isLoading) return;
+
     if (!user || !isSupabaseConfigured) {
       setIsAdmin(false);
       setIsAdminLoading(false);
@@ -123,7 +125,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, [user]);
+  }, [user, isLoading]);
 
   const signUpWithPassword: AuthContextValue["signUpWithPassword"] = async (
     email,
