@@ -75,10 +75,14 @@ function mapProductToRow(product: Partial<Product>) {
   return row;
 }
 
-// Fetch products from supabase, falls back to static data
-
+/**
+ * Fetch products from supabase, falls back to static data
+ * @returns staticProducts or fetchedProduct from API
+ */
 export async function fetchProducts(): Promise<Product[]> {
-  if (!isSupabaseConfigured) return staticProducts;
+  if (!isSupabaseConfigured) {
+    return staticProducts;
+  }
 
   const { data, error } = await supabase
     .from("products")

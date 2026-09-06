@@ -64,7 +64,7 @@ function RevenueChart({ data }: { data: DashboardMetrics["revenueByDay"] }) {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
-              margin={{ top: 4, right: 4, left: -10, bottom: 0 }}
+              margin={{ top: 4, right: 4, left: -5, bottom: 0 }}
             >
               <CartesianGrid
                 strokeDasharray="3 3"
@@ -108,7 +108,7 @@ function RevenueChart({ data }: { data: DashboardMetrics["revenueByDay"] }) {
               />
               <Bar
                 dataKey="revenue"
-                fill="#d06a3a"
+                fill="#D06A3A"
                 radius={[2, 2, 0, 0]}
                 maxBarSize={28}
               />
