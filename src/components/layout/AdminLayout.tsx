@@ -1,4 +1,10 @@
-import { LayoutDashboard, Package, ShoppingCart, Users2 } from "lucide-react";
+import {
+  LayoutDashboard,
+  Package,
+  ShieldCheck,
+  ShoppingCart,
+  Users2,
+} from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 
 const NAV_ITEMS = [
@@ -12,7 +18,11 @@ const AdminLayout = () => {
   return (
     <div className="container-edge grid grid-cols-1 gap-8 py-10 sm:py-14 lg:grid-cols-[220px_1fr]">
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        <h1 className="font-display text-2xl font-black uppercase tracking-tight">
+        <h1
+          className="font-display text-2xl font-black uppercase
+        flex items-center gap-2"
+        >
+          <ShieldCheck className="h-6 w-6 text-orange" strokeWidth={2.5} />
           Admin
         </h1>
         <nav className="mt-6">

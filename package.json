@@ -7,7 +7,6 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint ."
-    
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.4",
@@ -17,6 +16,7 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.2",
+    "recharts": "^3.10.1",
     "simple-icons": "^16.28.0",
     "tailwindcss": "^4.3.3",
     "zustand": "^5.0.14"
@@ -33,6 +33,5 @@
     "globals": "^17.7.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.65.0"
-    
   }
 }

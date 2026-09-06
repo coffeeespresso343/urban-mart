@@ -4,9 +4,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { fetchAllUsers, setUserAdmin, type AdminUser } from "../../lib/Admin";
 import { AdminUsersSkeleton } from "../../components/ui/Skeleton";
 import EmptyState from "../../components/ui/EmptyState";
-import { ShieldCheck, ShieldOff, Users2 } from "lucide-react";
+import { Loader2, ShieldCheck, ShieldOff, Users2 } from "lucide-react";
 import Badge from "../../components/ui/Badge";
-import { Button } from "../../components/ui/Button";
 
 const AdminUsers = () => {
   const { user: currentUser } = useAuth();
@@ -28,20 +27,30 @@ const AdminUsers = () => {
     }
 
     setPendingId(targetUser.id);
-    const { error } = await setUserAdmin(targetUser.id, !targetUser.isAdmin);
 
-    setPendingId(null);
+    try {
+      const { error } = await setUserAdmin(targetUser.id, !targetUser.isAdmin);
 
-    if (error) {
-      showToast(error, "error");
-      return;
+      if (error) {
+        showToast(error, "error");
+        return;
+      }
+
+      showToast(
+        targetUser.isAdmin ? "Removed admin access" : "Granted admin access",
+        "success",
+      );
+      load();
+    } catch (error) {
+      showToast(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+        "error",
+      );
+    } finally {
+      setPendingId(null);
     }
-
-    showToast(
-      targetUser.isAdmin ? "Remove admin access" : "Granted admin access",
-      "success",
-    );
-    load();
   };
 
   if (users === null) {
@@ -84,11 +93,8 @@ const AdminUsers = () => {
                         : "-"}
                     </p>
                     {user.isAdmin && (
-                      <Badge tone="orange">
-                        <ShieldCheck
-                          className="h-3.5 w-3.5"
-                          strokeWidth={2.5}
-                        />
+                      <Badge tone="orange" className="text-[10px] px-2 py-0.5">
+                        <ShieldCheck className="h-3 w-3" strokeWidth={2.5} />
                         Admin
                       </Badge>
                     )}
@@ -117,15 +123,25 @@ const AdminUsers = () => {
                 </div>
 
                 <div className="shrink-0">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    isLoading={pendingId === user.id}
-                    disabled={currentUser?.id === user.id}
+                  <button
+                    type="button"
+                    disabled={
+                      currentUser?.id === user.id || pendingId === user.id
+                    }
                     onClick={() => toggleAdmin(user)}
-                    className="w-full sm:w-auto"
+                    className={`w-full rounded-2xl flex items-center justify-center gap-1.5 border font-semibold text-sm px-3 py-1
+                      active:scale-[0.98] sm:w-auto disabled:cursor-not-allowed disabled:opacity-30 ${
+                        user.isAdmin
+                          ? "bg-transparent text-error border-error/90 hover:bg-error/5"
+                          : "bg-ink text-paper border-ink hover:bg-ink/90"
+                      }`}
                   >
-                    {user.isAdmin ? (
+                    {pendingId === user.id ? (
+                      <>
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        Updating...
+                      </>
+                    ) : user.isAdmin ? (
                       <>
                         <ShieldOff className="h-3.5 w-3.5" />
                         Remove Admin
@@ -136,7 +152,7 @@ const AdminUsers = () => {
                         Make Admin
                       </>
                     )}
-                  </Button>
+                  </button>
                 </div>
               </div>
             ))}

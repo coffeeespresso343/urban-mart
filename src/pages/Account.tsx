@@ -65,8 +65,8 @@ const Account = () => {
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />{" "}
-                  Signing Out...
+                  <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />
+                  Signing Out
                 </>
               ) : (
                 <>

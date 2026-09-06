@@ -1,14 +1,15 @@
 import { Crown, Hourglass, PackageX, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 
-type Tone = "ink" | "orange" | "warn" | "good" | "stone";
+type Tone = "ink" | "orange" | "warn" | "good" | "error" | "stone";
 
 const toneClasses: Record<Tone, string> = {
   ink: "bg-ink/90 text-paper border border-ink",
   orange: "bg-orange/80 text-paper border border-orange/60 backdrop-blur-sm",
-  warn: "bg-warn/90 text-ink border border-warn/95",
-  good: "bg-good/50 text-ink border border-good/60 ",
-  stone: "bg-paper-dim/70 text-orange border border-line-light",
+  warn: "bg-warn/50 text-ink border border-warn/60",
+  good: "bg-good/40 text-ink border border-good/70 ",
+  error: "bg-error/40 text-ink border border-error/60",
+  stone: "bg-paper-dim/50 text-ink border border-line-light",
 };
 
 const badgeIcon: Record<string, ReactNode> = {

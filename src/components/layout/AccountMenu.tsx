@@ -129,7 +129,7 @@ const AccountMenu = () => {
             <button
               disabled={isSignOutLoading}
               onClick={handleSignOut}
-              className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-error border-t border-line-light hover:bg-paper-dim disabled:opacity-40"
+              className="mt-2 flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm text-error border-t border-error/10 hover:bg-paper-dim disabled:opacity-40"
             >
               {isSignOutLoading ? (
                 <>

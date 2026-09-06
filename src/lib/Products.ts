@@ -93,7 +93,7 @@ export async function fetchProducts(): Promise<Product[]> {
     return staticProducts;
   }
 
-  console.log("Success fetching products data from Supabase.");
+  // console.log("Success fetching products data from Supabase.");
   return (data as ProductRow[]).map(mapRowToProduct);
 }
 
@@ -167,4 +167,13 @@ export function getRelatedProducts(
   return products
     .filter((p) => p.id !== product.id && p.category === p.category)
     .slice(0, count);
+}
+
+export function getLowStockProducts(
+  products: Product[],
+  threshold = 5,
+): Product[] {
+  return [...products]
+    .filter((p) => p.stock <= threshold)
+    .sort((a, b) => a.stock - b.stock);
 }

@@ -132,12 +132,50 @@ export interface TopProducts {
   revenue: number;
 }
 
+export interface RevenuePoint {
+  date: string;
+  isoDate: string;
+  revenue: number;
+}
+
 export interface DashboardMetrics {
   totalRevenue: number;
   orderCount: number;
   userCount: number;
   averageOrderValue: number;
   topProducts: TopProducts[];
+  revenueByDay: RevenuePoint[];
+  recentOrders: Order[];
+}
+
+const REVENUE_CHART_DAYS = 14;
+
+function buildRevenueByDay(orders: Order[], days: number): RevenuePoint[] {
+  const buckets = new Map<string, number>();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    buckets.set(d.toISOString().slice(0, 10), 0);
+  }
+
+  for (const order of orders) {
+    const isoDate = order.placedAt.slice(0, 10);
+    if (buckets.has(isoDate)) {
+      buckets.set(isoDate, (buckets.get(isoDate) ?? 0) + order.totals.total);
+    }
+  }
+
+  return Array.from(buckets.entries()).map(([isoDate, revenue]) => ({
+    isoDate,
+    date: new Date(isoDate).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    }),
+    revenue: Math.round(revenue * 100) / 100,
+  }));
 }
 
 export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
@@ -179,5 +217,7 @@ export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
     userCount: users.length,
     averageOrderValue,
     topProducts,
+    revenueByDay: buildRevenueByDay(orders, REVENUE_CHART_DAYS),
+    recentOrders: orders.slice(0, 6),
   };
 }
