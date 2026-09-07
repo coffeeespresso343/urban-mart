@@ -142,7 +142,7 @@ function RecentOrderPanel({
       {orders.length === 0 ? (
         <p className="mt-6 text-sm text-stone">No orders yet.</p>
       ) : (
-        <div className="mt-4 flex flex-col divide-y divide-line-light">
+        <div className="mt-4 flex flex-col border-t border-line-light divide-y divide-line-light">
           {orders.map((order) => (
             <Link
               key={order.id}
@@ -193,7 +193,7 @@ function LowStockPanel({ products }: { products: Product[] }) {
           Everything's well stocked - nothing at or below 5 units
         </p>
       ) : (
-        <div className="mt-4 divide-y divide-line-light flex flex-col">
+        <div className="mt-4 border-t border-line-light divide-y divide-line-light flex flex-col">
           {lowStock.slice(0, 6).map((product) => (
             <Link
               key={product.id}
@@ -204,7 +204,10 @@ function LowStockPanel({ products }: { products: Product[] }) {
                 <p className="label-tag truncate font-medium">{product.name}</p>
                 <p className="label-tag mt-0.5 text-stone">{product.sku}</p>
               </div>
-              <Badge tone={product.stock === 0 ? "error" : "warn"}>
+              <Badge
+                tone={product.stock === 0 ? "error" : "warn"}
+                className="text-[9px]"
+              >
                 {product.stock === 0 ? "Out of stock" : `${product.stock} left`}
               </Badge>
             </Link>
@@ -299,7 +302,7 @@ const AdminOverview = () => {
             No orders yet - top products will show up here once sales come in.
           </p>
         ) : (
-          <div className="divide-y divide-line-light border border-line-light rounded-xl p-5">
+          <div className="divide-y divide-line-light border-y border-line-light">
             {metrics.topProducts.map((product, index) => (
               <div
                 key={product.name}

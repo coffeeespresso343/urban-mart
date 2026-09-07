@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useUIStore } from "../../hooks/uiStore";
 import type { Order, OrderStatus } from "../../types/Order";
 import { fetchAllOrders, updateOrderStatus } from "../../lib/Admin";
-import { ProductGridSkeleton } from "../../components/ui/Skeleton";
+import { AdminOrdersSkeleton } from "../../components/ui/Skeleton";
 import EmptyState from "../../components/ui/EmptyState";
 import { PackageX } from "lucide-react";
 import { formatPrice } from "../../utils/currency";
@@ -40,6 +40,18 @@ const AdminOrders = () => {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [pendingId, setPendingId] = useState<string | null>(null);
 
+  const activeFilterBtnRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!activeFilterBtnRef.current) return;
+
+    activeFilterBtnRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [statusFilter]);
+
   const load = () => {
     fetchAllOrders().then(setOrders);
   };
@@ -75,7 +87,7 @@ const AdminOrders = () => {
   };
 
   if (orders === null) {
-    return <ProductGridSkeleton count={4} />;
+    return <AdminOrdersSkeleton count={6} />;
   }
 
   if (orders.length === 0) {
@@ -103,7 +115,7 @@ const AdminOrders = () => {
       </div>
 
       <div className="mt-6 overflow-x-auto scrollbar-none">
-        <div className="inline-flex min-w-max gap-1 rounded-2xl border border-line-light bg-paper-dim/40 p-1">
+        <div className="inline-flex min-w-max gap-1 rounded-2xl border border-paper-warm/50 bg-paper-warm/40 p-1">
           {FILTER_OPTIONS.map((option) => {
             const isActive = statusFilter === option.value;
 
@@ -115,6 +127,7 @@ const AdminOrders = () => {
 
             return (
               <button
+                ref={isActive ? activeFilterBtnRef : null}
                 key={option.value}
                 type="button"
                 onClick={() => setStatusFilter(option.value)}
@@ -163,13 +176,13 @@ const AdminOrders = () => {
                 className="flex flex-col px-4 py-4 transition-colors duration-200 hover:bg-paper-dim/30 sm:px-5 lg:flex-row lg:items-center lg:justify-between lg:gap-6"
               >
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center  gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <p className="label-tag font-semibold text-orange">
                       #{order.orderNumber}
                     </p>
                     <Badge
                       tone={STATUS_TONE[order.status]}
-                      className="uppercase"
+                      className="uppercase text-[10px]"
                     >
                       {order.status}
                     </Badge>

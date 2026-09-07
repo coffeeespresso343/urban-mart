@@ -5,7 +5,8 @@ import {
   ShoppingCart,
   Users2,
 } from "lucide-react";
-import { NavLink, Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 const NAV_ITEMS = [
   { label: "Overview", to: "/admin", end: true, Icon: LayoutDashboard },
@@ -15,6 +16,25 @@ const NAV_ITEMS = [
 ];
 
 const AdminLayout = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    const activeItem = NAV_ITEMS.find((item) =>
+      item.end
+        ? location.pathname === item.to
+        : location.pathname.startsWith(item.to),
+    );
+
+    if (!activeItem) return;
+
+    const element = document.querySelector(`a[href="${activeItem.to}"]`);
+    element?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [location.pathname]);
+
   return (
     <div className="container-edge grid grid-cols-1 gap-8 py-10 sm:py-14 lg:grid-cols-[220px_1fr]">
       <aside className="lg:sticky lg:top-24 lg:self-start">

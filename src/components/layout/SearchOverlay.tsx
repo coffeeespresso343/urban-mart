@@ -18,9 +18,9 @@ import ImageWithFallback from "../ui/ImageWithFallback";
 import { formatPrice } from "../../utils/currency";
 
 const POPULAR_SEARCHS = [
-  "Backpack",
-  "Desk Lamp",
-  "Multi-Tools",
+  "Home",
+  "Lighting",
+  "Anchor Key Rack",
   "Travel",
   "Storage",
 ];

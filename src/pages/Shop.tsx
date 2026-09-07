@@ -13,7 +13,6 @@ import {
   type ProductFilters,
 } from "../utils/filters";
 import { useDebounce } from "../hooks/useDebounce";
-import { products } from "../data/products";
 import { useSearchParams } from "react-router-dom";
 import type { ProductCategory, SortOption } from "../types/Product";
 import { sortProducts } from "../utils/sortProducts";
@@ -175,7 +174,7 @@ const Shop = () => {
           })}
         </div>
       </div>
-      <div className="flex items-center justify-between border-y border-line-light py-4">
+      <div className="sticky self-auto z-10 top-16 flex items-center justify-between bg-paper/98 border-y border-line-light py-4 lg:static lg:top-auto">
         <p className="label-tag text-stone">
           {filteredProducts.length} products
         </p>
@@ -197,7 +196,7 @@ const Shop = () => {
         <SortSelect value={sort} onChange={setSort} />
       </div>
       <div className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-[220px_1fr]">
-        <aside className="hidden lg:block">
+        <aside className="hidden lg:block lg:sticky lg:self-start lg:top-30">
           <FilterSidebar
             filters={filters}
             onChange={updateFilter}

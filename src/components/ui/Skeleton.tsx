@@ -151,3 +151,44 @@ export const AdminUsersSkeleton = ({ count = 4 }: { count?: number }) => {
     </div>
   );
 };
+
+export const AdminOrdersSkeleton = ({ count = 4 }: { count?: number }) => {
+  return (
+    <div>
+      <div>
+        <Skeleton className="h-5 w-20 rounded-xl" />
+        <Skeleton className="mt-2 h-4 w-40 rounded-xl" />
+      </div>
+
+      <div className="mt-4">
+        <Skeleton className="h-7 w-full rounded-xl" />
+      </div>
+      <div className="mt-6 overflow-hidden border border-line-light rounded-xl">
+        <div className="divide-y divide-line-light">
+          {Array.from({ length: count }).map((_, i) => (
+            <div
+              key={i}
+              className="flex flex-col px-4 py-4 lg:flex-row lg:justify-between lg:gap-6"
+            >
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Skeleton className="h-3 w-30 rounded-xl" />
+                  <Skeleton className="h-4 w-20 rounded-xl" />
+                </div>
+                <div className="mt-2 flex flex-wrap items-center gap-x-2">
+                  <Skeleton className="h-3 w-20 rounded-xl" />
+                  <Skeleton className="h-3 w-20 rounded-xl" />
+                  <Skeleton className="h-3 w-20 rounded-xl" />
+                </div>
+              </div>
+              <div className="mt-2 flex w-full items-center justify-between gap-4 sm:justify-end lg:w-auto">
+                <Skeleton className="h-4 w-16 rounded-xl" />
+                <Skeleton className="h-4 w-28 rounded-xl" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
