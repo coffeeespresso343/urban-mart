@@ -1,7 +1,7 @@
 // Product Data Access Layer
 
 import type { Product, ProductBadge, ProductCategory } from "../types/Product";
-import { products as staticProducts } from "../data/products";
+import { products, products as staticProducts } from "../data/products";
 import { isSupabaseConfigured, supabase } from "./supabase";
 
 interface ProductRow {
@@ -145,6 +145,10 @@ export async function deleteProduct(
 /** Next available integer id, for the "new product" form — one past the current max. */
 export function nextProductId(products: Product[]): number {
   return products.reduce((max, p) => Math.max(max, p.id), 0) + 1;
+}
+
+export function getProductById(id: number): Product | undefined {
+  return products.find((p) => p.id === id);
 }
 
 // For home page sections

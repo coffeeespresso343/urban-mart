@@ -222,7 +222,7 @@
 
     /* Small uppercase metadata */
     .label-tag {
-        font-family: var(--font-mono);
+        /* font-family: var(--font-mono); */
 
         font-size: 0.6875rem;
         font-weight: 500;

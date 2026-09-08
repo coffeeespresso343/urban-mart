@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { getProductById, getRelatedProducts, products } from "../data/products";
-import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
-import { useEffect, useState } from "react";
+// import { getRelatedProducts, products } from "../data/products";
+import { useEffect } from "react";
 import { ChevronRight } from "lucide-react";
 import ProductReviews from "../components/product/ProductReviews";
 import ProductGallery from "../components/product/ProductGallery";
@@ -12,38 +11,23 @@ import {
   ProductGridSkeleton,
   ProductInfoSkeleton,
 } from "../components/ui/Skeleton";
+import { useProducts } from "../hooks/useProducts";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
+import { getRelatedProducts } from "../lib/Products";
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();
-  const product = id ? getProductById(Number(id)) : undefined;
+  const { products, isLoading } = useProducts();
 
+  const product = id ? products.find((p) => p.id === Number(id)) : undefined;
   const { ids: recentIds, trackView } = useRecentlyViewed();
-
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (product) {
       trackView(product.id);
       window.scrollTo({ top: 0 });
     }
-    setIsLoading(true);
-
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-    return () => clearTimeout(timeout);
   }, [product?.id]);
-
-  if (!product) {
-    return <Navigate to="/404" replace />;
-  }
-
-  const related = getRelatedProducts(product);
-  const recentlyViewed = recentIds
-    .filter((rid) => rid !== product.id)
-    .map((rid) => products.find((p) => p.id === rid))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p))
-    .slice(0, 4);
 
   if (isLoading) {
     return (
@@ -69,6 +53,17 @@ const ProductDetails = () => {
       </div>
     );
   }
+
+  if (!product) {
+    return <Navigate to="/404" replace />;
+  }
+
+  const related = getRelatedProducts(products, product);
+  const recentlyViewed = recentIds
+    .filter((rid) => rid !== product.id)
+    .map((rid) => products.find((p) => p.id === rid))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p))
+    .slice(0, 4);
 
   return (
     <motion.div
