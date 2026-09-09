@@ -11,6 +11,7 @@ export interface AdminUser {
   lastName: string | null;
   createdAt: string;
   isAdmin: boolean;
+  isBlocked: boolean;
 }
 
 interface ProfileRow {
@@ -19,6 +20,7 @@ interface ProfileRow {
   first_name: string | null;
   last_name: string | null;
   created_at: string;
+  is_blocked: boolean;
 }
 
 interface UserRoleRow {
@@ -40,7 +42,7 @@ export async function fetchAllUsers(): Promise<AdminUser[]> {
   const [profileResult, roleResult] = await Promise.all([
     supabase
       .from("profiles")
-      .select("id, email, first_name, last_name, created_at")
+      .select("id, email, first_name, last_name, created_at, is_blocked")
       .order("created_at", { ascending: false }),
     supabase.from("user_roles").select("user_id, roles(name)"),
   ]);
@@ -60,7 +62,84 @@ export async function fetchAllUsers(): Promise<AdminUser[]> {
     lastName: row.last_name,
     createdAt: row.created_at,
     isAdmin: adminIds.has(row.id),
+    isBlocked: row.is_blocked,
   }));
+}
+
+export async function fetchUserById(userId: string): Promise<AdminUser | null> {
+  if (!isSupabaseConfigured) return null;
+
+  const [profileResult, rolesResult] = await Promise.all([
+    supabase
+      .from("profiles")
+      .select("id, first_name, last_name, created_at, is_blocked")
+      .eq("id", userId)
+      .single(),
+    supabase
+      .from("user_roles")
+      .select("user_id, roles(name)")
+      .eq("user_id", userId),
+  ]);
+
+  if (profileResult.error || !profileResult.data) return null;
+
+  const row = profileResult.data as ProfileRow;
+  const isAdmin = ((rolesResult.data as UserRoleRow[] | null) ?? []).some(
+    (r) => roleNameof(r) === "admin",
+  );
+
+  return {
+    id: row.id,
+    email: row.email,
+    firstName: row.first_name,
+    lastName: row.last_name,
+    createdAt: row.created_at,
+    isAdmin,
+    isBlocked: row.is_blocked,
+  };
+}
+
+export async function setUserBlocked(
+  userId: string,
+  blocked: boolean,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured) return { error: "Supabase isn't configured." };
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({
+      is_blocked: blocked,
+    })
+    .eq("id", userId);
+
+  return { error: error?.message ?? null };
+}
+
+/**
+ * Parmanently deletes the user's account via the delete-user Edge
+ * Function (see/functions/delete-user) - this can't be undone
+ * with the anon/authenticated client directly, since delete an auth.users row requires the service-role-key
+ * @param userId
+ * @returns
+ */
+
+export async function deleteUserAccount(
+  userId: string,
+): Promise<{ error: string | null }> {
+  if (!isSupabaseConfigured) return { error: "Supabase isn't configured." };
+
+  const { data, error } = await supabase.functions.invoke<{ error?: string }>(
+    "delete-user",
+    {
+      body: { userId },
+    },
+  );
+
+  if (error) return { error: error.message };
+
+  if (data?.error) return { error: data.error };
+
+  return { error: null };
 }
 
 export async function setUserAdmin(

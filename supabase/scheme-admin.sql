@@ -210,3 +210,35 @@ values
 (26, 'UM-STR-338', 'Locker Storage Trunk', 'Storage', 118, 140, 'A steel-frame storage trunk with a plywood core — doubles as a bench, coffee table, or off-season gear locker.', ARRAY['Powder-coated steel frame', 'Birch plywood panels', 'Reinforced corner brackets', '30 x 16 x 16 in']::text[], ARRAY['https://images.unsplash.com/photo-1583686298564-46fbffda0707?w=1200&q=80&auto=format&fit=crop']::text[], 4.6, 27, 12, 'Limited', ARRAY['Graphite', 'Olive']::text[], ARRAY['trunk', 'storage', 'furniture']::text[], false, false, false)
 on conflict (id) do nothing;
 ---
+
+-- ---------------------------------------------------------------------
+-- profiles.is_blocked — app-level suspension flag (checked by RLS on
+-- order creation, and by the app before showing checkout). Not a real
+-- auth-level ban — the user can still sign in, they just can't place
+-- orders. A real ban (blocking sign-in itself) would need the same
+-- service-role Edge Function pattern as account deletion below.
+-- ---------------------------------------------------------------------
+alter table public.profiles add column if not exists is_blocked boolean not null default false;
+
+-- Replace the guest-or-self insert policy so a blocked user's own orders
+-- are rejected at the database level too, not just hidden in the UI.
+drop policy if exists "Anyone can create an order" on public.orders;
+
+create policy "Anyone can create an order"
+  on public.orders for insert
+  with check (
+    user_id is null
+    or (
+      auth.uid() = user_id
+      and not exists (
+        select 1 from public.profiles
+        where id = auth.uid() and is_blocked = true
+      )
+    )
+  );
+
+-- Admins can update is_blocked on any profile (the "Block User" toggle).
+create policy "Admins can update any profile"
+  on public.profiles for update
+  using (public.has_role(auth.uid(), 'admin'))
+  with check (public.has_role(auth.uid(), 'admin'));

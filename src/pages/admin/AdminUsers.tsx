@@ -1,11 +1,26 @@
 import { useEffect, useState } from "react";
 import { useUIStore } from "../../hooks/uiStore";
 import { useAuth } from "../../hooks/useAuth";
-import { fetchAllUsers, setUserAdmin, type AdminUser } from "../../lib/Admin";
+import {
+  deleteUserAccount,
+  fetchAllUsers,
+  setUserAdmin,
+  setUserBlocked,
+  type AdminUser,
+} from "../../lib/Admin";
 import { AdminUsersSkeleton } from "../../components/ui/Skeleton";
 import EmptyState from "../../components/ui/EmptyState";
-import { Loader2, ShieldCheck, ShieldOff, Users2 } from "lucide-react";
+import {
+  Ban,
+  Eye,
+  Loader2,
+  ShieldCheck,
+  ShieldOff,
+  Trash2,
+  Users2,
+} from "lucide-react";
 import Badge from "../../components/ui/Badge";
+import { Link } from "react-router-dom";
 
 const AdminUsers = () => {
   const { user: currentUser } = useAuth();
@@ -13,12 +28,22 @@ const AdminUsers = () => {
   const showToast = useUIStore((s) => s.showToast);
   const [users, setUsers] = useState<AdminUser[] | null>(null);
   const [pendingId, setPendingId] = useState<string | null>(null);
+  const [isAdminLoading, setIsAdminLoading] = useState(false);
+  const [isBlocking, setIsBlocking] = useState(false);
 
   const load = () => {
     fetchAllUsers().then(setUsers);
   };
 
   useEffect(load, []);
+
+  const guardSelf = (targetUser: AdminUser, message: string) => {
+    if (targetUser.id === currentUser?.id) {
+      showToast(message, "error");
+      return true;
+    }
+    return false;
+  };
 
   const toggleAdmin = async (targetUser: AdminUser) => {
     if (targetUser.id === currentUser?.id) {
@@ -27,6 +52,7 @@ const AdminUsers = () => {
     }
 
     setPendingId(targetUser.id);
+    setIsAdminLoading(true);
 
     try {
       const { error } = await setUserAdmin(targetUser.id, !targetUser.isAdmin);
@@ -50,7 +76,67 @@ const AdminUsers = () => {
       );
     } finally {
       setPendingId(null);
+      setIsAdminLoading(false);
     }
+  };
+
+  const toggleBlocked = async (targetUser: AdminUser) => {
+    if (guardSelf(targetUser, "You can't block your own account")) return;
+
+    setPendingId(targetUser.id);
+    setIsBlocking(true);
+
+    try {
+      const { error } = await setUserBlocked(
+        targetUser.id,
+        !targetUser.isBlocked,
+      );
+
+      if (error) {
+        showToast(error, "error");
+        return;
+      }
+
+      showToast(
+        targetUser.isBlocked
+          ? `Unblocked ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}`
+          : `Blocked ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}`,
+        "success",
+      );
+      load();
+    } catch (error) {
+      showToast(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again.",
+        "error",
+      );
+    } finally {
+      setPendingId(null);
+      setIsBlocking(false);
+    }
+  };
+
+  const handleDelete = async (targetUser: AdminUser) => {
+    if (guardSelf(targetUser, "You can't delete your own account")) return;
+
+    if (
+      !window.confirm(
+        `Permanently delete ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}? This can't be undone.`,
+      )
+    )
+      return;
+
+    setPendingId(targetUser.id);
+    const { error } = await deleteUserAccount(targetUser.id);
+    setPendingId(null);
+    if (error) return showToast(error, "error");
+
+    showToast(
+      `Deleted ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}`,
+    );
+
+    load();
   };
 
   if (users === null) {
@@ -122,21 +208,21 @@ const AdminUsers = () => {
                   </p>
                 </div>
 
-                <div className="shrink-0">
+                <div className="flex items-center justify-between gap-2 sm:gap-4">
                   <button
                     type="button"
                     disabled={
                       currentUser?.id === user.id || pendingId === user.id
                     }
                     onClick={() => toggleAdmin(user)}
-                    className={`w-full rounded-2xl flex items-center justify-center gap-1.5 border font-semibold text-sm px-3 py-1
-                      active:scale-[0.98] sm:w-auto disabled:cursor-not-allowed disabled:opacity-30 ${
+                    className={`shrink-0 rounded-2xl flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
+                      active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
                         user.isAdmin
                           ? "bg-transparent text-error border-error/90 hover:bg-error/5"
                           : "bg-ink text-paper border-ink hover:bg-ink/90"
                       }`}
                   >
-                    {pendingId === user.id ? (
+                    {isAdminLoading && pendingId === user.id ? (
                       <>
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
                         Updating...
@@ -152,6 +238,60 @@ const AdminUsers = () => {
                         Make Admin
                       </>
                     )}
+                  </button>
+
+                  <Link
+                    to={`/admin/users/${user.id}`}
+                    className="shrink-0 rounded-2xl flex items-center justify-center gap-1.5 
+                    border border-line-light font-medium text-stone text-xs px-3 py-1.5 hover:bg-paper active:scale-[0.97]"
+                  >
+                    <Eye className="h-3.5 w-3.5" /> Details
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleBlocked(user)}
+                    disabled={
+                      currentUser?.id === user.id || pendingId === user.id
+                    }
+                    className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-2xl border font-medium transition-colors hover:text-stone disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] ${
+                      user.isBlocked
+                        ? "bg-warn/40 border-warn/45 text-ink"
+                        : "bg-error/20 border-error/30 text-error"
+                    }`}
+                  >
+                    {user.isBlocked ? (
+                      <>
+                        {isBlocking && pendingId === user.id ? (
+                          <>
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            Unblocking
+                          </>
+                        ) : (
+                          "Unblock"
+                        )}
+                      </>
+                    ) : isBlocking && pendingId === user.id ? (
+                      <>
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                        Blocking
+                      </>
+                    ) : (
+                      <>
+                        <Ban className="h-3.5 w-3.5" />
+                        Block
+                      </>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(user)}
+                    disabled={
+                      currentUser?.id === user.id || user.id === pendingId
+                    }
+                    className="text-error transition-colors hover:text-warn disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97]"
+                  >
+                    <Trash2 className="h-4 w-4 shrink-0" />
                   </button>
                 </div>
               </div>
