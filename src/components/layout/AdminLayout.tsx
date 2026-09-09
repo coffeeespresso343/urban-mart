@@ -54,7 +54,7 @@ const AdminLayout = () => {
             <div className="flex items-start gap-2 bg-good/5 w-fit pr-5 lg:pr-0 py-4 px-2 rounded-lg lg:w-auto">
               <div className="relative">
                 <div className="h-8 w-8 shrink-0 flex items-center justify-center rounded-full bg-paper ring-2 ring-orange/30">
-                  <ShieldUser className="h-6 w-6 text-orange" />
+                  <ShieldUser className="h-5 w-5 text-orange" />
                 </div>
               </div>
               <div className="min-w-0">

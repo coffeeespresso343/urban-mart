@@ -9,7 +9,6 @@ import {
   Info,
   Package,
   PercentDiamond,
-  ShieldUser,
   ShoppingCart,
   Sparkle,
   User2,
@@ -110,7 +109,7 @@ function NavGroup({
   );
 }
 const MobileNavigation = () => {
-  const { user, profile, isConfigured, isAdmin } = useAuth();
+  const { user, profile, isConfigured } = useAuth();
   const { productIds } = useWishlist();
   const { totals } = useCart();
   const mobileMenuOpen = useUIStore((s) => s.mobileMenuOpen);
@@ -244,18 +243,12 @@ const MobileNavigation = () => {
               >
                 {signedIn ? (
                   <>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-semibold text-orange">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-semibold text-paper">
                       {initial}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="flex items-center gap-1.5 truncate text-sm font-medium text-ink">
+                      <span className="truncate text-sm font-medium text-ink">
                         {displayName}
-                        {isAdmin ? (
-                          <ShieldUser
-                            className="h-3 w-3 text-orange"
-                            strokeWidth={2}
-                          />
-                        ) : null}
                       </span>
                       <span className="block truncate text-xs text-stone">
                         {user?.email}
@@ -264,7 +257,7 @@ const MobileNavigation = () => {
                   </>
                 ) : (
                   <>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-semibold text-orange">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-semibold text-paper">
                       <User2 className="h-5 w-5" />
                     </span>
                     <span className="text-sm font-medium text-ink">

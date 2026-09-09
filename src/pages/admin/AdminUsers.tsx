@@ -173,6 +173,11 @@ const AdminUsers = () => {
               >
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
+                    <div>
+                      <span className="h-7 w-7 flex items-center justify-center rounded-full bg-ink text-xs font-semibold text-paper transition-opacity hover:opacity-80 active:scale-[0.97]">
+                        {user.firstName ? user.firstName[0].toUpperCase() : "-"}
+                      </span>
+                    </div>
                     <p className="text-sm truncate font-semibold text-ink">
                       {user.firstName
                         ? `${user.firstName} ${user.lastName ?? ""}`.trim()
@@ -184,6 +189,11 @@ const AdminUsers = () => {
                         Admin
                       </Badge>
                     )}
+                    {user.isBlocked ? (
+                      <Badge tone="error" className="text-[10px] px-2 py-0.5">
+                        Blocked
+                      </Badge>
+                    ) : null}
 
                     {currentUser?.id === user.id && (
                       <span className="text-stone  font-semibold text-xs">
@@ -283,7 +293,7 @@ const AdminUsers = () => {
                       </>
                     )}
                   </button>
-                  <button
+                  {/* <button
                     type="button"
                     onClick={() => handleDelete(user)}
                     disabled={
@@ -292,7 +302,7 @@ const AdminUsers = () => {
                     className="text-error transition-colors hover:text-warn disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97]"
                   >
                     <Trash2 className="h-4 w-4 shrink-0" />
-                  </button>
+                  </button> */}
                 </div>
               </div>
             ))}

@@ -210,7 +210,7 @@ const Checkout = () => {
     setTimeout(() => {
       clearCart();
       navigate(`/order-confirmation?order=${order.orderNumber}`);
-    }, 2600);
+    }, 1600);
   };
 
   return (

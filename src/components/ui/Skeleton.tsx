@@ -136,14 +136,19 @@ export const AdminUsersSkeleton = ({ count = 4 }: { count?: number }) => {
             >
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
+                  <Skeleton className="h-8 w-8 rounded-full" />
                   <Skeleton className="h-4 w-28 rounded-md" />
-                  <Skeleton className="h-5 w-14 rounded-full" />
+                  <Skeleton className="h-4 w-14 rounded-full" />
                 </div>
                 <Skeleton className="mt-2 h-3 w-50 rounded-md" />
                 <Skeleton className="mt-2 h-4 w-44 rounded-md" />
                 <Skeleton className="mt-2 h-3 w-34 rounded-md" />
               </div>
-              <Skeleton className="h-6 w-full rounded-full sm:w-32" />
+              <div className="flex items-center justify-between gap-2 sm:gap-4">
+                <Skeleton className="h-6 w-24 rounded-full" />
+                <Skeleton className="h-6 w-20 rounded-full" />
+                <Skeleton className="h-6 w-20 rounded-full" />
+              </div>
             </div>
           ))}
         </div>

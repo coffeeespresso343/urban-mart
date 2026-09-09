@@ -23,6 +23,7 @@ import AdminRoute from "./components/auth/AdminRoute";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminProducts from "./pages/admin/AdminProducts";
+import AdminUserDetail from "./pages/admin/AdminUserDetail";
 
 function App() {
   return (
@@ -88,6 +89,7 @@ function App() {
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="orders" element={<AdminOrders />} />
                 <Route path="products" element={<AdminProducts />} />
+                <Route path="users/:userId" element={<AdminUserDetail />} />
               </Route>
             </Routes>
           </BrowserRouter>
