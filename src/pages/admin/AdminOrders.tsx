@@ -232,10 +232,10 @@ const AdminOrders = () => {
                         handleStatusChange(order, e.target.value as OrderStatus)
                       }
                       className="label-tag min-w-28 cursor-pointer rounded-xl border border-line-light bg-paper px-2 py-1 font-medium
-                capitalize outline-none transition-colors hover:border-ink/30 focus:border-orange focus:ring-2 focus:ring-orange disabled:opacity-50"
+                uppercase outline-none transition-colors hover:border-ink/30 focus:border-orange focus:ring-2 focus:ring-orange disabled:opacity-50"
                     >
                       {STATUS_OPTIONS.map((status) => (
-                        <option key={status} className="capitalize">
+                        <option key={status} className="uppercase">
                           {status}
                         </option>
                       ))}

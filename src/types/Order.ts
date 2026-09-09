@@ -1,8 +1,7 @@
 import type { CartItem, CartTotals } from "./Cart";
 
 export interface ShippingAddress {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
   phone: string;
   address: string;

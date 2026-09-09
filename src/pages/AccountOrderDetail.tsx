@@ -240,8 +240,7 @@ const AccountOrderDetail = () => {
               <div className="min-w-0">
                 <p className="label-tag text-stone"> Shipping address </p>
                 <p className="mt-2 text-sm font-semibold text-ink">
-                  {order.shippingAddress.firstName}{" "}
-                  {order.shippingAddress.lastName}
+                  {order.shippingAddress.fullName}
                 </p>
                 <p className="mt-1 text-sm leading-relaxed text-stone">
                   {order.shippingAddress.city}, {order.shippingAddress.country}

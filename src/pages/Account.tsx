@@ -46,7 +46,7 @@ const Account = () => {
                 : "Urban-Mart Customer"}
             </p>
             {isAdmin && (
-              <Badge tone="orange">
+              <Badge tone="good">
                 <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2.5} />
                 Admin
               </Badge>

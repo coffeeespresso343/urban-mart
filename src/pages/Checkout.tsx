@@ -71,8 +71,7 @@ const Checkout = () => {
   const showToast = useUIStore((s) => s.showToast);
 
   const [address, setAddress] = useState<ShippingAddress>({
-    firstName: "",
-    lastName: "",
+    fullName: "",
     email: "",
     phone: "",
     address: "",
@@ -121,8 +120,7 @@ const Checkout = () => {
   const validateInformation = (): boolean => {
     const next: Errors = {};
 
-    if (!required(address.firstName)) next.firstName = "First name is required";
-    if (!required(address.lastName)) next.lastName = "Last name is required";
+    if (!required(address.fullName)) next.fullName = "First name is required";
     if (!isValidEmail(address.email))
       next.email = "Please enter a valid email address";
     if (!isValidPhone(address.phone))
@@ -301,37 +299,22 @@ const Checkout = () => {
                   <Info className="h-5 w-5" strokeWidth={2.5} />
                   Information
                 </h2>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <InputField
-                    label="First Name"
-                    placeholder="Enter your first name"
-                    value={address.firstName}
-                    onChange={(v) =>
-                      setAddress({
-                        ...address,
-                        firstName: v,
-                      })
-                    }
-                    error={errors.firstName}
-                    Icon={User2}
-                  />
-
-                  <InputField
-                    label="Last Name"
-                    placeholder="Enter your last name"
-                    value={address.lastName}
-                    onChange={(v) =>
-                      setAddress({
-                        ...address,
-                        lastName: v,
-                      })
-                    }
-                    error={errors.lastName}
-                    Icon={User2}
-                  />
-                </div>
                 <InputField
-                  label="Email"
+                  label="Fulll Name*"
+                  placeholder="Your full name"
+                  value={address.fullName}
+                  onChange={(v) =>
+                    setAddress({
+                      ...address,
+                      fullName: v,
+                    })
+                  }
+                  error={errors.fullName}
+                  Icon={User2}
+                />
+
+                <InputField
+                  label="Email*"
                   type="email"
                   placeholder="you@example.com"
                   value={address.email}
@@ -345,7 +328,7 @@ const Checkout = () => {
                   Icon={Mail}
                 />
                 <InputField
-                  label="Phone"
+                  label="Phone*"
                   type="tel"
                   placeholder="+95 9 123 458 869"
                   value={address.phone}
@@ -390,7 +373,7 @@ const Checkout = () => {
                 />
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <InputField
-                    label="City"
+                    label="City*"
                     placeholder="Enter your city"
                     value={address.city}
                     onChange={(v) => setAddress({ ...address, city: v })}
@@ -398,7 +381,7 @@ const Checkout = () => {
                     Icon={LocateFixed}
                   />
                   <InputField
-                    label="Country"
+                    label="Country*"
                     placeholder="Enter your country"
                     value={address.country}
                     onChange={(v) => setAddress({ ...address, country: v })}
@@ -480,7 +463,7 @@ const Checkout = () => {
                   This is a simulated checkout - no real payment is processed.
                 </p>
                 <InputField
-                  label="Card Number"
+                  label="Card Number*"
                   value={card.number}
                   onChange={(v) =>
                     setCard({ ...card, number: formatCardNumber(v) })
@@ -491,7 +474,7 @@ const Checkout = () => {
                   Icon={CreditCard}
                 />
                 <InputField
-                  label="Name on Card"
+                  label="Name on Card*"
                   placeholder="Your name on card"
                   value={card.name}
                   onChange={(v) =>
@@ -506,7 +489,7 @@ const Checkout = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <InputField
-                    label="Expiry (MM / YY)"
+                    label="Expiry (MM / YY)*"
                     value={card.expiry}
                     onChange={(v) =>
                       setCard({ ...card, expiry: formatExpiry(v) })
@@ -517,7 +500,7 @@ const Checkout = () => {
                     Icon={CalendarCheck}
                   />
                   <InputField
-                    label="CVC"
+                    label="CVC*"
                     value={card.cvc}
                     onChange={(v) =>
                       setCard({

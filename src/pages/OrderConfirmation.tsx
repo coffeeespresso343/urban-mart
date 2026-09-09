@@ -70,7 +70,8 @@ const OrderConfirmation = () => {
           Order confirmed
         </h1>
         <p className="mt-3 text-sm text-stone">
-          Thanks for your order, {order.shippingAddress.firstName}.
+          Thanks for your order,{" "}
+          <strong>{order.shippingAddress.fullName}</strong>.
         </p>
         <p className="label-tag mt-4 text-orange">Order #{order.orderNumber}</p>
       </div>
@@ -115,7 +116,7 @@ const OrderConfirmation = () => {
           <div className="min-w-0">
             <p className="label-tag text-stone"> Shipping address </p>
             <p className="mt-2 text-sm font-semibold text-ink">
-              {order.shippingAddress.firstName} {order.shippingAddress.lastName}
+              {order.shippingAddress.fullName}
             </p>
             <p className="mt-1 text-sm leading-relaxed text-stone">
               {order.shippingAddress.city}, {order.shippingAddress.country}
@@ -152,8 +153,12 @@ const OrderConfirmation = () => {
           <Package className="h-4 w-4" />
           Your Orders
         </Button>
-        <Button size="sm" variant="outline" onClick={() => navigate("/shop")}>
-          Contine Shopping <ArrowRight className="h-4 w-4" />
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => navigate(`/account/orders/${order.orderNumber}`)}
+        >
+          Order Details <ArrowRight className="h-4 w-4" />
         </Button>
       </div>
     </div>

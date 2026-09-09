@@ -9,6 +9,7 @@ import {
   Info,
   Package,
   PercentDiamond,
+  ShieldUser,
   ShoppingCart,
   Sparkle,
   User2,
@@ -109,7 +110,7 @@ function NavGroup({
   );
 }
 const MobileNavigation = () => {
-  const { user, profile, isConfigured } = useAuth();
+  const { user, profile, isConfigured, isAdmin } = useAuth();
   const { productIds } = useWishlist();
   const { totals } = useCart();
   const mobileMenuOpen = useUIStore((s) => s.mobileMenuOpen);
@@ -247,8 +248,14 @@ const MobileNavigation = () => {
                       {initial}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-sm font-medium text-ink">
+                      <span className="flex items-center gap-1.5 truncate text-sm font-medium text-ink">
                         {displayName}
+                        {isAdmin ? (
+                          <ShieldUser
+                            className="h-3 w-3 text-orange"
+                            strokeWidth={2}
+                          />
+                        ) : null}
                       </span>
                       <span className="block truncate text-xs text-stone">
                         {user?.email}

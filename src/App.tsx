@@ -75,20 +75,19 @@ function App() {
 
                 <Route path="/404" element={<NotFound />} />
                 <Route path="*" element={<NotFound />} />
-
-                <Route
-                  path="/admin"
-                  element={
-                    <AdminRoute>
-                      <AdminLayout />
-                    </AdminRoute>
-                  }
-                >
-                  <Route index element={<AdminOverview />} />
-                  <Route path="users" element={<AdminUsers />} />
-                  <Route path="orders" element={<AdminOrders />} />
-                  <Route path="products" element={<AdminProducts />} />
-                </Route>
+              </Route>
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminLayout />
+                  </AdminRoute>
+                }
+              >
+                <Route index element={<AdminOverview />} />
+                <Route path="users" element={<AdminUsers />} />
+                <Route path="orders" element={<AdminOrders />} />
+                <Route path="products" element={<AdminProducts />} />
               </Route>
             </Routes>
           </BrowserRouter>

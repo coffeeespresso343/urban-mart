@@ -11,7 +11,7 @@ import { isSupabaseConfigured, supabase } from "../lib/supabase";
 interface Profile {
   id: string;
   firstName: string | null;
-  lastName: string | null;
+  lastName?: string | null;
 }
 
 interface AuthResult {
@@ -30,7 +30,7 @@ interface AuthContextValue {
     email: string,
     password: string,
     firstName: string,
-    lastName: string,
+    lastName?: string | null,
   ) => Promise<AuthResult>;
 
   signInWithPassword: (email: string, password: string) => Promise<AuthResult>;

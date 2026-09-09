@@ -22,6 +22,7 @@ import { useUIStore } from "../../hooks/uiStore";
 import Modal from "../../components/ui/Modal";
 import { categories } from "../../data/categories";
 import { CheckboxField, TextField } from "../../components/admin/ProductInput";
+import { Link } from "react-router-dom";
 
 const BADGE_OPTIONS: (ProductBadge | "None")[] = [
   "None",
@@ -175,8 +176,8 @@ const AdminProducts = () => {
       editingProduct ? "Product updated" : "Product created",
       "success",
     );
-    setModalOpen(false);
     void refetch();
+    setModalOpen(false);
 
     return;
   };
@@ -208,7 +209,7 @@ const AdminProducts = () => {
             </h2>
             <p className="mt-1 text-sm text-stone">({products.length})</p>
           </div>
-          <p className="mt-1 text-sm text-stone">Manage and track products.</p>
+          <p className="mt-1 text-sm text-stone">Manage products.</p>
         </div>
         <Button onClick={openCreate}>
           <Plus className="h-3.5 w-3.5" /> Add Product
@@ -233,19 +234,22 @@ const AdminProducts = () => {
               className="flex flex-wrap items-center justify-between gap-4 py-4"
             >
               <div className="flex items-center gap-4">
-                <span className="bg-stone/40 text-ink text-xs h-5 w-5 flex items-center justify-center rounded-full">
+                <span className="bg-stone/40 text-ink text-[10px] h-4 w-4 flex items-center justify-center rounded-full">
                   {product.id}
                 </span>
-                <div className="h-18 w-18 rounded-xl shrink-0 overflow-hidden bg-paper-dim">
+                <Link
+                  to={`/product/${product.id}`}
+                  className="h-14 w-14 rounded-xl shrink-0 overflow-hidden bg-paper-dim hover:opacity-90 active:scale-95"
+                >
                   <ImageWithFallback
                     src={product.images[0]}
                     alt={product.name}
                     className="h-full w-full object-cover"
                   />
-                </div>
+                </Link>
                 <div>
                   <div className="flex items-start flex-col-reverse lg:flex-row gap-1 lg:gap-3">
-                    <p className="text-sm max-w-50 font-medium">
+                    <p className="text-sm max-w-45 font-medium">
                       {product.name}
                     </p>
                     {product.badge ? (
@@ -279,7 +283,7 @@ const AdminProducts = () => {
                   type="button"
                   onClick={() => handleDelete(product)}
                   disabled={product.id === deletingId}
-                  className="text-warn transition-colors duration-200 hover:text-ink active:scale-[0.95] disabled:opacity-40"
+                  className="text-error transition-colors duration-200 hover:text-ink active:scale-[0.95] disabled:opacity-40"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -302,12 +306,14 @@ const AdminProducts = () => {
                   label="Name"
                   value={form.name}
                   onChange={(v) => setForm({ ...form, name: v })}
+                  placeholder="Product name"
                   required
                 />
                 <TextField
                   label="SKU"
                   value={form.sku}
                   onChange={(v) => setForm({ ...form, sku: v })}
+                  placeholder="UM-SKU-000"
                   required
                 />
               </div>
@@ -379,6 +385,7 @@ const AdminProducts = () => {
               <TextField
                 label="Image URLs (comma-separated)"
                 value={form.images}
+                placeholder="https://images.unsplash.com/photo"
                 onChange={(v) => setForm({ ...form, images: v })}
               />
 

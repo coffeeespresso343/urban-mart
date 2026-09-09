@@ -49,7 +49,7 @@ const Login = () => {
       location.state as {
         from?: string;
       } | null
-    )?.from ?? "/account/orders";
+    )?.from ?? "/account";
 
   if (user) {
     return <Navigate to={redirectTo} replace />;
@@ -215,20 +215,20 @@ const Login = () => {
               <div className="grid grid-cols-2 gap-3">
                 <div className="flex flex-col gap-1.5">
                   <label htmlFor="first-name" className="label-tag text-stone">
-                    First Name
+                    First Name*
                   </label>
                   <input
                     type="text"
                     id="firstName"
                     value={firstName}
                     onChange={(e) => handleChange("firstName", e.target.value)}
-                    placeholder="Aung"
+                    placeholder="John"
                     className={`border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
-                      errors.firstName ? "border-error" : "border-line-light"
+                      errors.firstName ? "border-warn" : "border-line-light"
                     }`}
                   />
                   {errors.firstName && (
-                    <p className="mt-0.5 flex items-center gap-1 text-xs text-error">
+                    <p className="mt-0.5 flex items-center gap-1 text-xs text-warn">
                       <AlertCircle className="h-3 w-3 shrink-0" />
                       {errors.firstName}
                     </p>
@@ -243,13 +243,13 @@ const Login = () => {
                     id="lastName"
                     value={lastName}
                     onChange={(e) => handleChange("lastName", e.target.value)}
-                    placeholder="Kyaw"
+                    placeholder="Doe"
                     className={`border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
-                      errors.lastName ? "border-error" : "border-line-light"
+                      errors.lastName ? "border-warn" : "border-line-light"
                     }`}
                   />
                   {errors.lastName && (
-                    <p className="mt-0.5 flex items-center gap-1 text-xs text-error">
+                    <p className="mt-0.5 flex items-center gap-1 text-xs text-warn">
                       <AlertCircle className="h-3 w-3 shrink-0" />
                       {errors.lastName}
                     </p>
@@ -260,7 +260,7 @@ const Login = () => {
 
             <div className="flex flex-col gap-1.5">
               <label htmlFor="email" className="label-tag text-stone">
-                Email
+                Email*
               </label>
               <input
                 type="email"
@@ -269,11 +269,11 @@ const Login = () => {
                 onChange={(e) => handleChange("email", e.target.value)}
                 placeholder="you@example.com"
                 className={`border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
-                  errors.email ? "border-error" : "border-line-light"
+                  errors.email ? "border-warn" : "border-line-light"
                 }`}
               />
               {errors.email && (
-                <p className="mt-0.5 flex items-center gap-1 text-xs text-error">
+                <p className="mt-0.5 flex items-center gap-1 text-xs text-warn">
                   <AlertCircle className="h-3 w-3 shrink-0" />
                   {errors.email}
                 </p>
@@ -283,7 +283,7 @@ const Login = () => {
             {mode !== "magic-link" ? (
               <div className="flex flex-col gap-1.5">
                 <label htmlFor="password" className="label-tag text-stone">
-                  Password
+                  Password*
                 </label>
                 <input
                   type="password"
@@ -292,11 +292,11 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="At least 8 characters."
                   className={`border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
-                    errors.password ? "border-error" : "border-line-light"
+                    errors.password ? "border-warn" : "border-line-light"
                   }`}
                 />
                 {errors.password && (
-                  <p className="mt-0.5 flex items-center gap-1 text-xs text-error">
+                  <p className="mt-0.5 flex items-center gap-1 text-xs text-warn">
                     <AlertCircle className="h-3 w-3 shrink-0" />
                     {errors.password}
                   </p>

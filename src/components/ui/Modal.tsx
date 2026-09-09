@@ -50,7 +50,7 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
               <X className="h-5 w-5" />
             </button>
             {title ? (
-              <h2 className="mt-4 pr-8 font-display text-lg font-semibold">
+              <h2 className="mb-4 pr-8 border-b border-line-light font-display text-lg font-semibold">
                 {title}
               </h2>
             ) : null}

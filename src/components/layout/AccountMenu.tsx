@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
-import { Loader2, LogOut, Package, Shield, User2 } from "lucide-react";
+import { Loader2, LogOut, Package, ShieldUser, User2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useUIStore } from "../../hooks/uiStore";
@@ -123,7 +123,7 @@ const AccountMenu = () => {
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-2.5 px-4 py-2.5 text-sm transition-all duration-200 hover:bg-paper-dim active:scale-98"
               >
-                <Shield className="h-3.5 w-3.5" /> Admin Dashboard
+                <ShieldUser className="h-3.5 w-3.5" /> Admin Dashboard
               </Link>
             ) : null}
             <button

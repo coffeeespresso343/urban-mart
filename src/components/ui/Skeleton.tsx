@@ -127,8 +127,8 @@ export const AdminUsersSkeleton = ({ count = 4 }: { count?: number }) => {
         <Skeleton className="h-6 w-20 rounded-md" />
         <Skeleton className="mt-2 h-4 w-24 rounded-md" />
       </div>
-      <div className="mt-6 overflow-hidden rounded-2xl border border-line-light">
-        <div className="divide-y divide-line-light">
+      <div className="mt-6 overflow-hidden rounded-2xl border border-paper-warm">
+        <div className="divide-y divide-paper-warm">
           {Array.from({ length: count }).map((_, i) => (
             <div
               key={i}
@@ -163,8 +163,8 @@ export const AdminOrdersSkeleton = ({ count = 4 }: { count?: number }) => {
       <div className="mt-4">
         <Skeleton className="h-7 w-full rounded-xl" />
       </div>
-      <div className="mt-6 overflow-hidden border border-line-light rounded-xl">
-        <div className="divide-y divide-line-light">
+      <div className="mt-6 overflow-hidden border border-paper-warm rounded-xl">
+        <div className="divide-y divide-paper-warm">
           {Array.from({ length: count }).map((_, i) => (
             <div
               key={i}
@@ -195,7 +195,7 @@ export const AdminOrdersSkeleton = ({ count = 4 }: { count?: number }) => {
 
 export const AdminProductsSkeleton = ({ count = 4 }: { count?: number }) => {
   return (
-    <div className="mt-6 divide-y divide-line-light border-y border-line-light">
+    <div className="mt-6 divide-y divide-paper-warm border-y border-paper-warm">
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
@@ -203,11 +203,11 @@ export const AdminProductsSkeleton = ({ count = 4 }: { count?: number }) => {
         >
           <div className="flex items-center gap-4">
             <Skeleton className="h-4 w-4 rounded-full" />
-            <Skeleton className="h-18 w-18 rounded-xl" />
+            <Skeleton className="h-14 w-14 rounded-xl" />
             <div>
               <div className="flex items-start flex-col-reverse lg:flex-row gap-2 lg:gap-3">
                 <Skeleton className="h-4 w-30 rounded-xl" />
-                <Skeleton className="h-4 w-20 rounded-xl" />
+                <Skeleton className="h-4 w-16 rounded-xl" />
               </div>
               <div className="mt-2 flex items-center gap-1">
                 <Skeleton className="h-4 w-14 rounded-xl" />

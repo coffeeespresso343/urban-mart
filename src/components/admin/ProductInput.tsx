@@ -3,11 +3,13 @@ export const TextField = ({
   value,
   onChange,
   required,
+  placeholder,
   inputMode,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
+  placeholder?: string;
   required?: boolean;
   inputMode?: "text" | "numeric" | "decimal";
 }) => {
@@ -23,8 +25,9 @@ export const TextField = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
+        placeholder={placeholder}
         inputMode={inputMode}
-        className="rounded-lg border border-line-light bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+        className="rounded-lg placeholder:text-stone/60 border border-line-light bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
       />
     </div>
   );

@@ -90,7 +90,7 @@ const Navbar = () => {
               <NavLink
                 key={link.label}
                 to={link.to}
-                className={` font-medium transition-colors hover:text-orange ${
+                className={`label-tag font-medium transition-colors hover:text-orange ${
                   active ? "text-orange" : "text-ink"
                 }`}
               >
