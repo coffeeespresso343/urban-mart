@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useUIStore } from "../../hooks/uiStore";
 import { useAuth } from "../../hooks/useAuth";
 import {
-  deleteUserAccount,
   fetchAllUsers,
   setUserAdmin,
   setUserBlocked,
@@ -21,11 +20,20 @@ import {
 import Badge from "../../components/ui/Badge";
 import { Link } from "react-router-dom";
 
+type UserFilter = "all" | "customer" | "admin";
+
+const FILTER_OPTIONS: { value: UserFilter; label: string }[] = [
+  { value: "all", label: "All Users" },
+  { value: "admin", label: "Admin" },
+  { value: "customer", label: "Customer" },
+];
+
 const AdminUsers = () => {
   const { user: currentUser } = useAuth();
 
   const showToast = useUIStore((s) => s.showToast);
   const [users, setUsers] = useState<AdminUser[] | null>(null);
+  const [userFilter, setUserFilter] = useState<UserFilter>("all");
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [isAdminLoading, setIsAdminLoading] = useState(false);
   const [isBlocking, setIsBlocking] = useState(false);
@@ -35,6 +43,16 @@ const AdminUsers = () => {
   };
 
   useEffect(load, []);
+
+  const filteredUsers = useMemo(() => {
+    if (!users) return [];
+
+    if (userFilter === "admin") {
+      return users.filter((user) => user.isAdmin);
+    } else if (userFilter === "customer") {
+      return users.filter((user) => !user.isAdmin);
+    } else return users;
+  }, [users, userFilter]);
 
   const guardSelf = (targetUser: AdminUser, message: string) => {
     if (targetUser.id === currentUser?.id) {
@@ -62,7 +80,9 @@ const AdminUsers = () => {
       }
 
       showToast(
-        targetUser.isAdmin ? "Removed admin access" : "Granted admin access",
+        targetUser.isAdmin
+          ? `Removed admin access to ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}`
+          : `Granted admin access to ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}`,
         "success",
       );
       load();
@@ -116,28 +136,6 @@ const AdminUsers = () => {
     }
   };
 
-  // const handleDelete = async (targetUser: AdminUser) => {
-  //   if (guardSelf(targetUser, "You can't delete your own account")) return;
-
-  //   if (
-  //     !window.confirm(
-  //       `Permanently delete ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}? This can't be undone.`,
-  //     )
-  //   )
-  //     return;
-
-  //   setPendingId(targetUser.id);
-  //   const { error } = await deleteUserAccount(targetUser.id);
-  //   setPendingId(null);
-  //   if (error) return showToast(error, "error");
-
-  //   showToast(
-  //     `Deleted ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}`,
-  //   );
-
-  //   load();
-  // };
-
   if (users === null) {
     return <AdminUsersSkeleton count={5} />;
   }
@@ -155,16 +153,35 @@ const AdminUsers = () => {
   return (
     <div>
       <div className="flex items-end justify-between gap-4">
-        <h2 className="text-xl font-display font-bold tracking-tight">Users</h2>
-        <p className="mt-1 text-sm text-stone">
-          {users.length ?? 0} {users.length === 1 ? "account" : "accounts"}
-        </p>
+        <div className="flex  items-center gap-2">
+          <h2 className="text-xl font-display font-bold tracking-tight">
+            Users
+          </h2>
+          <p className="mt-1 text-sm text-stone">
+            ({filteredUsers.length ?? 0}{" "}
+            {filteredUsers.length === 1 ? "account" : "accounts"})
+          </p>
+        </div>
+        <div className="shrink-0">
+          <select
+            value={userFilter}
+            onChange={(e) => setUserFilter(e.target.value as UserFilter)}
+            className="min-w-30 cursor-pointer text-xs rounded-lg border border-line-light bg-paper px-2 py-1 font-medium
+                capitalize outline-none transition-colors hover:border-ink/30 focus:border-orange focus:ring-2 focus:ring-orange"
+          >
+            {FILTER_OPTIONS.map((user) => (
+              <option key={user.value} value={user.value}>
+                {user.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="mt-6 overflow-hidden rounded-2xl border border-line-light bg-paper/50">
-        {users.length > 0 ? (
+        {filteredUsers.length > 0 ? (
           <div className="divide-y divide-line-light">
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <div
                 key={user.id}
                 className="group flex flex-col gap-4 px-4 py-4 transition-colors duration-200 hover:bg-paper-dim/40
@@ -252,7 +269,7 @@ const AdminUsers = () => {
                   <Link
                     to={`/admin/users/${user.id}`}
                     className="shrink-0 rounded-2xl flex items-center justify-center gap-1.5 
-                    border border-line-light font-medium text-stone text-xs px-3 py-1.5 hover:bg-paper active:scale-[0.97]"
+                   bg-ink/10 border border-ink/15 font-medium text-ink text-xs px-3 py-1.5 hover:bg-paper active:scale-[0.97]"
                   >
                     <Eye className="h-3.5 w-3.5" /> Details
                   </Link>
@@ -266,7 +283,7 @@ const AdminUsers = () => {
                     className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-2xl border font-medium transition-colors hover:text-stone disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] ${
                       user.isBlocked
                         ? "bg-warn/40 border-warn/45 text-ink"
-                        : "bg-error/20 border-error/30 text-error"
+                        : "bg-error/50 border-error/55 text-ink"
                     }`}
                   >
                     {user.isBlocked ? (
@@ -292,16 +309,6 @@ const AdminUsers = () => {
                       </>
                     )}
                   </button>
-                  {/* <button
-                    type="button"
-                    onClick={() => handleDelete(user)}
-                    disabled={
-                      currentUser?.id === user.id || user.id === pendingId
-                    }
-                    className="text-error transition-colors hover:text-warn disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97]"
-                  >
-                    <Trash2 className="h-4 w-4 shrink-0" />
-                  </button> */}
                 </div>
               </div>
             ))}

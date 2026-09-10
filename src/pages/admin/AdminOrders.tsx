@@ -182,7 +182,7 @@ const AdminOrders = () => {
                     </p>
                     <Badge
                       tone={STATUS_TONE[order.status]}
-                      className="uppercase text-[10px]"
+                      className="capitalize text-[9px]"
                     >
                       {order.status}
                     </Badge>
@@ -231,11 +231,11 @@ const AdminOrders = () => {
                       onChange={(e) =>
                         handleStatusChange(order, e.target.value as OrderStatus)
                       }
-                      className="label-tag min-w-28 cursor-pointer rounded-xl border border-line-light bg-paper px-2 py-1 font-medium
-                uppercase outline-none transition-colors hover:border-ink/30 focus:border-orange focus:ring-2 focus:ring-orange disabled:opacity-50"
+                      className="min-w-28 cursor-pointer text-xs rounded-lg border border-line-light bg-paper px-2 py-1 font-medium
+                capitalize outline-none transition-colors hover:border-ink/30 focus:border-orange focus:ring-2 focus:ring-orange disabled:opacity-50"
                     >
                       {STATUS_OPTIONS.map((status) => (
-                        <option key={status} className="uppercase">
+                        <option key={status} className="capitalize">
                           {status}
                         </option>
                       ))}
