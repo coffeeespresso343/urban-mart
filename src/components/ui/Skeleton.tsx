@@ -183,7 +183,6 @@ export const AdminOrdersSkeleton = ({ count = 4 }: { count?: number }) => {
                 <div className="mt-2 flex flex-wrap items-center gap-x-2">
                   <Skeleton className="h-3 w-20 rounded-xl" />
                   <Skeleton className="h-3 w-20 rounded-xl" />
-                  <Skeleton className="h-3 w-20 rounded-xl" />
                 </div>
               </div>
               <div className="mt-2 flex w-full items-center justify-between gap-4 sm:justify-end lg:w-auto">

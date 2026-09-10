@@ -265,7 +265,7 @@ const AdminUserDetail = () => {
       <div className="mt-10">
         <div className="flex items-center justify-between">
           <h3 className="label-tag font-semibold text-stone">Order History</h3>
-          <p className="text-sm text-stone">
+          <p className="text-sm text-stone font-semibold">
             {orders.length} order{orders.length === 1 ? "" : "s"} ·{" "}
             {formatPrice(totalSpent)} total
           </p>

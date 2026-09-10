@@ -157,7 +157,7 @@ const AdminUsers = () => {
           <h2 className="text-xl font-display font-bold tracking-tight">
             Users
           </h2>
-          <p className="mt-1 text-sm text-stone">
+          <p className="mt-1 text-sm text-stone font-bold">
             ({filteredUsers.length ?? 0}{" "}
             {filteredUsers.length === 1 ? "account" : "accounts"})
           </p>

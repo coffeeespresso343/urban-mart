@@ -4,10 +4,11 @@ import type { Order, OrderStatus } from "../../types/Order";
 import { fetchAllOrders, updateOrderStatus } from "../../lib/Admin";
 import { AdminOrdersSkeleton } from "../../components/ui/Skeleton";
 import EmptyState from "../../components/ui/EmptyState";
-import { PackageX } from "lucide-react";
+import { ArrowUpRight, PackageX } from "lucide-react";
 import { formatPrice } from "../../utils/currency";
 import Badge from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
+import { Link } from "react-router-dom";
 
 const STATUS_OPTIONS: OrderStatus[] = [
   "processing",
@@ -173,8 +174,28 @@ const AdminOrders = () => {
             {filteredOrders.map((order) => (
               <div
                 key={order.id}
-                className="flex flex-col px-4 py-4 transition-colors duration-200 hover:bg-paper-dim/30 sm:px-5 lg:flex-row lg:items-center lg:justify-between lg:gap-6"
+                className="relative flex flex-col px-4 py-4 transition-colors duration-200 hover:bg-paper-dim/30 sm:px-5 lg:flex-row lg:items-center lg:justify-between lg:gap-6"
               >
+                <Link
+                  to={`/account/orders/${order.orderNumber}`}
+                  className="lg:hidden absolute right-2 top-2"
+                >
+                  <span
+                    className="flex h-6 w-6 items-center justify-center
+                    rounded-full 
+                    bg-paper-dim text-stone
+                    backdrop-blur-sm
+                    transition-all duration-200
+                    hover:bg-orange
+                    hover:text-paper
+                    hover:rotate-45
+                    active:scale-[0.95]
+                  "
+                  >
+                    <ArrowUpRight className="h-3 w-3" strokeWidth={2.2} />
+                  </span>
+                </Link>
+
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="label-tag font-semibold text-orange">
@@ -187,30 +208,28 @@ const AdminOrders = () => {
                       {order.status}
                     </Badge>
                   </div>
-                  <div className="mt-2 flex flex-wrap text-xs items-center gap-x-2 text-stone">
-                    <span className="max-w-full truncate">
+
+                  <div className="mt-2 flex flex-wrap flex-col text-xs items-start gap-2  text-stone lg:flex-row lg:items-center">
+                    <span className="text-sm">
                       {order.shippingAddress.email}
                     </span>
-                    <span aria-hidden="true" className="text-stone/40">
-                      ·
-                    </span>
 
-                    <time dateTime={order.placedAt}>
-                      {new Date(order.placedAt).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </time>
-
-                    <span aria-hidden="true" className="text-stone/40">
-                      ·
-                    </span>
-
-                    <span>
-                      {order.totals.itemCount}{" "}
-                      {order.totals.itemCount === 1 ? "item" : "items"}
-                    </span>
+                    <div className="">
+                      <time dateTime={order.placedAt}>
+                        {new Date(order.placedAt).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </time>{" "}
+                      <span aria-hidden="true" className="text-stone/40">
+                        ·{" "}
+                      </span>
+                      <span>
+                        {order.totals.itemCount}{" "}
+                        {order.totals.itemCount === 1 ? "item" : "items"}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="mt-2 flex w-full items-center justify-between gap-4 sm:justify-end lg:w-auto">
@@ -220,26 +239,50 @@ const AdminOrders = () => {
                     </p>
                   </div>
 
-                  <div className="shrink-0">
-                    <label htmlFor={`status-${order.id}`} className="sr-only">
-                      Update status for order {order.orderNumber}
-                    </label>
-                    <select
-                      id={`status-${order.id}`}
-                      value={order.status}
-                      disabled={pendingId === order.id}
-                      onChange={(e) =>
-                        handleStatusChange(order, e.target.value as OrderStatus)
-                      }
-                      className="min-w-28 cursor-pointer text-xs rounded-lg border border-line-light bg-paper px-2 py-1 font-medium
+                  <div className="flex items-center gap-6">
+                    <div className="shrink-0">
+                      <label htmlFor={`status-${order.id}`} className="sr-only">
+                        Update status for order {order.orderNumber}
+                      </label>
+                      <select
+                        id={`status-${order.id}`}
+                        value={order.status}
+                        disabled={pendingId === order.id}
+                        onChange={(e) =>
+                          handleStatusChange(
+                            order,
+                            e.target.value as OrderStatus,
+                          )
+                        }
+                        className="min-w-28 cursor-pointer text-xs rounded-lg border border-line-light bg-paper px-2 py-1 font-medium
                 capitalize outline-none transition-colors hover:border-ink/30 focus:border-orange focus:ring-2 focus:ring-orange disabled:opacity-50"
+                      >
+                        {STATUS_OPTIONS.map((status) => (
+                          <option key={status} className="capitalize">
+                            {status}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <Link
+                      to={`/account/orders/${order.orderNumber}`}
+                      className="hidden lg:block"
                     >
-                      {STATUS_OPTIONS.map((status) => (
-                        <option key={status} className="capitalize">
-                          {status}
-                        </option>
-                      ))}
-                    </select>
+                      <span
+                        className="flex h-6 w-6 items-center justify-center
+                    rounded-full 
+                    bg-paper-dim text-stone
+                    backdrop-blur-sm
+                    transition-all duration-200
+                    hover:bg-orange
+                    hover:text-paper
+                    hover:rotate-45
+                    active:scale-[0.95]
+                  "
+                      >
+                        <ArrowUpRight className="h-3 w-3" strokeWidth={2.2} />
+                      </span>
+                    </Link>
                   </div>
                 </div>
               </div>
