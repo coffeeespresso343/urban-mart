@@ -39,23 +39,27 @@ const Account = () => {
       <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div className="border border-line-light rounded-xl p-6">
           <p className="label-tag text-stone">Signed in as</p>
-          <div className="flex items-center gap-3">
-            <p className="mt-2 text-lg font-medium">
-              {profile?.firstName
-                ? `${profile.firstName} ${profile.lastName}`
-                : "Urban-Mart Customer"}
-            </p>
-            {isAdmin && (
-              <Badge tone="good">
-                <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2.5} />
-                Admin
-              </Badge>
-            )}
+          <div className="mt-4 flex items-center gap-2">
+            <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-ink text-paper ring-2 ring-orange/30">
+              {profile?.firstName ? profile.firstName[0].toUpperCase() : "-"}
+            </div>
+
+            <div className="min-w-0">
+              <p className="text-lg font-medium flex items-center gap-1.5">
+                {profile?.firstName} {profile?.lastName}
+                {isAdmin ? (
+                  <Badge tone="orange">
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                    Admin
+                  </Badge>
+                ) : null}
+              </p>
+              <p className="flex items-center gap-1 text-stone text-sm">
+                <Mail className="h-3 w-3" />
+                {user?.email}
+              </p>
+            </div>
           </div>
-          <p className="mt-1 flex items-center gap-1.5 text-sm text-stone">
-            <Mail className="h-3.5 w-3.5" aria-hidden="true" />
-            {user?.email}
-          </p>
 
           <div className="flex items-center justify-between gap-2">
             <button

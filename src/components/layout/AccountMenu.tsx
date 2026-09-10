@@ -51,7 +51,7 @@ const AccountMenu = () => {
     return (
       <Link
         to="/login"
-        className="h-7 w-7 flex items-center justify-center rounded-full bg-ink text-xs font-semibold text-orange transition-opacity hover:opacity-80 active:scale-[0.97]"
+        className="h-7 w-7 flex items-center justify-center rounded-full bg-ink text-xs font-semibold text-paper transition-opacity hover:opacity-80 active:scale-[0.97]"
       >
         <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
       </Link>
@@ -62,7 +62,7 @@ const AccountMenu = () => {
     return (
       <Link
         to="/login"
-        className="h-7 w-7 flex items-center justify-center rounded-full bg-ink text-xs font-semibold text-orange transition-opacity hover:opacity-80 active:scale-[0.97]"
+        className="h-7 w-7 flex items-center justify-center rounded-full bg-ink text-xs font-semibold text-paper transition-opacity hover:opacity-80 active:scale-[0.97]"
       >
         <User2 className="h-5 w-5" aria-hidden="true" />
       </Link>

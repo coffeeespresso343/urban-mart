@@ -72,7 +72,7 @@ export async function fetchUserById(userId: string): Promise<AdminUser | null> {
   const [profileResult, rolesResult] = await Promise.all([
     supabase
       .from("profiles")
-      .select("id, first_name, last_name, created_at, is_blocked")
+      .select("id, first_name, last_name, email, created_at, is_blocked")
       .eq("id", userId)
       .single(),
     supabase

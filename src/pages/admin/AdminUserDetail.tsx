@@ -11,9 +11,8 @@ import {
 import type { Order, OrderStatus } from "../../types/Order";
 import { fetchOrdersForUsers } from "../../lib/Orders";
 import { ProductGridSkeleton } from "../../components/ui/Skeleton";
-import { Ban, ChevronLeft, ShieldCheck, ShieldOff, Trash2 } from "lucide-react";
+import { Ban, ChevronLeft, ShieldCheck, ShieldOff } from "lucide-react";
 import Badge from "../../components/ui/Badge";
-import { Button } from "../../components/ui/Button";
 import { formatPrice } from "../../utils/currency";
 
 const STATUS_TONE: Record<OrderStatus, "ink" | "orange" | "good" | "warn"> = {
@@ -76,40 +75,58 @@ const AdminUserDetail = () => {
     <div>
       <Link
         to="/admin/users"
-        className="label-tag flex items-center gap-1.5 text-stone hover:text-ink"
+        className="flex items-center gap-1.5 text-stone text-sm hover:text-ink"
       >
-        <ChevronLeft className="h-3.5 w-3.5" aria-hidden="true" /> Users
+        <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Users
       </Link>
 
-      <div className="mt-6 flex flex-wrap items-start justify-between gap-4">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-6">
         <div>
-          <div className="flex items-center gap-2">
-            <h2 className="font-display text-2xl font-bold uppercase tracking-tight">
-              {targetUser.firstName
-                ? `${targetUser.firstName} ${targetUser.lastName ?? ""}`.trim()
-                : "Unnamed User"}
-            </h2>
-            {targetUser.isAdmin ? <Badge tone="orange">Admin</Badge> : null}
-            {targetUser.isBlocked ? <Badge tone="warn">Blocked</Badge> : null}
+          <div className="mt-4 flex items-start gap-3 rounded-xl bg-paper-dim/50 px-4 py-6">
+            <div className="h-9 w-9 shrink-0 flex items-center justify-center rounded-full bg-ink text-paper ring-2 ring-orange/30">
+              {targetUser?.firstName
+                ? targetUser.firstName[0].toUpperCase()
+                : "-"}
+            </div>
+
+            <div className="min-w-0">
+              <div className="flex items-center gap-2">
+                <h2 className="font-display text-lg font-bold">
+                  {targetUser.firstName
+                    ? `${targetUser.firstName} ${targetUser.lastName ?? ""}`.trim()
+                    : "Unnamed User"}
+                </h2>
+                {targetUser.isAdmin ? (
+                  <Badge tone="orange">
+                    <ShieldCheck className="h-3 w-3" strokeWidth={2.5} />
+                    Admin
+                  </Badge>
+                ) : null}
+                {targetUser.isBlocked ? (
+                  <Badge tone="warn">
+                    <Ban className="h-3 w-3" strokeWidth={2.5} />
+                    Blocked
+                  </Badge>
+                ) : null}
+              </div>
+
+              <p className="mt-1 text-sm text-stone">
+                {targetUser.email ?? "no email on file"}
+              </p>
+              <p className="mt-1 text-sm text-stone">
+                Joined{" "}
+                {new Date(targetUser.createdAt).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
           </div>
-          <p className="mt-1 text-sm text-stone">
-            {targetUser.email ?? "no email on file"}
-          </p>
-          <p className="label-tag mt-1 text-stone">
-            Joined{" "}
-            {new Date(targetUser.createdAt).toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            isLoading={isPending}
+          <button
             disabled={isSelf}
             onClick={() =>
               runAction(
@@ -119,6 +136,12 @@ const AdminUserDetail = () => {
                   : "Granted admin access",
               )
             }
+            className={`shrink-0 rounded-2xl flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
+                      active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
+                        targetUser.isAdmin
+                          ? "bg-transparent text-ink border-error/90 hover:bg-error/5"
+                          : "bg-ink text-paper border-ink hover:bg-ink/90"
+                      }`}
           >
             {targetUser.isAdmin ? (
               <>
@@ -131,11 +154,9 @@ const AdminUserDetail = () => {
                 Admin
               </>
             )}
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            isLoading={isPending}
+          </button>
+          <button
+            type="button"
             disabled={isSelf}
             onClick={() =>
               runAction(
@@ -143,11 +164,16 @@ const AdminUserDetail = () => {
                 targetUser.isBlocked ? "User unblocked" : "User blocked",
               )
             }
+            className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-2xl border font-medium transition-colors hover:text-stone disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] ${
+              targetUser.isBlocked
+                ? "bg-warn/60 border-warn/45 text-ink"
+                : "bg-error/60 border-error/30 text-ink"
+            }`}
           >
             <Ban className="h-3.5 w-3.5" aria-hidden="true" />{" "}
             {targetUser.isBlocked ? "Unblock" : "Block"}
-          </Button>
-          <Button
+          </button>
+          {/* <Button
             variant="outline"
             size="sm"
             isLoading={isPending}
@@ -169,7 +195,7 @@ const AdminUserDetail = () => {
             }}
           >
             <Trash2 className="h-3.5 w-3.5" aria-hidden="true" /> Delete
-          </Button>
+          </Button> */}
         </div>
       </div>
 

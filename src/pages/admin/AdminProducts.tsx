@@ -4,7 +4,7 @@ import { useProductsStore } from "../../hooks/useProductsStore";
 import EmptyState from "../../components/ui/EmptyState";
 import { useEffect, useState, type FormEvent } from "react";
 import ImageWithFallback from "../../components/ui/ImageWithFallback";
-import Badge from "../../components/ui/Badge";
+import Badge, { BadgeIcon } from "../../components/ui/Badge";
 import { formatPrice } from "../../utils/currency";
 import { AdminProductsSkeleton } from "../../components/ui/Skeleton";
 import type {
@@ -233,30 +233,38 @@ const AdminProducts = () => {
               key={product.id}
               className="flex flex-wrap items-center justify-between gap-4 py-4"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 lg:gap-5">
                 <span className="bg-stone/40 text-ink text-[10px] h-4 w-4 flex items-center justify-center rounded-full">
                   {product.id}
                 </span>
+
                 <Link
                   to={`/product/${product.id}`}
-                  className="h-14 w-14 rounded-xl shrink-0 overflow-hidden bg-paper-dim hover:opacity-90 active:scale-95"
+                  className="relative h-14 w-14 rounded-xl shrink-0 overflow-hidden bg-paper-dim hover:opacity-90 active:scale-95"
                 >
                   <ImageWithFallback
                     src={product.images[0]}
                     alt={product.name}
                     className="h-full w-full object-cover"
                   />
+                  {product.badge ? (
+                    <div className="absolute -right-0.5 -top-1 lg:hidden">
+                      <BadgeIcon badge={product.badge} tone="stone" />
+                    </div>
+                  ) : null}
                 </Link>
-                <div>
+                <div className="min-w-0">
                   <div className="flex items-start flex-col-reverse lg:flex-row gap-1 lg:gap-3">
-                    <p className="text-sm max-w-45 font-medium">
+                    <p className="text-sm max-w-40 lg:min-w-70 font-medium">
                       {product.name}
                     </p>
-                    {product.badge ? (
-                      <Badge tone="stone" className="text-[10px]">
-                        {product.badge}
-                      </Badge>
-                    ) : null}
+                    <span className="hidden lg:block">
+                      {product.badge ? (
+                        <Badge tone="stone" className="text-[10px]">
+                          {product.badge}
+                        </Badge>
+                      ) : null}
+                    </span>
                   </div>
                   <div className="mt-1 label-tag flex flex-col lg:items-center lg:flex-row lg:gap-2 text-stone lg:mt-2">
                     <p>{product.category}</p>

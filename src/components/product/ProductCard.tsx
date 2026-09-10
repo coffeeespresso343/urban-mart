@@ -60,20 +60,22 @@ const ProductCard = ({ product }: { product: Product }) => {
 
         <div className="absolute left-2 top-2 flex max-w-[75%] flex-wrap gap-1.5">
           {product.badge ? (
-            <Badge
-              tone={
-                product.badge === "Limited"
-                  ? "warn"
-                  : product.badge === "Best Seller"
-                    ? "good"
-                    : "orange"
-              }
-            >
-              {product.badge}
-            </Badge>
+            outOfStock ? (
+              <Badge tone="error">Sold out</Badge>
+            ) : (
+              <Badge
+                tone={
+                  product.badge === "Limited"
+                    ? "warn"
+                    : product.badge === "Best Seller"
+                      ? "good"
+                      : "orange"
+                }
+              >
+                {product.badge}
+              </Badge>
+            )
           ) : null}
-
-          {outOfStock ? <Badge tone="stone">Sold out</Badge> : null}
         </div>
 
         <button

@@ -16,7 +16,6 @@ import {
   Loader2,
   ShieldCheck,
   ShieldOff,
-  Trash2,
   Users2,
 } from "lucide-react";
 import Badge from "../../components/ui/Badge";
@@ -117,27 +116,27 @@ const AdminUsers = () => {
     }
   };
 
-  const handleDelete = async (targetUser: AdminUser) => {
-    if (guardSelf(targetUser, "You can't delete your own account")) return;
+  // const handleDelete = async (targetUser: AdminUser) => {
+  //   if (guardSelf(targetUser, "You can't delete your own account")) return;
 
-    if (
-      !window.confirm(
-        `Permanently delete ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}? This can't be undone.`,
-      )
-    )
-      return;
+  //   if (
+  //     !window.confirm(
+  //       `Permanently delete ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}? This can't be undone.`,
+  //     )
+  //   )
+  //     return;
 
-    setPendingId(targetUser.id);
-    const { error } = await deleteUserAccount(targetUser.id);
-    setPendingId(null);
-    if (error) return showToast(error, "error");
+  //   setPendingId(targetUser.id);
+  //   const { error } = await deleteUserAccount(targetUser.id);
+  //   setPendingId(null);
+  //   if (error) return showToast(error, "error");
 
-    showToast(
-      `Deleted ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}`,
-    );
+  //   showToast(
+  //     `Deleted ${targetUser.firstName ?? targetUser.email} ${targetUser.lastName ?? ""}`,
+  //   );
 
-    load();
-  };
+  //   load();
+  // };
 
   if (users === null) {
     return <AdminUsersSkeleton count={5} />;
@@ -228,7 +227,7 @@ const AdminUsers = () => {
                     className={`shrink-0 rounded-2xl flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
                       active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
                         user.isAdmin
-                          ? "bg-transparent text-error border-error/90 hover:bg-error/5"
+                          ? "bg-warn text-ink border-warn/90 hover:bg-warn/90"
                           : "bg-ink text-paper border-ink hover:bg-ink/90"
                       }`}
                   >
