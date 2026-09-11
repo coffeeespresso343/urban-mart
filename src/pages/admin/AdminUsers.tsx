@@ -10,22 +10,26 @@ import {
 import { AdminUsersSkeleton } from "../../components/ui/Skeleton";
 import EmptyState from "../../components/ui/EmptyState";
 import {
+  ArrowUpRight,
   Ban,
-  Eye,
+  Clock,
   Loader2,
+  Mail,
   ShieldCheck,
   ShieldOff,
   Users2,
+  UserX2,
 } from "lucide-react";
 import Badge from "../../components/ui/Badge";
 import { Link } from "react-router-dom";
 
-type UserFilter = "all" | "customer" | "admin";
+type UserFilter = "all" | "customer" | "admin" | "blocked";
 
 const FILTER_OPTIONS: { value: UserFilter; label: string }[] = [
   { value: "all", label: "All Users" },
   { value: "admin", label: "Admin" },
-  { value: "customer", label: "Customer" },
+  { value: "customer", label: "Customers" },
+  { value: "blocked", label: "Blocked Users" },
 ];
 
 const AdminUsers = () => {
@@ -51,7 +55,10 @@ const AdminUsers = () => {
       return users.filter((user) => user.isAdmin);
     } else if (userFilter === "customer") {
       return users.filter((user) => !user.isAdmin);
-    } else return users;
+    } else if (userFilter === "blocked") {
+      return users.filter((user) => user.isBlocked);
+    }
+    return users;
   }, [users, userFilter]);
 
   const guardSelf = (targetUser: AdminUser, message: string) => {
@@ -155,18 +162,24 @@ const AdminUsers = () => {
       <div className="flex items-end justify-between gap-4">
         <div className="flex  items-center gap-2">
           <h2 className="text-xl font-display font-bold tracking-tight">
-            Users
+            {userFilter === "admin"
+              ? "Admin"
+              : userFilter === "customer"
+                ? "All Customers"
+                : userFilter === "blocked"
+                  ? "Blocked Users"
+                  : "All Users"}
           </h2>
           <p className="mt-1 text-sm text-stone font-bold">
             ({filteredUsers.length ?? 0}{" "}
-            {filteredUsers.length === 1 ? "account" : "accounts"})
+            {filteredUsers.length <= 1 ? "account" : "accounts"})
           </p>
         </div>
         <div className="shrink-0">
           <select
             value={userFilter}
             onChange={(e) => setUserFilter(e.target.value as UserFilter)}
-            className="min-w-30 cursor-pointer text-xs rounded-lg border border-line-light bg-paper px-2 py-1 font-medium
+            className="min-w-30 h-8 cursor-pointer text-xs rounded-lg border border-line-light bg-paper px-2 py-1 font-medium
                 capitalize outline-none transition-colors hover:border-ink/30 focus:border-orange focus:ring-2 focus:ring-orange"
           >
             {FILTER_OPTIONS.map((user) => (
@@ -179,14 +192,39 @@ const AdminUsers = () => {
       </div>
 
       <div className="mt-6 overflow-hidden rounded-2xl border border-line-light bg-paper/50">
-        {filteredUsers.length > 0 ? (
+        {filteredUsers.length === 0 ? (
+          <EmptyState
+            icon={UserX2}
+            title="No Users Found!"
+            message="Try different filters."
+          />
+        ) : filteredUsers.length > 0 ? (
           <div className="divide-y divide-line-light">
             {filteredUsers.map((user) => (
               <div
                 key={user.id}
-                className="group flex flex-col gap-4 px-4 py-4 transition-colors duration-200 hover:bg-paper-dim/40
+                className="group relative flex flex-col gap-4 px-4 py-4 transition-colors duration-200 hover:bg-paper-dim/40
               sm:flex-row sm:items-center sm:justify-between sm:px-5"
               >
+                <Link
+                  to={`/admin/users/${user.id}`}
+                  className="absolute right-4 top-4 sm:top-2 sm:right-2"
+                >
+                  <span
+                    className="flex h-6 w-6 items-center justify-center
+                    rounded-full 
+                    bg-paper-dim/20 text-stone
+                    backdrop-blur-sm
+                    transition-all duration-200
+                    hover:bg-orange
+                    hover:text-paper
+                    hover:rotate-45
+                    active:scale-[0.98]
+                  "
+                  >
+                    <ArrowUpRight className="h-3 w-3" strokeWidth={2.2} />
+                  </span>
+                </Link>
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
                     <div>
@@ -218,13 +256,15 @@ const AdminUsers = () => {
                     )}
                   </div>
                   <p className="mt-2 font-mono font-semibold truncate text-xs text-stone">
-                    ID: #{user.id}
+                    ID #{user.id}
                   </p>
-                  <p className="mt-1 truncate text-sm text-stone">
+                  <p className="mt-1 truncate flex items-center gap-2 text-sm text-stone">
+                    <Mail className="h-3 w-3" />
                     {user.email ?? "No email on file"}
                   </p>
 
-                  <p className="mt-2 text-xs font-medium text-stone/80">
+                  <p className="mt-1 text-xs flex items-center gap-2 font-medium text-stone/80">
+                    <Clock className="h-3 w-3" />
                     Joined{" "}
                     {new Date(user.createdAt).toLocaleDateString("en-US", {
                       month: "short",
@@ -241,11 +281,11 @@ const AdminUsers = () => {
                       currentUser?.id === user.id || pendingId === user.id
                     }
                     onClick={() => toggleAdmin(user)}
-                    className={`shrink-0 rounded-2xl flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
-                      active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
+                    className={`shrink-0 h-8 rounded-lg flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
+                      transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
                         user.isAdmin
-                          ? "bg-warn text-ink border-warn/90 hover:bg-warn/90"
-                          : "bg-ink text-paper border-ink hover:bg-ink/90"
+                          ? "bg-warn/60 text-ink border-warn/15 hover:bg-warn/25"
+                          : "bg-ink border-ink/15 text-paper hover:bg-ink/90"
                       }`}
                   >
                     {isAdminLoading && pendingId === user.id ? (
@@ -266,24 +306,16 @@ const AdminUsers = () => {
                     )}
                   </button>
 
-                  <Link
-                    to={`/admin/users/${user.id}`}
-                    className="shrink-0 rounded-2xl flex items-center justify-center gap-1.5 
-                   bg-ink/10 border border-ink/15 font-medium text-ink text-xs px-3 py-1.5 hover:bg-paper active:scale-[0.97]"
-                  >
-                    <Eye className="h-3.5 w-3.5" /> Details
-                  </Link>
-
                   <button
                     type="button"
                     onClick={() => toggleBlocked(user)}
                     disabled={
                       currentUser?.id === user.id || pendingId === user.id
                     }
-                    className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-2xl border font-medium transition-colors hover:text-stone disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] ${
+                    className={`flex shrink-0 h-8 items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all hover:text-stone disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] ${
                       user.isBlocked
-                        ? "bg-warn/40 border-warn/45 text-ink"
-                        : "bg-error/50 border-error/55 text-ink"
+                        ? "bg-good/30 border-good/10 text-ink hover:bg-good/15"
+                        : "bg-error/30 border-error/10 text-error hover:bg-error/15"
                     }`}
                   >
                     {user.isBlocked ? (
@@ -309,6 +341,13 @@ const AdminUsers = () => {
                       </>
                     )}
                   </button>
+                  <Link
+                    to={`/admin/users/${user.id}`}
+                    className="shrink-0 h-8 rounded-lg flex items-center justify-center
+                   bg-paper border border-ink/20 font-medium text-ink transition-colors text-xs px-3 py-1.5 hover:border-ink/20 hover:bg-paper-warm active:scale-[0.98]"
+                  >
+                    Details
+                  </Link>
                 </div>
               </div>
             ))}

@@ -124,8 +124,8 @@ export const AdminUsersSkeleton = ({ count = 4 }: { count?: number }) => {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <Skeleton className="h-6 w-20 rounded-md" />
-        <Skeleton className="mt-2 h-4 w-24 rounded-md" />
+        <Skeleton className="h-5 w-26 rounded-lg" />
+        <Skeleton className=" h-6 w-24 rounded-lg" />
       </div>
       <div className="mt-6 overflow-hidden rounded-2xl border border-paper-warm">
         <div className="divide-y divide-paper-warm">
@@ -145,9 +145,9 @@ export const AdminUsersSkeleton = ({ count = 4 }: { count?: number }) => {
                 <Skeleton className="mt-2 h-3 w-34 rounded-md" />
               </div>
               <div className="flex items-center justify-between gap-2 sm:gap-4">
-                <Skeleton className="h-6 w-24 rounded-full" />
-                <Skeleton className="h-6 w-20 rounded-full" />
-                <Skeleton className="h-6 w-20 rounded-full" />
+                <Skeleton className="h-6 w-24 rounded-lg" />
+                <Skeleton className="h-6 w-20 rounded-lg" />
+                <Skeleton className="h-6 w-20 rounded-lg" />
               </div>
             </div>
           ))}
@@ -187,7 +187,7 @@ export const AdminOrdersSkeleton = ({ count = 4 }: { count?: number }) => {
               </div>
               <div className="mt-2 flex w-full items-center justify-between gap-4 sm:justify-end lg:w-auto">
                 <Skeleton className="h-4 w-16 rounded-xl" />
-                <Skeleton className="h-4 w-28 rounded-xl" />
+                <Skeleton className="h-6 w-28 rounded-lg" />
               </div>
             </div>
           ))}
@@ -237,16 +237,16 @@ export const AdminUsersDetailSkeleton = ({ count = 4 }: { count?: number }) => {
       <div className="flex items-center justify-between gap-4">
         <Skeleton className="h-24 w-50 rounded-2xl" />
         <div className="flex items-center gap-3">
-          <Skeleton className="h-5 w-20 rounded-2xl" />
-          <Skeleton className="h-5 w-20 rounded-2xl" />
+          <Skeleton className="h-5 w-24 rounded-lg" />
+          <Skeleton className="h-5 w-20 rounded-lg" />
         </div>
       </div>
 
       <div className="mt-6 flex items-center justify-between gap-4">
         <Skeleton className="h-4 w-24 rounded-xl" />
         <div className="flex items-center gap-2">
-          <Skeleton className="h-4 w-10 rounded-xl" />
-          <Skeleton className="h-4 w-10 rounded-xl" />
+          <Skeleton className="h-4 w-16 rounded-xl" />
+          <Skeleton className="h-4 w-16 rounded-xl" />
         </div>
       </div>
 
@@ -267,6 +267,7 @@ export const AdminUsersDetailSkeleton = ({ count = 4 }: { count?: number }) => {
               </div>
             </div>
             <Skeleton className="h-4 w-20 rounded-xl" />
+            <Skeleton className="h-6 w-16 rounded-lg" />
           </div>
         ))}
       </div>

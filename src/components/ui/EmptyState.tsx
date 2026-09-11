@@ -21,7 +21,7 @@ const EmptyState = ({
           aria-hidden="true"
         />
       </div>
-      <h2 className="font-display text-xl text-stone font-bold uppercase tracking-wide">
+      <h2 className="font-display text-xl text-stone font-bold tracking-wide">
         {title}
       </h2>
       <p className="mt-2 max-w-sm text-sm text-stone">{message}</p>

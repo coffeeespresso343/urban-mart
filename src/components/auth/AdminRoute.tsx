@@ -18,9 +18,9 @@ const AdminRoute = ({ children }: { children: ReactNode }) => {
 
   if (isLoading || isAdminLoading) {
     return (
-      <div className="flex min-h-[90vh] items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <span
-          className="h-8 w-8 animate-spin rounded-full border-2 border-orange border-t-transparent"
+          className="h-8 w-8 animate-spin rounded-full border-3 border-orange border-t-transparent"
           aria-hidden="true"
         />
       </div>

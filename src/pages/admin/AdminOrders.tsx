@@ -10,11 +10,11 @@ import Badge from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
 import { Link } from "react-router-dom";
 
-const STATUS_OPTIONS: OrderStatus[] = [
-  "processing",
-  "shipped",
-  "delivered",
-  "cancelled",
+const STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
+  { value: "processing", label: "Processing" },
+  { value: "shipped", label: "Shipped" },
+  { value: "delivered", label: "Delivered" },
+  { value: "cancelled", label: "Cancelled" },
 ];
 
 const STATUS_TONE: Record<OrderStatus, "ink" | "orange" | "good" | "warn"> = {
@@ -178,12 +178,12 @@ const AdminOrders = () => {
               >
                 <Link
                   to={`/account/orders/${order.orderNumber}`}
-                  className="lg:hidden absolute right-2 top-2"
+                  className="absolute right-4 top-4 lg:right-1 lg:top-1"
                 >
                   <span
                     className="flex h-6 w-6 items-center justify-center
                     rounded-full 
-                    bg-paper-dim text-stone
+                    bg-paper-dim/25 text-stone
                     backdrop-blur-sm
                     transition-all duration-200
                     hover:bg-orange
@@ -203,7 +203,7 @@ const AdminOrders = () => {
                     </p>
                     <Badge
                       tone={STATUS_TONE[order.status]}
-                      className="capitalize text-[9px]"
+                      className="capitalize text-[10px]"
                     >
                       {order.status}
                     </Badge>
@@ -232,7 +232,7 @@ const AdminOrders = () => {
                     </div>
                   </div>
                 </div>
-                <div className="mt-2 flex w-full items-center justify-between gap-4 sm:justify-end lg:w-auto">
+                <div className="mt-2 mr-8 flex w-full items-center justify-between gap-4 sm:justify-end lg:w-auto">
                   <div className="min-w-20 sm:text-right">
                     <p className="price mt-0.5 text-sm font-bold tracking-tight text-ink">
                       {formatPrice(order.totals.total)}
@@ -258,31 +258,12 @@ const AdminOrders = () => {
                 capitalize outline-none transition-colors hover:border-ink/30 focus:border-orange focus:ring-2 focus:ring-orange disabled:opacity-50"
                       >
                         {STATUS_OPTIONS.map((status) => (
-                          <option key={status} className="capitalize">
-                            {status}
+                          <option key={status.value} value={status.value}>
+                            {status.label}
                           </option>
                         ))}
                       </select>
                     </div>
-                    <Link
-                      to={`/account/orders/${order.orderNumber}`}
-                      className="hidden lg:block"
-                    >
-                      <span
-                        className="flex h-6 w-6 items-center justify-center
-                    rounded-full 
-                    bg-paper-dim text-stone
-                    backdrop-blur-sm
-                    transition-all duration-200
-                    hover:bg-orange
-                    hover:text-paper
-                    hover:rotate-45
-                    active:scale-[0.95]
-                  "
-                      >
-                        <ArrowUpRight className="h-3 w-3" strokeWidth={2.2} />
-                      </span>
-                    </Link>
                   </div>
                 </div>
               </div>

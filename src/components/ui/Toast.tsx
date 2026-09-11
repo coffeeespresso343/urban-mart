@@ -56,7 +56,7 @@ const ToastItem = ({ toast }: { toast: ToastMessage }) => {
             aria-hidden="true"
           />
         </div>
-        <p className="text-[12px]">{toast.message}</p>
+        <p className="text-[12px] font-medium">{toast.message}</p>
       </div>
       <button
         onClick={() => dismissToast(toast.id)}

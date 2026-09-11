@@ -171,8 +171,8 @@ const AdminUserDetail = () => {
 
       <div className="mt-6 flex flex-wrap flex-col lg:flex-row items-start justify-between gap-6">
         <div>
-          <div className="mt-4 flex items-start gap-3 rounded-xl bg-paper-dim/50 px-4 py-6">
-            <div className="h-9 w-9 shrink-0 flex items-center justify-center rounded-full bg-ink text-paper ring-2 ring-orange/30">
+          <div className="flex items-start gap-3 rounded-xl bg-paper-dim/50 px-4 py-6">
+            <div className="h-8 w-8 shrink-0 flex items-center justify-center rounded-full bg-ink text-paper ring-2 ring-orange/30">
               {targetUser?.firstName
                 ? targetUser.firstName[0].toUpperCase()
                 : "-"}
@@ -180,7 +180,7 @@ const AdminUserDetail = () => {
 
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <h2 className="font-display text-lg font-bold">
+                <h2 className="font-display text-md font-bold">
                   {targetUser.firstName
                     ? `${targetUser.firstName} ${targetUser.lastName ?? ""}`.trim()
                     : "Unnamed User"}
@@ -218,11 +218,11 @@ const AdminUserDetail = () => {
           <button
             disabled={isSelf || isPending}
             onClick={() => toggleAdmin(targetUser)}
-            className={`shrink-0 rounded-2xl flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
-                      active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
+            className={`shrink-0 h-8 rounded-lg flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
+                      transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
                         targetUser.isAdmin
-                          ? "bg-warn text-ink border-warn/90 hover:bg-warn/90"
-                          : "bg-ink text-paper border-ink hover:bg-ink/90"
+                          ? "bg-warn/60 text-ink border-warn/15 hover:bg-warn/25"
+                          : "bg-ink border-ink/15 text-paper hover:bg-ink/90"
                       }`}
           >
             {isPending && isAdminLoading ? (
@@ -246,10 +246,10 @@ const AdminUserDetail = () => {
             type="button"
             disabled={isSelf || isPending}
             onClick={() => toggleBlocked(targetUser)}
-            className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-2xl border font-medium transition-colors hover:text-stone disabled:opacity-40 disabled:cursor-not-allowed active:scale-[0.97] ${
+            className={`flex shrink-0 h-8 items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all hover:text-stone disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] ${
               targetUser.isBlocked
-                ? "bg-warn/40 border-warn/45 text-ink"
-                : "bg-error/50 border-error/55 text-ink"
+                ? "bg-good/30 border-good/10 text-ink hover:bg-good/15"
+                : "bg-error/30 border-error/10 text-error hover:bg-error/15"
             }`}
           >
             {isPending && isBlocking ? (
@@ -293,7 +293,7 @@ const AdminUserDetail = () => {
                     </p>
                     <Badge
                       tone={STATUS_TONE[order.status]}
-                      className="capitalize"
+                      className="capitalize text-[10px]"
                     >
                       {order.status}
                     </Badge>
@@ -311,6 +311,13 @@ const AdminUserDetail = () => {
                 <span className="price text-sm font-semibold">
                   {formatPrice(order.totals.total)}
                 </span>
+                <Link
+                  to={`/account/orders/${order.orderNumber}`}
+                  className="shrink-0 rounded-lg flex items-center justify-center gap-1 px-2 py-1 text-ink
+                   bg-paper border border-ink/20 font-medium transition-colors text-xs hover:border-ink/20 hover:bg-paper-warm active:scale-[0.98]"
+                >
+                  Details
+                </Link>
               </div>
             ))}
           </div>

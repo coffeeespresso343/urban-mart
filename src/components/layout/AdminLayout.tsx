@@ -51,7 +51,7 @@ const AdminLayout = () => {
       <main className="flex-1">
         <div className="container-edge grid grid-cols-1 gap-8 py-5 sm:py-10 lg:grid-cols-[220px_1fr]">
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="flex items-start gap-2 bg-good/5 w-fit pr-5 lg:pr-0 py-4 px-2 rounded-lg lg:w-auto">
+            <div className="flex items-start gap-2 bg-paper-dim w-fit pr-5 lg:pr-0 py-4 px-2 rounded-lg lg:w-auto">
               <div className="relative">
                 <div className="h-8 w-8 shrink-0 flex items-center justify-center rounded-full bg-paper ring-2 ring-orange/30">
                   <ShieldUser className="h-5 w-5 text-orange" />
