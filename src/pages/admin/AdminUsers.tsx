@@ -39,8 +39,9 @@ const AdminUsers = () => {
   const [users, setUsers] = useState<AdminUser[] | null>(null);
   const [userFilter, setUserFilter] = useState<UserFilter>("all");
   const [pendingId, setPendingId] = useState<string | null>(null);
-  const [isAdminLoading, setIsAdminLoading] = useState(false);
-  const [isBlocking, setIsBlocking] = useState(false);
+  const [pendingAction, setPendingAction] = useState<"admin" | "block" | null>(
+    null,
+  );
 
   const load = () => {
     fetchAllUsers().then(setUsers);
@@ -76,7 +77,7 @@ const AdminUsers = () => {
     }
 
     setPendingId(targetUser.id);
-    setIsAdminLoading(true);
+    setPendingAction("admin");
 
     try {
       const { error } = await setUserAdmin(targetUser.id, !targetUser.isAdmin);
@@ -102,7 +103,7 @@ const AdminUsers = () => {
       );
     } finally {
       setPendingId(null);
-      setIsAdminLoading(false);
+      setPendingAction(null);
     }
   };
 
@@ -110,7 +111,7 @@ const AdminUsers = () => {
     if (guardSelf(targetUser, "You can't block your own account")) return;
 
     setPendingId(targetUser.id);
-    setIsBlocking(true);
+    setPendingAction("block");
 
     try {
       const { error } = await setUserBlocked(
@@ -139,7 +140,7 @@ const AdminUsers = () => {
       );
     } finally {
       setPendingId(null);
-      setIsBlocking(false);
+      setPendingAction(null);
     }
   };
 
@@ -278,17 +279,18 @@ const AdminUsers = () => {
                   <button
                     type="button"
                     disabled={
-                      currentUser?.id === user.id || pendingId === user.id
+                      currentUser?.id === user.id ||
+                      (pendingId === user.id && pendingAction === "admin")
                     }
                     onClick={() => toggleAdmin(user)}
-                    className={`shrink-0 h-8 rounded-lg flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
+                    className={`shrink-0 h-8 min-w-34 rounded-lg flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
                       transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
                         user.isAdmin
                           ? "bg-warn/60 text-ink border-warn/15 hover:bg-warn/25"
                           : "bg-ink border-ink/15 text-paper hover:bg-ink/90"
                       }`}
                   >
-                    {isAdminLoading && pendingId === user.id ? (
+                    {pendingId === user.id && pendingAction === "admin" ? (
                       <>
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
                         Updating...
@@ -310,30 +312,22 @@ const AdminUsers = () => {
                     type="button"
                     onClick={() => toggleBlocked(user)}
                     disabled={
-                      currentUser?.id === user.id || pendingId === user.id
+                      currentUser?.id === user.id ||
+                      (pendingId === user.id && pendingAction === "block")
                     }
-                    className={`flex shrink-0 h-8 items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all hover:text-stone disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] ${
+                    className={`flex shrink-0 h-8 min-w-28 items-center justify-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all hover:text-stone disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] ${
                       user.isBlocked
                         ? "bg-good/30 border-good/10 text-ink hover:bg-good/15"
                         : "bg-error/30 border-error/10 text-error hover:bg-error/15"
                     }`}
                   >
-                    {user.isBlocked ? (
-                      <>
-                        {isBlocking && pendingId === user.id ? (
-                          <>
-                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                            Unblocking
-                          </>
-                        ) : (
-                          "Unblock"
-                        )}
-                      </>
-                    ) : isBlocking && pendingId === user.id ? (
+                    {pendingId === user.id && pendingAction === "block" ? (
                       <>
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                        Blocking
+                        {user.isBlocked ? "Unblocking" : "Blocking"}
                       </>
+                    ) : user.isBlocked ? (
+                      "Unblock"
                     ) : (
                       <>
                         <Ban className="h-3.5 w-3.5" />

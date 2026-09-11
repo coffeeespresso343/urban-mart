@@ -42,10 +42,10 @@ const AdminUserDetail = () => {
   );
   const [orders, setOrders] = useState<Order[] | null>(null);
 
-  const [isPending, setIsPending] = useState(false);
-
-  const [isAdminLoading, setIsAdminLoading] = useState(false);
-  const [isBlocking, setIsBlocking] = useState(false);
+  const [pendingId, setPendingId] = useState<string | null>(null);
+  const [pendingAction, setPendingAction] = useState<"admin" | "block" | null>(
+    null,
+  );
 
   const load = () => {
     if (!userId) return;
@@ -55,6 +55,10 @@ const AdminUserDetail = () => {
   };
 
   useEffect(load, [userId]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   if (targetUser === undefined || orders === null) {
     return <AdminUsersDetailSkeleton count={4} />;
@@ -66,27 +70,14 @@ const AdminUserDetail = () => {
 
   const isSelf = targetUser.id === currentUser?.id;
 
-  // const runAction = async (
-  //   action: () => Promise<{ error: string | null }>,
-  //   successMessage: string,
-  // ) => {
-  //   setIsPending(true);
-  //   const { error } = await action();
-  //   setIsPending(false);
-  //   if (error) return showToast(error, "error");
-
-  //   showToast(successMessage, "success");
-  //   load();
-  // };
-
   const toggleAdmin = async (targetUser: AdminUser) => {
     if (targetUser.id === currentUser?.id) {
       showToast("You can't change your own admin status", "error");
       return;
     }
 
-    setIsPending(true);
-    setIsAdminLoading(true);
+    setPendingId(targetUser.id);
+    setPendingAction("admin");
 
     try {
       const { error } = await setUserAdmin(targetUser.id, !targetUser.isAdmin);
@@ -111,9 +102,8 @@ const AdminUserDetail = () => {
         "error",
       );
     } finally {
-      setIsPending(false);
-
-      setIsAdminLoading(false);
+      setPendingId(null);
+      setPendingAction("admin");
     }
   };
 
@@ -123,8 +113,8 @@ const AdminUserDetail = () => {
       return;
     }
 
-    setIsPending(true);
-    setIsBlocking(true);
+    setPendingId(targetUser.id);
+    setPendingAction("block");
 
     try {
       const { error } = await setUserBlocked(
@@ -152,9 +142,8 @@ const AdminUserDetail = () => {
         "error",
       );
     } finally {
-      setIsPending(false);
-
-      setIsBlocking(false);
+      setPendingAction(null);
+      setPendingAction(null);
     }
   };
 
@@ -178,7 +167,7 @@ const AdminUserDetail = () => {
                 : "-"}
             </div>
 
-            <div className="min-w-0">
+            <div className="min-w-80">
               <div className="flex items-center gap-2">
                 <h2 className="font-display text-md font-bold">
                   {targetUser.firstName
@@ -192,10 +181,7 @@ const AdminUserDetail = () => {
                   </Badge>
                 ) : null}
                 {targetUser.isBlocked ? (
-                  <Badge tone="warn">
-                    <Ban className="h-3 w-3" strokeWidth={2.5} />
-                    Blocked
-                  </Badge>
+                  <Badge tone="error">Blocked</Badge>
                 ) : null}
               </div>
 
@@ -216,48 +202,61 @@ const AdminUserDetail = () => {
 
         <div className="flex items-center gap-4">
           <button
-            disabled={isSelf || isPending}
+            disabled={
+              isSelf ||
+              (pendingId === targetUser.id && pendingAction === "admin")
+            }
             onClick={() => toggleAdmin(targetUser)}
-            className={`shrink-0 h-8 rounded-lg flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
+            className={`shrink-0 h-8 min-w-34 rounded-lg flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
                       transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
                         targetUser.isAdmin
                           ? "bg-warn/60 text-ink border-warn/15 hover:bg-warn/25"
                           : "bg-ink border-ink/15 text-paper hover:bg-ink/90"
                       }`}
           >
-            {isPending && isAdminLoading ? (
+            {pendingId === targetUser.id && pendingAction === "admin" ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                Updating
+                Updating...
               </>
             ) : targetUser.isAdmin ? (
               <>
-                <ShieldOff className="h-3.5 w-3.5" aria-hidden="true" /> Remove
-                Admin
+                <ShieldOff className="h-3.5 w-3.5" />
+                Remove Admin
               </>
             ) : (
               <>
-                <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" /> Make
-                Admin
+                <ShieldCheck className="h-3.5 w-3.5" />
+                Make Admin
               </>
             )}
           </button>
           <button
             type="button"
-            disabled={isSelf || isPending}
+            disabled={
+              isSelf ||
+              (pendingId === targetUser.id && pendingAction === "block")
+            }
             onClick={() => toggleBlocked(targetUser)}
-            className={`flex shrink-0 h-8 items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all hover:text-stone disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] ${
+            className={`flex shrink-0 h-8 min-w-28 items-center justify-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all hover:text-stone disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] ${
               targetUser.isBlocked
                 ? "bg-good/30 border-good/10 text-ink hover:bg-good/15"
                 : "bg-error/30 border-error/10 text-error hover:bg-error/15"
             }`}
           >
-            {isPending && isBlocking ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            {pendingId === targetUser.id && pendingAction === "block" ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                {targetUser.isBlocked ? "Unblocking" : "Blocking"}
+              </>
+            ) : targetUser.isBlocked ? (
+              "Unblock"
             ) : (
-              <Ban className="h-3.5 w-3.5" aria-hidden="true" />
+              <>
+                <Ban className="h-3.5 w-3.5" />
+                Block
+              </>
             )}
-            {targetUser.isBlocked ? "Unblock" : "Block"}
           </button>
         </div>
       </div>

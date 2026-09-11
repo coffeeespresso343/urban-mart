@@ -209,6 +209,7 @@ export interface TopProducts {
   name: string;
   unitsSold: number;
   revenue: number;
+  image: string;
 }
 
 export interface RevenuePoint {
@@ -272,16 +273,19 @@ export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
   const averageOrderValue = orderCount > 0 ? totalRevenue / orderCount : 0;
 
   const productTotals = new Map<string, TopProducts>();
+
   for (const order of orders) {
     for (const item of order.items) {
       const existing = productTotals.get(item.product.name) ?? {
         name: item.product.name,
         unitsSold: 0,
         revenue: 0,
+        image: item.product.images[0],
       };
 
       existing.unitsSold += item.quantity;
       existing.revenue += item.product.price * item.quantity;
+      existing.image = item.product.images[0];
       productTotals.set(item.product.name, existing);
     }
   }

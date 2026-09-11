@@ -14,7 +14,7 @@ const toneClasses: Record<Tone, string> = {
   orange: "bg-orange/80 text-paper border border-orange/60 backdrop-blur-sm",
   warn: "bg-warn/50 text-ink border border-warn/60",
   good: "bg-good/50 text-ink border border-good/70 ",
-  error: "bg-error/40 text-ink border border-error/60",
+  error: "bg-error/40 text-ink border border-error/50",
   stone: "bg-paper-dim/70 text-ink border border-line-light",
 };
 

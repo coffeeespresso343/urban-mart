@@ -1,12 +1,20 @@
-import { Check, ChevronLeft, MapPin, Package, Truck } from "lucide-react";
+import {
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  MapPin,
+  Package,
+  Truck,
+} from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import type { Order, OrderStatus } from "../types/Order";
 import { fetchOrderByNumber } from "../lib/Orders";
 import { OrderDetailsGridSkeleton } from "../components/ui/Skeleton";
 import Badge from "../components/ui/Badge";
 import ImageWithFallback from "../components/ui/ImageWithFallback";
 import { formatPrice } from "../utils/currency";
+import { useAuth } from "../hooks/useAuth";
 
 const STATUS_TONE: Record<OrderStatus, "ink" | "orange" | "good" | "warn"> = {
   processing: "orange",
@@ -27,6 +35,8 @@ const STATUS_STEPS: OrderStatus[] = ["processing", "shipped", "delivered"];
 const AccountOrderDetail = () => {
   const { orderNumber } = useParams<{ orderNumber: string }>();
   const [order, setOrder] = useState<Order | null | undefined>(undefined);
+  const { isAdmin } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!orderNumber) return;
@@ -72,13 +82,31 @@ const AccountOrderDetail = () => {
 
   return (
     <div className="container-edge py-10 sm:py-14">
-      <Link
-        to="/account/orders"
-        className="group inline-flex text-sm items-center gap-1.5 font-medium text-stone transition-colors duration-200 hover:text-ink"
-      >
-        <ChevronLeft className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-        Order History
-      </Link>
+      {isAdmin ? (
+        <span className="flex items-center gap-1.5 text-xs text-stone">
+          <Link
+            to="/admin/users"
+            className="text-sm items-center gap-1.5 font-medium text-stone transition-colors duration-200 hover:text-ink"
+          >
+            Users
+          </Link>
+          <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          <button
+            onClick={() => navigate(-1)}
+            className="text-sm items-center gap-1.5 font-medium text-stone transition-colors duration-200 hover:text-ink"
+          >
+            User Details
+          </button>
+        </span>
+      ) : (
+        <Link
+          to="/account/orders"
+          className="group inline-flex text-sm items-center gap-1.5 font-medium text-stone transition-colors duration-200 hover:text-ink"
+        >
+          <ChevronLeft className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          Order History
+        </Link>
+      )}
 
       <header className="mt-6 border-b border-line-light pb-7 sm:mt-7 sm:pb-8">
         <div className="flex gap-5 flex-row items-end justify-between">

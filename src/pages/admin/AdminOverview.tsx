@@ -4,8 +4,10 @@ import { Skeleton } from "../../components/ui/Skeleton";
 import { formatPrice } from "../../utils/currency";
 import {
   ArrowRight,
+  Crown,
   DollarSign,
   ShoppingCart,
+  Star,
   TrendingUp,
   TriangleAlert,
   Users2,
@@ -24,6 +26,7 @@ import {
 } from "recharts";
 import { Link } from "react-router-dom";
 import Badge from "../../components/ui/Badge";
+import ImageWithFallback from "../../components/ui/ImageWithFallback";
 
 function MertricCard({
   icon: Icon,
@@ -146,7 +149,7 @@ function RecentOrderPanel({
           {orders.map((order) => (
             <Link
               key={order.id}
-              to="/admin/orders"
+              to={`/account/orders/${order.orderNumber}`}
               className="flex items-center justify-between gap-3 py-3 transition duration-200 hover:bg-paper-dim/20 active:scale-99"
             >
               <div className="min-w-0">
@@ -308,10 +311,28 @@ const AdminOverview = () => {
                 key={product.name}
                 className="flex items-center gap-4 transition-colors hover:bg-paper-dim/40 sm:px-5 py-3"
               >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-paper-dim text-xs font-bold text-stone">
+                <span
+                  className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full  
+                text-xs font-bold ${index <= 2 ? "text-paper bg-ink" : "text-stone bg-paper-dim"}`}
+                >
                   {index + 1}
                 </span>
-
+                <div className="relative h-12 w-12 bg-paper">
+                  {index <= 2 ? (
+                    <span className="absolute -right-1.5 -top-1.5 h-6 w-6 bg-paper-dim/90 flex items-center justify-center rounded-full">
+                      {index === 0 ? (
+                        <Crown className="h-3 w-3 text-ink" strokeWidth={2.5} />
+                      ) : (
+                        <Star className="h-3 w-3  text-ink" strokeWidth={2.5} />
+                      )}
+                    </span>
+                  ) : null}
+                  <ImageWithFallback
+                    src={product.image}
+                    alt={product.name}
+                    className="h-full w-full object-cover rounded-lg"
+                  />
+                </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-semibold">
                     {product.name}

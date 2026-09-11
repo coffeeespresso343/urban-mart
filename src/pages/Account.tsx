@@ -40,12 +40,12 @@ const Account = () => {
         <div className="border border-line-light rounded-xl p-6">
           <p className="label-tag text-stone">Signed in as</p>
           <div className="mt-4 flex items-center gap-2">
-            <div className="h-10 w-10 shrink-0 flex items-center justify-center rounded-full bg-ink text-paper ring-2 ring-orange/30">
+            <div className="h-9 w-9 shrink-0 flex items-center justify-center rounded-full bg-ink text-paper ring-2 ring-orange/30">
               {profile?.firstName ? profile.firstName[0].toUpperCase() : "-"}
             </div>
 
             <div className="min-w-0">
-              <p className="text-lg font-medium flex items-center gap-1.5">
+              <p className="text-md font-medium flex items-center gap-1.5">
                 {profile?.firstName} {profile?.lastName}
                 {isAdmin ? (
                   <Badge tone="orange">
