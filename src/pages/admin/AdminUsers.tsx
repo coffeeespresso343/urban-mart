@@ -6,7 +6,7 @@ import {
   setUserAdmin,
   setUserBlocked,
   type AdminUser,
-} from "../../lib/Admin";
+} from "../../lib/admin";
 import { AdminUsersSkeleton } from "../../components/ui/Skeleton";
 import EmptyState from "../../components/ui/EmptyState";
 import {
@@ -286,8 +286,8 @@ const AdminUsers = () => {
                     className={`shrink-0 h-8 min-w-34 rounded-lg flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
                       transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
                         user.isAdmin
-                          ? "bg-warn/60 text-ink border-warn/15 hover:bg-warn/25"
-                          : "bg-ink border-ink/15 text-paper hover:bg-ink/90"
+                          ? "bg-warn/40 text-ink border-warn/20 hover:bg-warn/55"
+                          : "bg-orange/80 border-orange/15 text-paper hover:bg-orange/90"
                       }`}
                   >
                     {pendingId === user.id && pendingAction === "admin" ? (

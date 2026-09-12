@@ -2,7 +2,7 @@
 
 import { isSupabaseConfigured, supabase } from "./supabase";
 import type { Order, OrderStatus } from "../types/Order";
-import { mapRowToOrder, type OrderRow } from "./Orders";
+import { mapRowToOrder, type OrderRow } from "./orders";
 
 export interface AdminUser {
   id: string;

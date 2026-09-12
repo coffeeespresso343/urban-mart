@@ -243,7 +243,7 @@ const MobileNavigation = () => {
               >
                 {signedIn ? (
                   <>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-semibold text-paper">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange text-sm font-semibold text-paper">
                       {initial}
                     </span>
                     <span className="min-w-0 flex-1">
@@ -257,7 +257,7 @@ const MobileNavigation = () => {
                   </>
                 ) : (
                   <>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-sm font-semibold text-paper">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange text-sm font-semibold text-paper">
                       <User2 className="h-5 w-5" />
                     </span>
                     <span className="text-sm font-medium text-ink">

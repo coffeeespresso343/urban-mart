@@ -6,7 +6,7 @@ import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import ImageWithFallback from "../components/ui/ImageWithFallback";
 import { formatPrice } from "../utils/currency";
 import { Button } from "../components/ui/Button";
-import { fetchOrderByNumber, getLastLocalOrder } from "../lib/Orders";
+import { fetchOrderByNumber, getLastLocalOrder } from "../lib/orders";
 
 const OrderConfirmation = () => {
   const [searchParams] = useSearchParams();

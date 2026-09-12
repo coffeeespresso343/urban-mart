@@ -4,7 +4,7 @@ import { ArrowRight, ArrowUpRight, Clock, Package } from "lucide-react";
 
 import { useAuth } from "../hooks/useAuth";
 import type { Order, OrderStatus } from "../types/Order";
-import { fetchOrdersForUsers } from "../lib/Orders";
+import { fetchOrdersForUsers } from "../lib/orders";
 
 import { OrderGridSkeleton } from "../components/ui/Skeleton";
 import EmptyState from "../components/ui/EmptyState";

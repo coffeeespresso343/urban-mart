@@ -17,12 +17,16 @@ import {
   deleteProduct,
   nextProductId,
   updateProduct,
-} from "../../lib/Products";
+} from "../../lib/products";
 import { useUIStore } from "../../hooks/uiStore";
 import Modal from "../../components/ui/Modal";
 import { categories } from "../../data/categories";
 import { CheckboxField, TextField } from "../../components/admin/ProductInput";
 import { Link } from "react-router-dom";
+import ImageUploadField, {
+  type ImagePreviewItem,
+} from "../../components/admin/ImageUploadField";
+import { uploadProductImages } from "../../lib/storage";
 
 const BADGE_OPTIONS: (ProductBadge | "None")[] = [
   "None",
@@ -39,7 +43,7 @@ interface FormState {
   compareAtPrice: string;
   description: string;
   stock: string;
-  images: string;
+  images: string[];
   colors: string;
   tags: string;
   badge: ProductBadge | "None";
@@ -56,7 +60,7 @@ const emptyForm = (defaultCategory: ProductCategory): FormState => ({
   compareAtPrice: "",
   description: "",
   stock: "0",
-  images: "",
+  images: [],
   colors: "",
   tags: "",
   badge: "None",
@@ -74,7 +78,7 @@ const productToForm = (product: Product): FormState => ({
     product.compareAtPrice !== undefined ? String(product.compareAtPrice) : "",
   description: product.description,
   stock: String(product.stock),
-  images: product.images.join(", "),
+  images: [...product.images],
   colors: (product.colors ?? []).join(", "),
   tags: product.tags.join(", "),
   badge: (product.badge as ProductBadge | undefined) ?? "None",
@@ -95,6 +99,7 @@ const AdminProducts = () => {
 
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [form, setForm] = useState<FormState>(emptyForm(categories[0].name));
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
 
@@ -102,14 +107,32 @@ const AdminProducts = () => {
     setEditingProduct(null);
 
     setForm(emptyForm(categories[0].name));
+    setPendingFiles([]);
     setModalOpen(true);
   };
 
   const openEdit = (product: Product) => {
     setEditingProduct(product);
     setForm(productToForm(product));
+    setPendingFiles([]);
     setModalOpen(true);
   };
+
+  const imagePreviews: ImagePreviewItem[] = [
+    ...form.images.map((url) => ({
+      key: url,
+      src: url,
+      onRemove: () =>
+        setForm((f) => ({ ...f, images: f.images.filter((u) => u !== url) })),
+    })),
+
+    ...pendingFiles.map((file, index) => ({
+      key: `pending-${index}-${file.name}`,
+      src: URL.createObjectURL(file),
+      onRemove: () =>
+        setPendingFiles((prev) => prev.filter((_, i) => i !== index)),
+    })),
+  ];
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -131,8 +154,32 @@ const AdminProducts = () => {
       return;
     }
 
+    const productId = editingProduct?.id ?? nextProductId(products);
+
+    let uploadedUrls: string[] = [];
+    if (pendingFiles.length > 0) {
+      const { urls, error: uploadError } = await uploadProductImages(
+        pendingFiles,
+        productId,
+      );
+
+      if (uploadError) {
+        showToast(uploadError, "error");
+        setIsSaving(false);
+        return;
+      }
+      uploadedUrls = urls;
+    }
+
+    const finalImages = [...form.images, ...uploadedUrls];
+    if (finalImages.length === 0) {
+      showToast("At least one product image is required", "error");
+      setIsSaving(false);
+      return;
+    }
+
     const payload: Product = {
-      id: editingProduct?.id ?? nextProductId(products),
+      id: productId,
       sku: form.sku.trim(),
       name: form.name.trim(),
       category: form.category,
@@ -140,10 +187,7 @@ const AdminProducts = () => {
       compareAtPrice: parsedComparAt,
       description: form.description.trim(),
       details: editingProduct?.details ?? [],
-      images: form.images
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean),
+      images: finalImages,
       rating: editingProduct?.rating ?? 0,
       reviewCount: editingProduct?.reviewCount ?? 0,
       stock: parsedStock,
@@ -248,7 +292,7 @@ const AdminProducts = () => {
                     className="h-full w-full object-cover"
                   />
                   {product.badge ? (
-                    <div className="absolute -right-0.5 -top-1 lg:hidden">
+                    <div className="absolute -right-0.5 -top-0.5 lg:hidden">
                       <BadgeIcon badge={product.badge} tone="stone" />
                     </div>
                   ) : null}
@@ -390,11 +434,11 @@ const AdminProducts = () => {
                   className="rounded-lg border border-line-light bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
                 />
               </div>
-              <TextField
-                label="Image URLs (comma-separated)"
-                value={form.images}
-                placeholder="https://images.unsplash.com/photo"
-                onChange={(v) => setForm({ ...form, images: v })}
+              <ImageUploadField
+                previews={imagePreviews}
+                onFilesSelected={(files) =>
+                  setPendingFiles((prev) => [...prev, ...files])
+                }
               />
 
               <div className="grid grid-cols-2 gap-2">

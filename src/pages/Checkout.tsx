@@ -39,7 +39,7 @@ import EmptyState from "../components/ui/EmptyState";
 import ImageWithFallback from "../components/ui/ImageWithFallback";
 import { useUIStore } from "../hooks/uiStore";
 import { useAuth } from "../hooks/useAuth";
-import { createOrder } from "../lib/Orders";
+import { createOrder } from "../lib/orders";
 import Logo from "../assets/Logo.png";
 
 const STEPS = ["Information", "Shipping", "Payment", "Confirmation"] as const;

@@ -13,7 +13,7 @@ import {
 } from "../components/ui/Skeleton";
 import { useProducts } from "../hooks/useProducts";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
-import { getRelatedProducts } from "../lib/Products";
+import { getRelatedProducts } from "../lib/products";
 
 const ProductDetails = () => {
   const { id } = useParams<{ id: string }>();

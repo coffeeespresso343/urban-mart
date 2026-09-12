@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import type { Order, OrderStatus } from "../types/Order";
-import { fetchOrderByNumber } from "../lib/Orders";
+import { fetchOrderByNumber } from "../lib/orders";
 import { OrderDetailsGridSkeleton } from "../components/ui/Skeleton";
 import Badge from "../components/ui/Badge";
 import ImageWithFallback from "../components/ui/ImageWithFallback";

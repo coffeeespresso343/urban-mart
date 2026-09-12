@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchDashboardMetrics, type DashboardMetrics } from "../../lib/Admin";
+import { fetchDashboardMetrics, type DashboardMetrics } from "../../lib/admin";
 import { Skeleton } from "../../components/ui/Skeleton";
 import { formatPrice } from "../../utils/currency";
 import {
@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 
 import type { Product } from "../../types/Product";
-import { fetchProducts, getLowStockProducts } from "../../lib/Products";
+import { fetchProducts, getLowStockProducts } from "../../lib/products";
 import {
   Bar,
   BarChart,
@@ -24,7 +24,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Badge from "../../components/ui/Badge";
 import ImageWithFallback from "../../components/ui/ImageWithFallback";
 
@@ -32,13 +32,18 @@ function MertricCard({
   icon: Icon,
   label,
   value,
+  onClick,
 }: {
   icon: typeof DollarSign;
   label: string;
   value: string;
+  onClick?: () => void;
 }) {
   return (
-    <div className="group rounded-2xl border border-ink/10 bg-paper p-5 transition-colors duration-200 hover:bg-paper-dim hover:border-ink/20">
+    <div
+      onClick={onClick}
+      className="group rounded-2xl border border-ink/10 bg-paper p-5 transition-colors duration-200 hover:bg-paper-dim hover:border-ink/20"
+    >
       <Icon className="h-6 w-6 text-orange" />
       <p className="label-tag mt-5 text-stone">{label}</p>
       <p className="mt-1 price text-2xl font-semibold tracking-tight text-ink">
@@ -224,6 +229,7 @@ function LowStockPanel({ products }: { products: Product[] }) {
 const AdminOverview = () => {
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
   const [produts, setProducts] = useState<Product[] | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let cancelled = false;
@@ -274,11 +280,13 @@ const AdminOverview = () => {
           icon={ShoppingCart}
           label="Orders"
           value={String(metrics.orderCount)}
+          onClick={() => navigate("/admin/orders")}
         />
         <MertricCard
           icon={Users2}
           label="Users"
           value={String(metrics.userCount)}
+          onClick={() => navigate("/admin/users")}
         />
         <MertricCard
           icon={TrendingUp}

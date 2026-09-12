@@ -7,9 +7,9 @@ import {
   setUserAdmin,
   setUserBlocked,
   type AdminUser,
-} from "../../lib/Admin";
+} from "../../lib/admin";
 import type { Order, OrderStatus } from "../../types/Order";
-import { fetchOrdersForUsers } from "../../lib/Orders";
+import { fetchOrdersForUsers } from "../../lib/orders";
 import { AdminUsersDetailSkeleton } from "../../components/ui/Skeleton";
 import {
   Ban,
@@ -161,13 +161,13 @@ const AdminUserDetail = () => {
       <div className="mt-6 flex flex-wrap flex-col lg:flex-row items-start justify-between gap-6">
         <div>
           <div className="flex items-start gap-3 rounded-xl bg-paper-dim/50 px-4 py-6">
-            <div className="h-8 w-8 shrink-0 flex items-center justify-center rounded-full bg-ink text-paper ring-2 ring-orange/30">
+            <div className="h-8 w-8 shrink-0 flex items-center justify-center rounded-full bg-orange text-paper ring-2 ring-orange/30">
               {targetUser?.firstName
                 ? targetUser.firstName[0].toUpperCase()
                 : "-"}
             </div>
 
-            <div className="min-w-80">
+            <div className="min-w-60">
               <div className="flex items-center gap-2">
                 <h2 className="font-display text-md font-bold">
                   {targetUser.firstName
@@ -210,8 +210,8 @@ const AdminUserDetail = () => {
             className={`shrink-0 h-8 min-w-34 rounded-lg flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
                       transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
                         targetUser.isAdmin
-                          ? "bg-warn/60 text-ink border-warn/15 hover:bg-warn/25"
-                          : "bg-ink border-ink/15 text-paper hover:bg-ink/90"
+                          ? "bg-warn/40 text-ink border-warn/20 hover:bg-warn/55"
+                          : "bg-orange/80 border-orange/15 text-paper hover:bg-orange/90"
                       }`}
           >
             {pendingId === targetUser.id && pendingAction === "admin" ? (

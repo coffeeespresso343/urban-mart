@@ -76,7 +76,7 @@ const AdminLayout = () => {
                       className={({ isActive }) =>
                         `label-tag flex shrink-0 border rounded-lg items-center gap-2 px-3 py-2.5 font-semibold transition-all duration-200 active:scale-97 ${
                           isActive
-                            ? "bg-ink text-orange border-white"
+                            ? "bg-ink/90 text-orange border-white"
                             : "text-ink bg-paper-dim/50 border-paper/5 hover:bg-paper-dim hover:text-orange"
                         }`
                       }

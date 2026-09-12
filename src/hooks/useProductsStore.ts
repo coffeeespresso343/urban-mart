@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { Product } from "../types/Product";
-import { fetchProducts as fetchProductsFromApi } from "../lib/Products";
+import { fetchProducts as fetchProductsFromApi } from "../lib/products";
 
 interface ProductState {
   products: Product[];
