@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchDashboardMetrics, type DashboardMetrics } from "../../lib/admin";
+import { fetchDashboardMetrics, type DashboardMetrics } from "../../lib/Admin";
 import { Skeleton } from "../../components/ui/Skeleton";
 import { formatPrice } from "../../utils/currency";
 import {

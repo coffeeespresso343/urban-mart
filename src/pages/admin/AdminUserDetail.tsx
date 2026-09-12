@@ -7,7 +7,7 @@ import {
   setUserAdmin,
   setUserBlocked,
   type AdminUser,
-} from "../../lib/admin";
+} from "../../lib/Admin";
 import type { Order, OrderStatus } from "../../types/Order";
 import { fetchOrdersForUsers } from "../../lib/orders";
 import { AdminUsersDetailSkeleton } from "../../components/ui/Skeleton";
