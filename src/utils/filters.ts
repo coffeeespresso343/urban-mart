@@ -13,7 +13,7 @@ export const defaultFilters: ProductFilters = {
   search: "",
   categories: [],
   minPrice: 0,
-  maxPrice: 200,
+  maxPrice: 500,
   minRating: 0,
   inStockOnly: false,
 };
