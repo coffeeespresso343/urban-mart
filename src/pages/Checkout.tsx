@@ -39,8 +39,8 @@ import EmptyState from "../components/ui/EmptyState";
 import ImageWithFallback from "../components/ui/ImageWithFallback";
 import { useUIStore } from "../hooks/uiStore";
 import { useAuth } from "../hooks/useAuth";
-import { createOrder } from "../lib/orders";
 import Logo from "../assets/Logo.png";
+import { createOrder } from "../lib/orders";
 
 const STEPS = ["Information", "Shipping", "Payment", "Confirmation"] as const;
 type StepName = (typeof STEPS)[number];

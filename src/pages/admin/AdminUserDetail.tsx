@@ -4,7 +4,6 @@ import { useUIStore } from "../../hooks/uiStore";
 import { useEffect, useState } from "react";
 
 import type { Order, OrderStatus } from "../../types/Order";
-import { fetchOrdersForUsers } from "../../lib/orders";
 import { AdminUsersDetailSkeleton } from "../../components/ui/Skeleton";
 import {
   Ban,
@@ -17,6 +16,8 @@ import {
 import Badge from "../../components/ui/Badge";
 import { formatPrice } from "../../utils/currency";
 import EmptyState from "../../components/ui/EmptyState";
+
+import { fetchOrdersForUsers } from "../../lib/orders";
 import {
   fetchUserById,
   setUserAdmin,
