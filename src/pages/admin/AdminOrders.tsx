@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useUIStore } from "../../hooks/uiStore";
 import type { Order, OrderStatus } from "../../types/Order";
-import { fetchAllOrders, updateOrderStatus } from "../../lib/Admin";
+import { fetchAllOrders, updateOrderStatus } from "../../lib/admin";
 import { AdminOrdersSkeleton } from "../../components/ui/Skeleton";
 import EmptyState from "../../components/ui/EmptyState";
 import { ArrowUpRight, PackageX } from "lucide-react";

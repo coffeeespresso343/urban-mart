@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchDashboardMetrics, type DashboardMetrics } from "../../lib/Admin";
+import { fetchDashboardMetrics, type DashboardMetrics } from "../../lib/admin";
 import { Skeleton } from "../../components/ui/Skeleton";
 import { formatPrice } from "../../utils/currency";
 import {
@@ -327,7 +327,7 @@ const AdminOverview = () => {
                 </span>
                 <div className="relative h-12 w-12 bg-paper">
                   {index <= 2 ? (
-                    <span className="absolute -right-1.5 -top-1.5 h-6 w-6 bg-paper-dim/90 flex items-center justify-center rounded-full">
+                    <span className="absolute -right-1.5 -top-1.5 h-5 w-5 bg-paper-dim/90 flex items-center justify-center rounded-full">
                       {index === 0 ? (
                         <Crown className="h-3 w-3 text-ink" strokeWidth={2.5} />
                       ) : (

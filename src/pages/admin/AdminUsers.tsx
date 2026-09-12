@@ -6,7 +6,7 @@ import {
   setUserAdmin,
   setUserBlocked,
   type AdminUser,
-} from "../../lib/Admin";
+} from "../../lib/admin";
 import { AdminUsersSkeleton } from "../../components/ui/Skeleton";
 import EmptyState from "../../components/ui/EmptyState";
 import {

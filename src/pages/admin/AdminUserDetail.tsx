@@ -2,12 +2,7 @@ import { Link, Navigate, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useUIStore } from "../../hooks/uiStore";
 import { useEffect, useState } from "react";
-import {
-  fetchUserById,
-  setUserAdmin,
-  setUserBlocked,
-  type AdminUser,
-} from "../../lib/Admin";
+
 import type { Order, OrderStatus } from "../../types/Order";
 import { fetchOrdersForUsers } from "../../lib/orders";
 import { AdminUsersDetailSkeleton } from "../../components/ui/Skeleton";
@@ -22,6 +17,12 @@ import {
 import Badge from "../../components/ui/Badge";
 import { formatPrice } from "../../utils/currency";
 import EmptyState from "../../components/ui/EmptyState";
+import {
+  fetchUserById,
+  setUserAdmin,
+  setUserBlocked,
+  type AdminUser,
+} from "../../lib/admin";
 
 const STATUS_TONE: Record<OrderStatus, "ink" | "orange" | "good" | "warn"> = {
   processing: "orange",

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Navigate, useLocation } from "react-router-dom";
+import LoadingScreen from "../ui/LoadingScreen";
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   const { user, isLoading, isConfigured } = useAuth();
@@ -9,11 +10,7 @@ const ProtectedRoute = ({ children }: { children: ReactNode }) => {
   if (!isConfigured) return <>{children}</>;
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-[90vh] items-center justify-center">
-        <span className="h-8 w-8 animate-spin rounded-full border-2 border-orange border-t-transparent" />
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   if (!user) {

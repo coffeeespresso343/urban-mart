@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Navigate } from "react-router-dom";
+import LoadingScreen from "../ui/LoadingScreen";
 
 const AdminRoute = ({ children }: { children: ReactNode }) => {
   const { user, isLoading, isAdmin, isAdminLoading, isConfigured } = useAuth();
@@ -17,14 +18,7 @@ const AdminRoute = ({ children }: { children: ReactNode }) => {
   }
 
   if (isLoading || isAdminLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <span
-          className="h-8 w-8 animate-spin rounded-full border-3 border-orange border-t-transparent"
-          aria-hidden="true"
-        />
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   if (!user) return <Navigate to="/login" state={{ from: "/admin" }} replace />;
