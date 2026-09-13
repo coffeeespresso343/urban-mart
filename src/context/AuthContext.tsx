@@ -12,6 +12,7 @@ interface Profile {
   id: string;
   firstName: string | null;
   lastName?: string | null;
+  isBlocked: boolean;
 }
 
 interface AuthResult {
@@ -82,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     supabase
       .from("profiles")
-      .select("id, first_name, last_name")
+      .select("id, first_name, last_name, is_blocked")
       .eq("id", user.id)
       .single()
       .then(({ data }) => {
@@ -91,6 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             id: data.id as string,
             firstName: data.first_name as string | null,
             lastName: data.last_name as string | null,
+            isBlocked: Boolean(data.is_blocked),
           });
         }
       });

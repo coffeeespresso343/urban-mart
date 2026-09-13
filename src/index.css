@@ -2,6 +2,11 @@
 
 @theme {
 
+    --text: #6b6375;
+    --text-h: #08060d;
+    --bg: #fff;
+    --border: #e5e4e7;
+
     /* Core surfaces */
     --color-ink: #121313;
     --color-ink-soft: #1B1D1D;
@@ -29,6 +34,26 @@
     --color-good: #3e8c62;
     --color-warn: #c78a30;
     --color-error: #d4695f;
+
+    /* Admin dashboard — a distinct light, card-based visual system, kept
+     separate from the storefront's ink/orange brand palette on purpose. */
+    --color-admin-bg: #f4f5f7;
+    --color-admin-card: #ffffff;
+    --color-admin-ink: #101828;
+    --color-admin-gray: #667085;
+    --color-admin-gray-light: #98a2b3;
+    --color-admin-border: #eaecf0;
+    --color-admin-active: #eef2ff;
+    --color-admin-blue: #3b82f6;
+    --color-admin-blue-light: #dbeafe;
+    --color-admin-green: #12b76a;
+    --color-admin-green-light: #d1fadf;
+    --color-admin-gold: #f4b400;
+    --color-admin-gold-light: #fef0c7;
+    --color-admin-purple: #7a5af8;
+    --color-admin-purple-light: #ece9fe;
+    --color-admin-pink: #f04438;
+    --color-admin-pink-light: #fee4e2;
 
     --font-display:
         "Manrope",
@@ -110,6 +135,24 @@
             transform: translateX(-50%);
         }
     }
+
+
+
+}
+
+/* Dark variant for the admin dashboard only — toggled by adding
+   .admin-dark to AdminLayout's root element. Overriding the same CSS
+   custom properties here means every Tailwind utility that reads them
+   (bg-admin-bg, text-admin-ink, etc.) picks up the dark values for free,
+   with no extra dark: variants needed anywhere in admin page markup. */
+.admin-dark {
+    --color-admin-bg: #0b0d12;
+    --color-admin-card: #14171d;
+    --color-admin-ink: #f2f4f7;
+    --color-admin-gray: #98a2b3;
+    --color-admin-gray-light: #667085;
+    --color-admin-border: #262b33;
+    --color-admin-active: #1c2333;
 }
 
 

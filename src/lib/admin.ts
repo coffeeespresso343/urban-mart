@@ -3,6 +3,8 @@
 import { isSupabaseConfigured, supabase } from "./supabase";
 import type { Order, OrderStatus } from "../types/Order";
 import { mapRowToOrder, type OrderRow } from "./orders";
+import type { Product } from "../types/Product";
+import { fetchProducts } from "./products";
 
 export interface AdminUser {
   id: string;
@@ -205,6 +207,8 @@ export async function updateOrderStatus(
   return { error: error?.message ?? null };
 }
 
+// Dashboard metrics
+
 export interface TopProducts {
   name: string;
   unitsSold: number;
@@ -218,17 +222,48 @@ export interface RevenuePoint {
   revenue: number;
 }
 
-export interface DashboardMetrics {
-  totalRevenue: number;
-  orderCount: number;
-  userCount: number;
-  averageOrderValue: number;
-  topProducts: TopProducts[];
-  revenueByDay: RevenuePoint[];
-  recentOrders: Order[];
+export interface CountPoint {
+  date: string;
+  isoDate: string;
+  count: number;
 }
 
-const REVENUE_CHART_DAYS = 14;
+export interface DonutSlice {
+  label: string;
+  value: number;
+  color: string;
+}
+
+export interface DashboardMetrics {
+  orderCount: number;
+  orderCountDeltaPct: number | null;
+  deliveredCount: number;
+  fulfillmentRatePct: number;
+  totalRevenue: number;
+  currentMonthRevenue: number;
+  revenueDeltaPct: number | null;
+  averageOrderValue: number;
+  userCount: number;
+  userSegments: DonutSlice[];
+  stockHealth: DonutSlice[];
+  revenueByDay: RevenuePoint[];
+  revenueByMonth: RevenuePoint[];
+  signupsByDay: CountPoint[];
+  recentOrders: Order[];
+  topProducts: TopProducts[];
+}
+
+const TREND_WINDOW_DAYS = 14;
+
+function computeDeltaPct(current: number, previous: number): number | null {
+  if (previous === 0) return current > 0 ? 100 : null;
+  return Math.round(((current - previous) / previous) * 1000) / 10;
+}
+
+function inRange(iso: string, start: Date, end: Date): boolean {
+  const d = new Date(iso);
+  return d >= start && d < end;
+}
 
 function buildRevenueByDay(orders: Order[], days: number): RevenuePoint[] {
   const buckets = new Map<string, number>();
@@ -258,10 +293,104 @@ function buildRevenueByDay(orders: Order[], days: number): RevenuePoint[] {
   }));
 }
 
+function buildRevenueByMonth(orders: Order[]): RevenuePoint[] {
+  const year = new Date().getFullYear();
+  const buckets = new Map<string, number>();
+
+  for (let m = 0; m < 12; m++) {
+    buckets.set(new Date(year, m, 1).toISOString().slice(0, 7), 0);
+  }
+
+  for (const order of orders) {
+    const key = order.placedAt.slice(0, 7);
+    if (buckets.has(key))
+      buckets.set(key, (buckets.get(key) ?? 0) + order.totals.total);
+  }
+
+  return Array.from(buckets.entries()).map(([key, revenue]) => ({
+    isoDate: key,
+    date: new Date(`${key}-01`).toLocaleDateString("en-US", { month: "short" }),
+    revenue: Math.round(revenue * 100) / 100,
+  }));
+}
+
+function buildSignupsByDay(users: AdminUser[], days: number): CountPoint[] {
+  const buckets = new Map<string, number>();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    buckets.set(d.toISOString().slice(0, 10), 0);
+  }
+
+  for (const user of users) {
+    const isoDate = user.createdAt.slice(0, 10);
+    if (buckets.has(isoDate))
+      buckets.set(isoDate, (buckets.get(isoDate) ?? 0) + 1);
+  }
+
+  return Array.from(buckets.entries()).map(([isoDate, count]) => ({
+    isoDate,
+    date: new Date(isoDate).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    }),
+    count,
+  }));
+}
+
+function computeUserSegments(
+  users: AdminUser[],
+  orders: Order[],
+): DonutSlice[] {
+  const userWithOrders = new Set(
+    orders.filter((o) => o.userId).map((o) => o.userId as string),
+  );
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+  let newUsers = 0;
+  let returning = 0;
+  let inactive = 0;
+
+  for (const user of users) {
+    if (new Date(user.createdAt) >= thirtyDaysAgo) newUsers++;
+    else if (userWithOrders.has(user.id)) returning++;
+    else inactive++;
+  }
+
+  return [
+    { label: "New", value: newUsers, color: "#F4B400" },
+    { label: "Returning", value: returning, color: "#FDE293" },
+    { label: "Inactive", value: inactive, color: "#F6E9C9" },
+  ];
+}
+
+function computStockHealth(products: Product[]): DonutSlice[] {
+  let inStock = 0;
+  let lowStock = 0;
+  let outOfStock = 0;
+
+  for (const product of products) {
+    if (product.stock === 0) outOfStock++;
+    else if (product.stock <= 5) lowStock++;
+    else inStock++;
+  }
+
+  return [
+    { label: "In Stock", value: inStock, color: "#3B82F6" },
+    { label: "Low Stock", value: lowStock, color: "#3B82F6" },
+    { label: "Out of Stock", value: outOfStock, color: "#93C5FDBFDBFE" },
+  ];
+}
+
 export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
-  const [orders, users] = await Promise.all([
+  const [orders, users, products] = await Promise.all([
     fetchAllOrders(),
     fetchAllUsers(),
+    fetchProducts(),
   ]);
 
   const totalRevenue = orders.reduce(
@@ -271,6 +400,39 @@ export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
 
   const orderCount = orders.length;
   const averageOrderValue = orderCount > 0 ? totalRevenue / orderCount : 0;
+  const deliveredCount = orders.filter((o) => o.status === "delivered").length;
+  const fulfillmentRatePct =
+    orderCount > 0 ? Math.round((deliveredCount / orderCount) * 100) : 0;
+
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+
+  const periodEnd = new Date(now.getDate() + 86400000);
+  const currentStart = new Date(now);
+  currentStart.setDate(currentStart.getDate() - TREND_WINDOW_DAYS);
+  const previousStart = new Date(currentStart);
+  previousStart.setDate(previousStart.getDate() - TREND_WINDOW_DAYS);
+
+  const currentPeriodOrders = orders.filter((o) =>
+    inRange(o.placedAt, currentStart, periodEnd),
+  );
+  const previousPeriodOrders = orders.filter((o) =>
+    inRange(o.placedAt, previousStart, currentStart),
+  );
+
+  const currentRevenue = currentPeriodOrders.reduce(
+    (s, o) => s + o.totals.total,
+    0,
+  );
+  const previousRevenue = previousPeriodOrders.reduce(
+    (s, o) => s + o.totals.total,
+    0,
+  );
+
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const currentMonthRevenue = orders
+    .filter((o) => new Date(o.placedAt) >= monthStart)
+    .reduce((s, o) => s + o.totals.total, 0);
 
   const productTotals = new Map<string, TopProducts>();
 
@@ -295,12 +457,24 @@ export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
     .slice(0, 5);
 
   return {
-    totalRevenue,
     orderCount,
-    userCount: users.length,
+    orderCountDeltaPct: computeDeltaPct(
+      currentPeriodOrders.length,
+      previousPeriodOrders.length,
+    ),
+    deliveredCount,
+    fulfillmentRatePct,
+    totalRevenue,
+    currentMonthRevenue,
+    revenueDeltaPct: computeDeltaPct(currentRevenue, previousRevenue),
     averageOrderValue,
-    topProducts,
-    revenueByDay: buildRevenueByDay(orders, REVENUE_CHART_DAYS),
+    userCount: users.length,
+    userSegments: computeUserSegments(users, orders),
+    stockHealth: computStockHealth(products),
+    revenueByDay: buildRevenueByDay(orders, TREND_WINDOW_DAYS),
+    revenueByMonth: buildRevenueByMonth(orders),
+    signupsByDay: buildSignupsByDay(users, TREND_WINDOW_DAYS),
     recentOrders: orders.slice(0, 6),
+    topProducts,
   };
 }
