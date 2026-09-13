@@ -1,19 +1,25 @@
 import {
   LayoutDashboard,
+  LogOut,
+  Moon,
   Package,
-  ShieldCheck,
-  ShieldUser,
+  Settings,
   ShoppingCart,
+  Sun,
   Users2,
 } from "lucide-react";
 import { useEffect } from "react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
-import Navbar from "./Navbar";
-import MobileNavigation from "./MobileNavigation";
-import SearchOverlay from "./SearchOverlay";
-import CartDrawer from "../cart/CartDrawer";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { ToastContainer } from "../ui/Toast";
 import { useAuth } from "../../hooks/useAuth";
+import { useAdminTheme } from "../../hooks/useAdminTheme";
+import Logo from "../../assets/Logo.png";
 
 const NAV_ITEMS = [
   { label: "Overview", to: "/admin", end: true, Icon: LayoutDashboard },
@@ -23,9 +29,11 @@ const NAV_ITEMS = [
 ];
 
 const AdminLayout = () => {
-  const location = useLocation();
+  const { theme, toggleTheme } = useAdminTheme();
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
 
-  const { user, profile } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     const activeItem = NAV_ITEMS.find((item) =>
@@ -45,59 +53,125 @@ const AdminLayout = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar />
-
-      <main className="flex-1">
-        <div className="container-edge grid grid-cols-1 gap-8 py-5 sm:py-10 lg:grid-cols-[220px_1fr]">
-          <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="flex items-start gap-2 bg-paper-dim w-fit pr-5 lg:pr-0 py-4 px-2 rounded-lg lg:w-auto">
-              <div className="relative">
-                <div className="h-8 w-8 shrink-0 flex items-center justify-center rounded-full bg-paper ring-2 ring-orange/30">
-                  <ShieldUser className="h-5 w-5 text-orange" />
-                </div>
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-medium flex items-center gap-1.5">
-                  {profile?.firstName} {profile?.lastName}
-                  <ShieldCheck className="h-3 w-3 text-good" strokeWidth={2} />
-                </p>
-                <p className="text-stone text-xs">{user?.email}</p>
-              </div>
-            </div>
-
-            <nav className="mt-6">
-              <ul className="flex gap-2 overflow-x-auto scrollbar-none lg:flex-col lg:overflow-visible lg:gap-3">
-                {NAV_ITEMS.map((item) => (
-                  <li key={item.label}>
-                    <NavLink
-                      to={item.to}
-                      end={item.end}
-                      className={({ isActive }) =>
-                        `label-tag flex shrink-0 border rounded-lg items-center gap-2 px-3 py-2.5 font-semibold transition-all duration-200 active:scale-97 ${
-                          isActive
-                            ? "bg-ink/90 text-orange border-white"
-                            : "text-ink bg-paper-dim/50 border-paper/5 hover:bg-paper-dim hover:text-orange"
-                        }`
-                      }
-                    >
-                      <item.Icon className="h-4 w-4" />
-                      {item.label}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          </aside>
-
-          <div className="min-w-0">
-            <Outlet />
-          </div>
+    <div
+      className={`${theme === "dark" ? "admin-dark" : ""} flex min-h-screen bg-admin-bg text-admin-ink`}
+    >
+      <aside className="hidden w-[220px] shrink-0 flex-col bg-admin-card px-4 py-6 lg:flex">
+        <div className="flex items-center gap-2 px-2">
+          <Link to="/" className="flex items-center h-full w-30 lg:w-34">
+            <img
+              src={Logo}
+              alt="Urban-Mart-Logo"
+              className="h-auto w-full object-contain"
+            />
+          </Link>
         </div>
-      </main>
-      <MobileNavigation />
-      <SearchOverlay />
-      <CartDrawer />
+
+        <nav className="mt-8 flex flex-col gap-1">
+          {NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.label}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) =>
+                `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 active:scale-97 ${
+                  isActive
+                    ? "bg-admin-active text-admin-ink"
+                    : "text-admin-gray hover:bg-admin-active/60"
+                }`
+              }
+            >
+              <item.Icon className="h-4 w-4" />
+              {item.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="flex flex-col gap-1 border-t border-admin-border pt-4">
+          <button
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-admin-gray
+          transition-all duration-200 active:scale-97 hover:bg-admin-active/60"
+          >
+            <Settings className="h-4 w-4" /> Settings
+          </button>
+          <button
+            onClick={async () => {
+              await signOut();
+              navigate("/");
+            }}
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-admin-gray
+          transition-all duration-200 active:scale-97 hover:bg-admin-active/60"
+          >
+            <LogOut className="h-4 w-4" /> Sign Out
+          </button>
+        </div>
+      </aside>
+      <nav className="fixed inset-x-0 z-40 bottom-0 border-t border-admin-border bg-admin-card/95 backdrop-blur-xl lg:hidden">
+        <div className="grid grid-cols-4">
+          {NAV_ITEMS.map((item) => (
+            <NavLink
+              key={item.label}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) =>
+                `flex flex-col items-center justify-center gap-1 py-3 text-[11px] font-medium transition-colors active:scale-97 ${
+                  isActive
+                    ? "bg-admin-active text-admin-ink"
+                    : "text-admin-gray"
+                }`
+              }
+            >
+              <item.Icon className="h-5 w-5" />
+              {item.label}
+            </NavLink>
+          ))}
+        </div>
+      </nav>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-admin-border bg-admin-bg/95 px-4 py-4 backdrop-blur-xl sm:px-6 lg:px-8">
+          <div className="flex items-center gap-3">
+            <Link to="/" className="w-34 sm:w-34 lg:hidden">
+              <img
+                src={Logo}
+                alt="Urban-Mart-Logo"
+                className="h-auto w-full object-contain"
+              />
+            </Link>
+
+            <h1 className="hidden lg:block font-display text-2xl font-bold">
+              Analytics
+            </h1>
+          </div>
+          <div className="flex items-center overflow-hidden rounded-full border border-admin-border bg-admin-card">
+            <button
+              onClick={() => theme === "dark" && toggleTheme()}
+              className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
+                theme === "light"
+                  ? "bg-admin-blue text-white"
+                  : "text-admin-gray-light"
+              }`}
+            >
+              <Sun className="h-3.5 w-3.5" />
+            </button>
+            <button
+              onClick={() => theme === "light" && toggleTheme()}
+              className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
+                theme === "dark"
+                  ? "bg-admin-blue text-white"
+                  : "text-admin-gray-light"
+              }`}
+            >
+              <Moon className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </header>
+
+        <main className="flex-1 px-4 pb-24 pt-5 sm:px-6 lg:px-6">
+          <Outlet />
+        </main>
+      </div>
+
       <ToastContainer />
     </div>
   );
