@@ -381,8 +381,8 @@ function computStockHealth(products: Product[]): DonutSlice[] {
 
   return [
     { label: "In Stock", value: inStock, color: "#3B82F6" },
-    { label: "Low Stock", value: lowStock, color: "#3B82F6" },
-    { label: "Out of Stock", value: outOfStock, color: "#93C5FDBFDBFE" },
+    { label: "Low Stock", value: lowStock, color: "#93C5FD" },
+    { label: "Out of Stock", value: outOfStock, color: "#f04438" },
   ];
 }
 

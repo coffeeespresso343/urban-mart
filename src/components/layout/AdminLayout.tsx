@@ -8,14 +8,7 @@ import {
   Sun,
   Users2,
 } from "lucide-react";
-import { useEffect } from "react";
-import {
-  Link,
-  NavLink,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { ToastContainer } from "../ui/Toast";
 import { useAuth } from "../../hooks/useAuth";
 import { useAdminTheme } from "../../hooks/useAdminTheme";
@@ -33,30 +26,11 @@ const AdminLayout = () => {
   const { signOut } = useAuth();
   const navigate = useNavigate();
 
-  const location = useLocation();
-
-  useEffect(() => {
-    const activeItem = NAV_ITEMS.find((item) =>
-      item.end
-        ? location.pathname === item.to
-        : location.pathname.startsWith(item.to),
-    );
-
-    if (!activeItem) return;
-
-    const element = document.querySelector(`a[href="${activeItem.to}"]`);
-    element?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-      inline: "center",
-    });
-  }, [location.pathname]);
-
   return (
     <div
       className={`${theme === "dark" ? "admin-dark" : ""} flex min-h-screen bg-admin-bg text-admin-ink`}
     >
-      <aside className="hidden w-[220px] shrink-0 flex-col bg-admin-card px-4 py-6 lg:flex">
+      <aside className="hidden w-55 shrink-0 flex-col bg-admin-card px-4 py-6 lg:sticky lg:self-start top-0 lg:flex">
         <div className="flex items-center gap-2 px-2">
           <Link to="/" className="flex items-center h-full w-30 lg:w-34">
             <img

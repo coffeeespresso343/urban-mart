@@ -1,16 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { fetchDashboardMetrics, type DashboardMetrics } from "../../lib/admin";
 import { Skeleton } from "../../components/ui/Skeleton";
 import { formatPrice } from "../../utils/currency";
 import {
   ArrowRight,
+  Boxes,
+  Calendar,
+  CheckCircle2,
+  ClipboardList,
   Crown,
   DollarSign,
   ShoppingCart,
   Star,
+  TrendingDown,
   TrendingUp,
   TriangleAlert,
   Users2,
+  Wallet,
 } from "lucide-react";
 
 import type { Product } from "../../types/Product";
@@ -27,152 +33,86 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Badge from "../../components/ui/Badge";
 import ImageWithFallback from "../../components/ui/ImageWithFallback";
+import DonutChart from "../../components/admin/DonutChart";
+import RingBadge from "../../components/admin/RingBadge";
+import RecentOrdersTable from "../../components/admin/RecentOrdersTable";
+import ActivityChart from "../../components/admin/ActivityChart";
+import RevenueChart from "../../components/admin/RevenueChart";
 
-function MertricCard({
-  icon: Icon,
-  label,
-  value,
-  onClick,
+export function Card({
+  className = "",
+  children,
 }: {
-  icon: typeof DollarSign;
-  label: string;
-  value: string;
-  onClick?: () => void;
+  className?: string;
+  children: ReactNode;
 }) {
   return (
     <div
-      onClick={onClick}
-      className="group rounded-2xl border border-ink/10 bg-paper p-5 transition-colors duration-200 hover:bg-paper-dim hover:border-ink/20"
+      className={`${className} rounded-2xl border border-admin-border bg-admin-card p-4 shadow-sm`}
     >
-      <Icon className="h-6 w-6 text-orange" />
-      <p className="label-tag mt-5 text-stone">{label}</p>
-      <p className="mt-1 price text-2xl font-semibold tracking-tight text-ink">
-        {value}
-      </p>
+      {children}
     </div>
   );
 }
 
-function RevenueChart({ data }: { data: DashboardMetrics["revenueByDay"] }) {
-  const hasRevenue = data.some((point) => point.revenue > 0);
+function IconTile({ icon: Icon, tint }: { icon: typeof Wallet; tint: string }) {
+  return (
+    <span
+      className="flex h-9 w-9 items-center justify-center rounded-xl"
+      style={{
+        backgroundColor: tint,
+      }}
+    >
+      <Icon className="h-4 w-4" style={{ color: "#101818" }} />
+    </span>
+  );
+}
+
+function Delta({ pct }: { pct: number | null }) {
+  if (pct === null) {
+    return <span className="text-xs text-admin-gray-light">No prior data</span>;
+  }
+
+  const positive = pct >= 0;
 
   return (
-    <div className="border border-line-light rounded-xl p-5">
-      <h3 className="label-tag font-semibold text-stone">
-        Revenue - Last 14 Days
-      </h3>
-
-      {!hasRevenue ? (
-        <p className="mt-8 py-8 text-center text-sm text-stone">
-          No orders in this window yet - the chart will fill in as sales come
-          through.
-        </p>
+    <span
+      className={`flex items-center gap-1 text-xs font-medium ${
+        positive ? "text-admin-green" : "text-admin-pink"
+      }`}
+    >
+      {positive ? (
+        <TrendingUp className="h-3 w-3" />
       ) : (
-        <div className="mt-4 h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={data}
-              margin={{ top: 4, right: 4, left: -5, bottom: 0 }}
-            >
-              <CartesianGrid
-                strokeDasharray="3 3"
-                stroke="#d5d8d5"
-                vertical={false}
-              />
-              <XAxis
-                dataKey="date"
-                tick={{
-                  fontSize: 11,
-                  fill: "#777b79",
-                  fontFamily: "JetBrains Mono, monospace",
-                }}
-                axisLine={{ stroke: "#d5d8d5" }}
-                tickLine={false}
-                interval="preserveStartEnd"
-              />
-              <YAxis
-                tick={{
-                  fontSize: 11,
-                  fill: "#777b79",
-                  fontFamily: "JetBrains Mono, monospace",
-                }}
-                axisLine={false}
-                tickLine={false}
-                tickFormatter={(value: number) => formatPrice(value)}
-                width={64}
-              />
-              <Tooltip
-                formatter={(value) => [
-                  formatPrice(Number(value ?? 0)),
-                  "Revenue",
-                ]}
-                contentStyle={{
-                  border: "1px solid #d5d8d5",
-                  borderRadius: 10,
-                  fontSize: 13,
-                  fontFamily: "Inter, sans-serif",
-                }}
-                cursor={{ fill: "#e7e8e5" }}
-              />
-              <Bar
-                dataKey="revenue"
-                fill="#D06A3A"
-                radius={[2, 2, 0, 0]}
-                maxBarSize={28}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <TrendingDown className="h-3 w-3" />
       )}
-    </div>
+      {Math.abs(pct)}%<span>vs last period</span>
+    </span>
   );
 }
 
-function RecentOrderPanel({
-  orders,
+function StatCard({
+  icon,
+  tint,
+  label,
+  value,
+  footer,
 }: {
-  orders: DashboardMetrics["recentOrders"];
+  icon: typeof Wallet;
+  tint: string;
+  label: string;
+  value: string;
+  footer?: ReactNode;
 }) {
   return (
-    <div className="border border-line-light rounded-xl p-5">
-      <div className="flex items-center justify-between gap-2">
-        <h3 className="label-tag font-semibold text-stone">Recent Orders</h3>
-        <Link
-          to="/admin/orders"
-          className="label-tag font-semibold text-orange hover:underline
-          flex items-center gap-1"
-        >
-          View All
-          <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
+    <Card>
+      <div className="flex items-start justify-between">
+        <p className="text-sm font-medium text-admin-gray">{label}</p>
+        <IconTile icon={icon} tint={tint} />
       </div>
-
-      {orders.length === 0 ? (
-        <p className="mt-6 text-sm text-stone">No orders yet.</p>
-      ) : (
-        <div className="mt-4 flex flex-col border-t border-line-light divide-y divide-line-light">
-          {orders.map((order) => (
-            <Link
-              key={order.id}
-              to={`/account/orders/${order.orderNumber}`}
-              className="flex items-center justify-between gap-3 py-3 transition duration-200 hover:bg-paper-dim/20 active:scale-99"
-            >
-              <div className="min-w-0">
-                <p className="label-tag truncate font-semibold text-orange">
-                  #{order.orderNumber}
-                </p>
-                <p className="mt-0.5 truncate text-xs text-stone">
-                  {order.shippingAddress.email}
-                </p>
-              </div>
-              <span className="price shrink-0 text-sm font-semibold">
-                {formatPrice(order.totals.total)}
-              </span>
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
+      <p className="font-mono tabular-nums mt-4 text-3xl font-bold">{value}</p>
+      {footer ? <div className="mt-2">{footer}</div> : null}
+    </Card>
   );
 }
 
@@ -228,26 +168,14 @@ function LowStockPanel({ products }: { products: Product[] }) {
 
 const AdminOverview = () => {
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
-  const [produts, setProducts] = useState<Product[] | null>(null);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    let cancelled = false;
+  const load = () => {
+    fetchDashboardMetrics().then(setMetrics);
+  };
 
-    fetchDashboardMetrics().then((data) => {
-      if (!cancelled) setMetrics(data);
-    });
+  useEffect(load, []);
 
-    fetchProducts().then((data) => {
-      if (!cancelled) setProducts(data);
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (!metrics || !produts) {
+  if (!metrics) {
     return (
       <div className="flex flex-col gap-5">
         <Skeleton className="h-4 w-20 rounded-md" />
@@ -263,49 +191,116 @@ const AdminOverview = () => {
     );
   }
   return (
-    <div>
-      <div>
-        <h2 className="font-display text-xl font-bold">Overview</h2>
-        <p className="mt-1 text-sm text-stone">
-          Monitor store performace, orders, and inventory
-        </p>
-      </div>
-      <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <MertricCard
-          icon={DollarSign}
-          label="Total Revenue"
-          value={formatPrice(metrics.totalRevenue)}
-        />
-        <MertricCard
-          icon={ShoppingCart}
+    <div className="flex flex-col gap-5">
+      <div className="grid grid-cols-2 gap-5 lg:grid-cols-4">
+        <StatCard
+          icon={ClipboardList}
+          tint="var(--color-admin-blue-light)"
           label="Orders"
           value={String(metrics.orderCount)}
-          onClick={() => navigate("/admin/orders")}
+          footer={<Delta pct={metrics.orderCountDeltaPct} />}
         />
-        <MertricCard
-          icon={Users2}
-          label="Users"
-          value={String(metrics.userCount)}
-          onClick={() => navigate("/admin/users")}
+        <StatCard
+          icon={CheckCircle2}
+          tint="var(--color-admin-green-light)"
+          label="Delivered"
+          value={String(metrics.deliveredCount)}
+          footer={
+            <span className="text-xs text-admin-gray-light">
+              {metrics.fulfillmentRatePct}% fulfillment rate
+            </span>
+          }
         />
-        <MertricCard
-          icon={TrendingUp}
-          label="Avg Order Value"
-          value={formatPrice(metrics.averageOrderValue)}
-        />
+        <Card>
+          <div className="flex items-start justify-between">
+            <p className="text-sm font-medium text-admin-gray">Users</p>
+            <IconTile icon={Users2} tint="var(--color-admin-gold-light)" />
+          </div>
+          <p className="font-mono tabular-nums mt-4 text-3xl font-bold">
+            {metrics.userCount}
+          </p>
+          <div className="mt-3">
+            <DonutChart slices={metrics.userSegments} size={64} />
+          </div>
+        </Card>
+
+        <Card>
+          <div className="flex items-start justify-between">
+            <p className="text-sm font-medium text-admin-gray">Stock Health</p>
+            <IconTile icon={Boxes} tint="var(--color-admin-blue-light)" />
+          </div>
+          <p className="font-mono tabular-nums mt-4 text-3xl font-bold">
+            {metrics.stockHealth.find((s) => s.label === "Low Stock")!.value +
+              metrics.stockHealth.find((s) => s.label === "Out of Stock")!
+                .value}
+            <span className="ml-1.5 text-xs font-normal text-admin-gray-light">
+              need attention
+            </span>
+          </p>
+          <div className="mt-3">
+            <DonutChart slices={metrics.stockHealth} size={64} />
+          </div>
+        </Card>
       </div>
 
-      <div className="mt-6">
-        <RevenueChart data={metrics.revenueByDay} />
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-[220px_1fr_180px]">
+        <div className="flex flex-col gap-5">
+          <StatCard
+            icon={Calendar}
+            tint="var(--color-admin-purple-light)"
+            label="This Month"
+            value={formatPrice(metrics.currentMonthRevenue)}
+          />
+          <StatCard
+            icon={Wallet}
+            tint="var(--color-admin-green-light)"
+            label="Total Revenue"
+            value={formatPrice(metrics.totalRevenue)}
+            footer={<Delta pct={metrics.revenueDeltaPct} />}
+          />
+        </div>
+
+        <RevenueChart metrics={metrics} />
+
+        <div className="flex flex-row sm:flex-col gap-5">
+          <Card className="flex flex-col w-full items-center gap-3 text-center lg:w-auto">
+            <RingBadge
+              percent={metrics.fulfillmentRatePct}
+              color="#7a5af8"
+              size={56}
+            />
+            <div>
+              <p className="text-xs font-medium text-admin-gray">Fulfillment</p>
+              <p className="font-mono tabular-nums text-lg mt-1 font-bold">
+                {metrics.deliveredCount} orders
+              </p>
+            </div>
+          </Card>
+          <Card className="flex flex-col w-full items-center gap-3 text-center lg:w-auto">
+            <RingBadge
+              percent={Math.min(100, Math.abs(metrics.revenueDeltaPct ?? 0))}
+              color={(metrics.revenueDeltaPct ?? 0) ? "#12b76a" : "#f04438"}
+              size={56}
+            />
+            <div>
+              <p className="text-xs font-medium text-admin-gray">
+                Revenue Growth
+              </p>
+              <p className="font-mono tabular-nums text-lg mt-1 font-bold">
+                {formatPrice(metrics.totalRevenue)}
+              </p>
+            </div>
+          </Card>
+        </div>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <RecentOrderPanel orders={metrics.recentOrders} />
-        <LowStockPanel products={produts} />
+      <div className="grid grid-col-1 gap-5 lg:grid-cols-3">
+        <ActivityChart signups={metrics.signupsByDay} />
+        <RecentOrdersTable orders={metrics.recentOrders} onRefresh={load} />
       </div>
 
-      <div className="mt-10">
-        <h3 className="label-tag mb-4 font-semibold text-orange">
+      <Card>
+        <h3 className="mb-4 text-xs text-admin-gray font-semibold">
           Top Products by Revenue
         </h3>
         {metrics.topProducts.length === 0 ? (
@@ -313,25 +308,28 @@ const AdminOverview = () => {
             No orders yet - top products will show up here once sales come in.
           </p>
         ) : (
-          <div className="divide-y divide-line-light border-y border-line-light">
+          <div className="divide-y divide-admin-border border-t border-admin-border">
             {metrics.topProducts.map((product, index) => (
               <div
                 key={product.name}
-                className="flex items-center gap-4 transition-colors hover:bg-paper-dim/40 sm:px-5 py-3"
+                className="flex items-center justify-between py-3 gap-2 text-sm last:pb-0"
               >
-                <span
-                  className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full  
-                text-xs font-bold ${index <= 2 ? "text-paper bg-ink" : "text-stone bg-paper-dim"}`}
-                >
+                <span className="mr-2 shrink-0 text-xs font-bold text-admin-gray">
                   {index + 1}
                 </span>
-                <div className="relative h-12 w-12 bg-paper">
+                <div className="relative h-10 w-10">
                   {index <= 2 ? (
-                    <span className="absolute -right-1.5 -top-1.5 h-5 w-5 bg-paper-dim/90 flex items-center justify-center rounded-full">
+                    <span className="absolute -right-1.5 -top-1.5 h-4 w-4 bg-admin-active flex items-center justify-center rounded-full">
                       {index === 0 ? (
-                        <Crown className="h-3 w-3 text-ink" strokeWidth={2.5} />
+                        <Crown
+                          className="h-3 w-3 text-admin-gold"
+                          strokeWidth={2.5}
+                        />
                       ) : (
-                        <Star className="h-3 w-3  text-ink" strokeWidth={2.5} />
+                        <Star
+                          className="h-3 w-3  text-admin-gold"
+                          strokeWidth={2.5}
+                        />
                       )}
                     </span>
                   ) : null}
@@ -341,27 +339,25 @@ const AdminOverview = () => {
                     className="h-full w-full object-cover rounded-lg"
                   />
                 </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold">
-                    {product.name}
-                  </p>
-                  <p className="mt-0.5 text-xs text-stone">
+                <div className="min-w-0 ml-2 flex-1">
+                  <p className="font-semibold text-admin-ink">{product.name}</p>
+                  <p className="mt-0.5 text-xs text-admin-gray-light">
                     {product.unitsSold}{" "}
-                    {product.unitsSold === 1 ? "unit" : "units"}
+                    {product.unitsSold === 1 ? "unit" : "units"} sold
                   </p>
                 </div>
 
-                <div className="text-right">
-                  <p className="price text-sm font-semibold">
+                <div className="text-right font-mono text-xs text-admin-gray">
+                  <p className="text-sm font-semibold">
                     {formatPrice(product.revenue)}
                   </p>
-                  <p className="label-tag mt-0.5 text-stone">Revenue</p>
+                  <p className=" mt-0.5">Revenue</p>
                 </div>
               </div>
             ))}
           </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 };
