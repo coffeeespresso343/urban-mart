@@ -17,7 +17,7 @@ export const TextField = ({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="label-tag text-stone">
+      <label htmlFor={id} className="label-tag text-admin-gray-light">
         {label}
       </label>
       <input
@@ -27,7 +27,7 @@ export const TextField = ({
         required={required}
         placeholder={placeholder}
         inputMode={inputMode}
-        className="rounded-lg placeholder:text-stone/60 border border-line-light bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+        className="rounded-lg placeholder:text-admin-gray-light border border-admin-border bg-admin-bg px-3 py-2.5 text-sm outline-none focus:border-admin-ink"
       />
     </div>
   );
@@ -48,7 +48,7 @@ export const CheckboxField = ({
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="h-4 w-4 accent-ink"
+        className="h-4 w-4 accent-admin-ink"
       />
       {label}
     </label>

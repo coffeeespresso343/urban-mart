@@ -9,35 +9,23 @@ import {
   CheckCircle2,
   ClipboardList,
   Crown,
-  DollarSign,
-  ShoppingCart,
   Star,
   TrendingDown,
   TrendingUp,
-  TriangleAlert,
   Users2,
   Wallet,
 } from "lucide-react";
 
-import type { Product } from "../../types/Product";
-import { fetchProducts, getLowStockProducts } from "../../lib/products";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import { Link, useNavigate } from "react-router-dom";
-import Badge from "../../components/ui/Badge";
 import ImageWithFallback from "../../components/ui/ImageWithFallback";
 import DonutChart from "../../components/admin/DonutChart";
 import RingBadge from "../../components/admin/RingBadge";
 import RecentOrdersTable from "../../components/admin/RecentOrdersTable";
 import ActivityChart from "../../components/admin/ActivityChart";
 import RevenueChart from "../../components/admin/RevenueChart";
+import LowStockTable from "../../components/admin/LowStockTable";
+import { fetchProducts } from "../../lib/products";
+import type { Product } from "../../types/Product";
+import { Link } from "react-router-dom";
 
 export function Card({
   className = "",
@@ -63,7 +51,7 @@ function IconTile({ icon: Icon, tint }: { icon: typeof Wallet; tint: string }) {
         backgroundColor: tint,
       }}
     >
-      <Icon className="h-4 w-4" style={{ color: "#101818" }} />
+      <Icon className="h-4 w-4" style={{ color: "#667085" }} />
     </span>
   );
 }
@@ -116,64 +104,42 @@ function StatCard({
   );
 }
 
-function LowStockPanel({ products }: { products: Product[] }) {
-  const lowStock = getLowStockProducts(products, 5);
-
-  return (
-    <div className="border border-line-light rounded-xl p-5">
-      <div className="flex items-center justify-between gap-3">
-        <h3 className="flex items-center gap-1.5 text-stone label-tag font-semibold">
-          <TriangleAlert className="h-3.5 w-3.5 text-warn" />
-          Low Stock
-        </h3>
-        <Link
-          to="/admin/products"
-          className="label-tag font-semibold text-orange hover:underline
-          flex items-center gap-1"
-        >
-          Manage
-          <ArrowRight className="h-3.5 w-3.5" />
-        </Link>
-      </div>
-
-      {lowStock.length === 0 ? (
-        <p className="mt-6 text-sm text-good ">
-          Everything's well stocked - nothing at or below 5 units
-        </p>
-      ) : (
-        <div className="mt-4 border-t border-line-light divide-y divide-line-light flex flex-col">
-          {lowStock.slice(0, 6).map((product) => (
-            <Link
-              key={product.id}
-              to="/admin/products"
-              className="flex items-center justify-between gap-3 py-3 transition duration-200 hover:bg-paper-dim/20 active:scale-99"
-            >
-              <div className="min-w-0">
-                <p className="label-tag truncate font-medium">{product.name}</p>
-                <p className="label-tag mt-0.5 text-stone">{product.sku}</p>
-              </div>
-              <Badge
-                tone={product.stock === 0 ? "error" : "warn"}
-                className="text-[9px]"
-              >
-                {product.stock === 0 ? "Out of stock" : `${product.stock} left`}
-              </Badge>
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 const AdminOverview = () => {
   const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
+  const [lowStockProducts, setLowStockProducts] = useState<Product[]>([]);
+  // const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const load = () => {
-    fetchDashboardMetrics().then(setMetrics);
-  };
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
-  useEffect(load, []);
+  useEffect(() => {
+    const load = async () => {
+      const [metricsData, products] = await Promise.all([
+        fetchDashboardMetrics(),
+        fetchProducts(),
+      ]);
+
+      setMetrics(metricsData);
+      setLowStockProducts(products);
+    };
+
+    load();
+  }, []);
+
+  // const handleRefresh = async () => {
+  //   setIsRefreshing(true);
+
+  //   try {
+  //     const data = await fetchDashboardMetrics();
+  //     setMetrics(data);
+  //   } finally {
+  //     setIsRefreshing(false);
+  //   }
+  // };
 
   if (!metrics) {
     return (
@@ -227,7 +193,7 @@ const AdminOverview = () => {
         <Card>
           <div className="flex items-start justify-between">
             <p className="text-sm font-medium text-admin-gray">Stock Health</p>
-            <IconTile icon={Boxes} tint="var(--color-admin-blue-light)" />
+            <IconTile icon={Boxes} tint="var(--color-admin-purple-light)" />
           </div>
           <p className="font-mono tabular-nums mt-4 text-3xl font-bold">
             {metrics.stockHealth.find((s) => s.label === "Low Stock")!.value +
@@ -296,68 +262,84 @@ const AdminOverview = () => {
 
       <div className="grid grid-col-1 gap-5 lg:grid-cols-3">
         <ActivityChart signups={metrics.signupsByDay} />
-        <RecentOrdersTable orders={metrics.recentOrders} onRefresh={load} />
+        <RecentOrdersTable orders={metrics.recentOrders} />
       </div>
 
-      <Card>
-        <h3 className="mb-4 text-xs text-admin-gray font-semibold">
-          Top Products by Revenue
-        </h3>
-        {metrics.topProducts.length === 0 ? (
-          <p className="text-sm text-stone">
-            No orders yet - top products will show up here once sales come in.
-          </p>
-        ) : (
-          <div className="divide-y divide-admin-border border-t border-admin-border">
-            {metrics.topProducts.map((product, index) => (
-              <div
-                key={product.name}
-                className="flex items-center justify-between py-3 gap-2 text-sm last:pb-0"
-              >
-                <span className="mr-2 shrink-0 text-xs font-bold text-admin-gray">
-                  {index + 1}
-                </span>
-                <div className="relative h-10 w-10">
-                  {index <= 2 ? (
-                    <span className="absolute -right-1.5 -top-1.5 h-4 w-4 bg-admin-active flex items-center justify-center rounded-full">
-                      {index === 0 ? (
-                        <Crown
-                          className="h-3 w-3 text-admin-gold"
-                          strokeWidth={2.5}
-                        />
-                      ) : (
-                        <Star
-                          className="h-3 w-3  text-admin-gold"
-                          strokeWidth={2.5}
-                        />
-                      )}
-                    </span>
-                  ) : null}
-                  <ImageWithFallback
-                    src={product.image}
-                    alt={product.name}
-                    className="h-full w-full object-cover rounded-lg"
-                  />
-                </div>
-                <div className="min-w-0 ml-2 flex-1">
-                  <p className="font-semibold text-admin-ink">{product.name}</p>
-                  <p className="mt-0.5 text-xs text-admin-gray-light">
-                    {product.unitsSold}{" "}
-                    {product.unitsSold === 1 ? "unit" : "units"} sold
-                  </p>
-                </div>
-
-                <div className="text-right font-mono text-xs text-admin-gray">
-                  <p className="text-sm font-semibold">
-                    {formatPrice(product.revenue)}
-                  </p>
-                  <p className=" mt-0.5">Revenue</p>
-                </div>
-              </div>
-            ))}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="flex items-center gap-1.5 text-xs text-admin-gray font-semibold">
+              <TrendingUp className="h-3.5 w-3.5 text-admin-green" />
+              Top Products by Revenue
+            </h3>
+            <Link
+              to="/admin/products"
+              className="text-xs font-semibold text-admin-gray hover:underline
+          flex items-center gap-1"
+            >
+              View All
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
-        )}
-      </Card>
+          {metrics.topProducts.length === 0 ? (
+            <p className="text-sm mt-6 text-admin-gray">
+              No orders yet - top products will show up here once sales come in.
+            </p>
+          ) : (
+            <div className="mt-4 divide-y divide-admin-border border-t border-admin-border">
+              {metrics.topProducts.map((product, index) => (
+                <div
+                  key={product.name}
+                  className="flex items-center justify-between py-3 gap-2 text-sm last:pb-0 hover:bg-admin-bg"
+                >
+                  <span className="mr-2 shrink-0 text-xs font-bold text-admin-gray">
+                    {index + 1}
+                  </span>
+                  <div className="relative h-10 w-10">
+                    {index <= 2 ? (
+                      <span className="absolute -right-1 -top-1 h-3.5 w-3.5 bg-admin-active flex items-center justify-center rounded-full">
+                        {index === 0 ? (
+                          <Crown
+                            className="h-2.5 w-2.5 text-admin-gold"
+                            strokeWidth={2.5}
+                          />
+                        ) : (
+                          <Star
+                            className="h-2.5 w-2.5  text-admin-gold"
+                            strokeWidth={2.5}
+                          />
+                        )}
+                      </span>
+                    ) : null}
+                    <ImageWithFallback
+                      src={product.image}
+                      alt={product.name}
+                      className="h-full w-full object-cover rounded-lg"
+                    />
+                  </div>
+                  <div className="min-w-0 ml-2 flex-1">
+                    <p className="font-semibold text-admin-ink">
+                      {product.name}
+                    </p>
+                    <p className="mt-0.5 text-xs text-admin-gray-light">
+                      {product.unitsSold}{" "}
+                      {product.unitsSold === 1 ? "unit" : "units"} sold
+                    </p>
+                  </div>
+
+                  <div className="text-right font-mono text-xs text-admin-gray">
+                    <p className="text-sm font-semibold">
+                      {formatPrice(product.revenue)}
+                    </p>
+                    <p className=" mt-0.5">Revenue</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+        <LowStockTable products={lowStockProducts} />
+      </div>
     </div>
   );
 };

@@ -29,7 +29,7 @@ const ImageUploadField = ({
   };
   return (
     <div className="flex flex-col gap-3">
-      <label htmlFor="images" className="label-tag text-stone">
+      <label htmlFor="images" className="label-tag text-admin-gray-light">
         Images
       </label>
       <div
@@ -52,12 +52,12 @@ const ImageUploadField = ({
         className={`flex cursor-pointer rounded-lg flex-col items-center justify-center gap-2 border border-dashed px-4 py-8
         text-center transition-colors ${
           isDragging
-            ? "border-ink bg-paper-dim"
-            : "border-line-light hover:border-ink"
+            ? "border-admin-ink bg-admin-gray-light"
+            : "border-admin-border hover:border-admin-ink"
         }`}
       >
-        <ImagePlus className="h-5 w-5 text-stone" />
-        <p className="text-sm text-stone">
+        <ImagePlus className="h-5 w-5 text-admin-gray-light" />
+        <p className="text-sm text-admin-gray-light">
           Drag &amp; drop images, or click to browse
         </p>
         <input

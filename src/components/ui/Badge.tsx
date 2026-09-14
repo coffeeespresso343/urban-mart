@@ -7,15 +7,29 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 
-type Tone = "ink" | "orange" | "warn" | "good" | "error" | "stone";
+export type Tone =
+  | "ink"
+  | "orange"
+  | "warn"
+  | "good"
+  | "error"
+  | "stone"
+  | "blue"
+  | "purple"
+  | "green"
+  | "pink";
 
 const toneClasses: Record<Tone, string> = {
   ink: "bg-ink/60 text-paper border border-ink/20",
   orange: "bg-orange/80 text-paper border border-orange/60 backdrop-blur-sm",
   warn: "bg-warn/50 text-ink border border-warn/60",
   good: "bg-good/50 text-ink border border-good/70 ",
-  error: "bg-error/40 text-ink border border-error/50",
+  error: "bg-admin-pink-light text-admin-pink",
   stone: "bg-paper-dim/70 text-ink border border-line-light",
+  blue: "bg-admin-blue-light text-admin-blue",
+  purple: "bg-admin-purple-light text-admin-purple",
+  green: "bg-admin-green-light text-admin-green",
+  pink: "bg-admin-pink-light text-admin-pink",
 };
 
 const badgeIcons: Record<string, ReactNode> = {

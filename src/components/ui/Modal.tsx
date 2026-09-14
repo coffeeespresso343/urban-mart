@@ -33,7 +33,7 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-ink/50 backdrop-blur-2xl"
+            className="absolute inset-0 bg-admin-ink/40 backdrop-blur-2xl"
             onClick={onClose}
           />
           <motion.div
@@ -41,16 +41,16 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 12 }}
             transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-md rounded-xl bg-paper p-6 shadow-2xl"
+            className="relative w-full max-w-md rounded-xl bg-admin-card p-6 shadow-2xl"
           >
             <button
               onClick={onClose}
-              className="absolute right-4 top-4 text-stone transition-colors hover:text-ink"
+              className="absolute right-4 top-4 text-admin-gray-light transition-colors hover:text-admin-gray"
             >
               <X className="h-5 w-5" />
             </button>
             {title ? (
-              <h2 className="mb-4 pr-8 border-b border-line-light font-display text-lg font-semibold">
+              <h2 className="mb-4 pb-4 pr-8 border-b border-admin-border font-display text-sm font-semibold">
                 {title}
               </h2>
             ) : null}

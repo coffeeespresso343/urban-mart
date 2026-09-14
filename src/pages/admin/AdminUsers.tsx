@@ -49,6 +49,13 @@ const AdminUsers = () => {
 
   useEffect(load, []);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+
   const filteredUsers = useMemo(() => {
     if (!users) return [];
 
@@ -171,7 +178,7 @@ const AdminUsers = () => {
                   ? "Blocked Users"
                   : "All Users"}
           </h2>
-          <p className="mt-1 text-sm text-stone font-bold">
+          <p className="mt-1 text-sm font-bold text-admin-gray">
             ({filteredUsers.length ?? 0}{" "}
             {filteredUsers.length <= 1 ? "account" : "accounts"})
           </p>
@@ -180,8 +187,8 @@ const AdminUsers = () => {
           <select
             value={userFilter}
             onChange={(e) => setUserFilter(e.target.value as UserFilter)}
-            className="min-w-30 h-8 cursor-pointer text-xs rounded-lg border border-line-light bg-paper px-2 py-1 font-medium
-                capitalize outline-none transition-colors hover:border-ink/30 focus:border-orange focus:ring-2 focus:ring-orange"
+            className="min-w-30 h-8 cursor-pointer text-xs rounded-lg border border-admin-gray/20 bg-admin-card px-2 py-1 font-medium
+                capitalize outline-none transition-colors hover:border-admin-ink focus:border-orange focus:ring-2 focus:ring-orange"
           >
             {FILTER_OPTIONS.map((user) => (
               <option key={user.value} value={user.value}>
@@ -192,7 +199,7 @@ const AdminUsers = () => {
         </div>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-2xl border border-line-light bg-paper/50">
+      <div className="mt-6 overflow-hidden rounded-2xl border border-admin-border bg-admin-card">
         {filteredUsers.length === 0 ? (
           <EmptyState
             icon={UserX2}
@@ -200,11 +207,11 @@ const AdminUsers = () => {
             message="Try different filters."
           />
         ) : filteredUsers.length > 0 ? (
-          <div className="divide-y divide-line-light">
+          <div className="divide-y divide-admin-border">
             {filteredUsers.map((user) => (
               <div
                 key={user.id}
-                className="group relative flex flex-col gap-4 px-4 py-4 transition-colors duration-200 hover:bg-paper-dim/40
+                className="group relative flex flex-col gap-4 px-4 py-4 transition-colors duration-200
               sm:flex-row sm:items-center sm:justify-between sm:px-5"
               >
                 <Link
@@ -214,7 +221,7 @@ const AdminUsers = () => {
                   <span
                     className="flex h-6 w-6 items-center justify-center
                     rounded-full 
-                    bg-paper-dim/20 text-stone
+                    bg-paper-dim/10 text-admin-ink
                     backdrop-blur-sm
                     transition-all duration-200
                     hover:bg-orange
@@ -229,42 +236,42 @@ const AdminUsers = () => {
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
                     <div>
-                      <span className="h-7 w-7 flex items-center justify-center rounded-full bg-ink text-xs font-semibold text-paper transition-opacity hover:opacity-80 active:scale-[0.97]">
+                      <span className="h-7 w-7 flex items-center justify-center rounded-full bg-admin-gray-light text-xs font-semibold text-paper transition-opacity hover:opacity-80 active:scale-[0.97]">
                         {user.firstName ? user.firstName[0].toUpperCase() : "-"}
                       </span>
                     </div>
-                    <p className="text-sm truncate font-semibold text-ink">
+                    <p className="text-sm truncate font-semibold text-admin-gray">
                       {user.firstName
                         ? `${user.firstName} ${user.lastName ?? ""}`.trim()
                         : "-"}
                     </p>
                     {user.isAdmin && (
-                      <Badge tone="orange" className="text-[10px] px-2 py-0.5">
+                      <Badge tone="blue" className="text-[10px] px-2 py-0.5">
                         <ShieldCheck className="h-3 w-3" strokeWidth={2.5} />
                         Admin
                       </Badge>
                     )}
                     {user.isBlocked ? (
-                      <Badge tone="error" className="text-[10px] px-2 py-0.5">
+                      <Badge tone="pink" className="text-[10px] px-2 py-0.5">
                         Blocked
                       </Badge>
                     ) : null}
 
                     {currentUser?.id === user.id && (
-                      <span className="text-stone  font-semibold text-xs">
+                      <span className="text-admin-gray  font-semibold text-xs">
                         (You)
                       </span>
                     )}
                   </div>
-                  <p className="mt-2 font-mono font-semibold truncate text-xs text-stone">
+                  <p className="mt-2 font-mono font-semibold truncate text-xs text-admin-gray">
                     ID #{user.id}
                   </p>
-                  <p className="mt-1 truncate flex items-center gap-2 text-sm text-stone">
+                  <p className="mt-1 truncate flex items-center gap-2 text-sm text-admin-gray">
                     <Mail className="h-3 w-3" />
                     {user.email ?? "No email on file"}
                   </p>
 
-                  <p className="mt-1 text-xs flex items-center gap-2 font-medium text-stone/80">
+                  <p className="mt-1 text-xs flex items-center gap-2 font-medium text-admin-gray-light">
                     <Clock className="h-3 w-3" />
                     Joined{" "}
                     {new Date(user.createdAt).toLocaleDateString("en-US", {
@@ -284,10 +291,10 @@ const AdminUsers = () => {
                     }
                     onClick={() => toggleAdmin(user)}
                     className={`shrink-0 h-8 min-w-34 rounded-lg flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
-                      transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
+                      transition-all text-admin-ink active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
                         user.isAdmin
-                          ? "bg-warn/40 text-ink border-warn/20 hover:bg-warn/55"
-                          : "bg-orange/80 border-orange/15 text-paper hover:bg-orange/90"
+                          ? "bg-admin-pink/20 text-admin-pink border-admin-pink/30 hover:bg-admin-pink/35"
+                          : "bg-admin-gold/50 border-admin-gold/35 hover:bg-admin-gold/90"
                       }`}
                   >
                     {pendingId === user.id && pendingAction === "admin" ? (
@@ -315,10 +322,10 @@ const AdminUsers = () => {
                       currentUser?.id === user.id ||
                       (pendingId === user.id && pendingAction === "block")
                     }
-                    className={`flex shrink-0 h-8 min-w-28 items-center justify-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all hover:text-stone disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] ${
+                    className={`flex shrink-0 h-8 min-w-28 text-admin-ink items-center justify-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all hover:text-stone disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] ${
                       user.isBlocked
-                        ? "bg-good/30 border-good/10 text-ink hover:bg-good/15"
-                        : "bg-error/30 border-error/10 text-error hover:bg-error/15"
+                        ? "bg-admin-green/30 border-admin-green/20 hover:bg-admin-green/35"
+                        : "bg-admin-pink/10 border-admin-pink/10 text-admin-pink hover:bg-admin-pink/20"
                     }`}
                   >
                     {pendingId === user.id && pendingAction === "block" ? (
@@ -338,7 +345,8 @@ const AdminUsers = () => {
                   <Link
                     to={`/admin/users/${user.id}`}
                     className="shrink-0 h-8 rounded-lg flex items-center justify-center
-                   bg-paper border border-ink/20 font-medium text-ink transition-colors text-xs px-3 py-1.5 hover:border-ink/20 hover:bg-paper-warm active:scale-[0.98]"
+                   bg-admin-gray/5 border border-admin-gray/10 font-medium text-admin-gray transition-colors
+                    text-xs px-3 py-1.5 hover:border-admin-gray/20 hover:bg-admin-gray/30 active:scale-[0.98]"
                   >
                     Details
                   </Link>

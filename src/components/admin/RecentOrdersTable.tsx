@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Card } from "../../pages/admin/AdminOverview";
 import { formatPrice } from "../../utils/currency";
-import { RefreshCcw } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 import type { DashboardMetrics } from "../../lib/admin";
 
 const STATUS_PILL: Record<string, string> = {
@@ -13,21 +13,25 @@ const STATUS_PILL: Record<string, string> = {
 
 const RecentOrdersTable = ({
   orders,
-  onRefresh,
 }: {
   orders: DashboardMetrics["recentOrders"];
-  onRefresh: () => void;
 }) => {
   return (
     <Card>
       <div className="flex items-center justify-between gap-2">
-        <h3 className="text-xs text-admin-gray font-semibold">Recent Orders</h3>
-        <button
-          onClick={onRefresh}
-          className="text-admin-gray-light hover:text-admin-ink"
+        <h3 className="flex items-center gap-1.5 text-xs text-admin-gray font-semibold">
+          <Clock className="h-3.5 w-3.5 text-admin-gray" />
+          Recent Orders
+        </h3>
+
+        <Link
+          to="/admin/orders"
+          className="text-xs font-semibold text-admin-gray hover:underline
+          flex items-center gap-1"
         >
-          <RefreshCcw className="h-4 w-4" />
-        </button>
+          View All
+          <ArrowRight className="h-3.5 w-3.5" />
+        </Link>
       </div>
 
       {orders.length === 0 ? (

@@ -95,6 +95,13 @@ const AdminProducts = () => {
     void refetch();
   }, []);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -271,14 +278,14 @@ const AdminProducts = () => {
           message="Add your first product to get started."
         />
       ) : (
-        <div className="mt-6 divide-y divide-line-light border-y border-line-light">
+        <div className="mt-6 divide-y divide-admin-border border-y border-admin-border">
           {products.map((product) => (
             <div
               key={product.id}
               className="flex flex-wrap items-center justify-between gap-4 py-4"
             >
               <div className="flex items-center gap-2 lg:gap-5">
-                <span className="bg-stone/40 text-ink text-[10px] h-4 w-4 flex items-center justify-center rounded-full">
+                <span className="bg-admin-gray/30 text-admin-ink text-[10px] h-4 w-4 flex items-center justify-center rounded-full">
                   {product.id}
                 </span>
 
@@ -313,7 +320,7 @@ const AdminProducts = () => {
                   <div className="mt-1 label-tag flex flex-col lg:items-center lg:flex-row lg:gap-2 text-stone lg:mt-2">
                     <p>{product.category}</p>
                     <span className="hidden text-stone/80 lg:block">.</span>
-                    <p className="text-ink text-[10px]">
+                    <p className="text-admin-gray-light text-[10px]">
                       Stock {product.stock}
                     </p>
                   </div>
@@ -321,13 +328,13 @@ const AdminProducts = () => {
               </div>
 
               <div className="flex items-center gap-4 lg:gap-10">
-                <span className="price text-sm font-semibold">
+                <span className="font-mono tabular-nums text-admin-gray text-sm font-semibold">
                   {formatPrice(product.price)}
                 </span>
                 <button
                   type="button"
                   onClick={() => openEdit(product)}
-                  className="text-stone transition-colors duration-200 hover:text-ink active:scale-[0.95]"
+                  className="text-admin-gray-light transition-colors duration-200 hover:text-admin-gray active:scale-[0.95]"
                 >
                   <Pencil className="h-4 w-4" />
                 </button>
@@ -335,7 +342,7 @@ const AdminProducts = () => {
                   type="button"
                   onClick={() => handleDelete(product)}
                   disabled={product.id === deletingId}
-                  className="text-error transition-colors duration-200 hover:text-ink active:scale-[0.95] disabled:opacity-40"
+                  className="text-admin-pink/60 transition-colors duration-200 hover:text-admin-pink/70 active:scale-[0.95] disabled:opacity-40"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -372,7 +379,7 @@ const AdminProducts = () => {
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="admin-category"
-                  className="label-tag text-stone"
+                  className="label-tag text-admin-gray-light"
                 >
                   Category
                 </label>
@@ -385,8 +392,8 @@ const AdminProducts = () => {
                       category: e.target.value as ProductCategory,
                     })
                   }
-                  className="border border-line-light rounded-lg
-                bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+                  className="border border-admin-border rounded-lg
+                bg-admin-bg px-3 py-2.5 text-sm outline-none focus:border-admin-ink"
                 >
                   {categories.map((cat) => (
                     <option key={cat.slug}>{cat.name}</option>
@@ -420,7 +427,7 @@ const AdminProducts = () => {
               <div className="flex flex-col gap-1.5">
                 <label
                   htmlFor="admin-description"
-                  className="label-tag text-stone"
+                  className="label-tag text-admin-gray-light"
                 >
                   Description
                 </label>
@@ -431,7 +438,7 @@ const AdminProducts = () => {
                     setForm({ ...form, description: e.target.value })
                   }
                   rows={3}
-                  className="rounded-lg border border-line-light bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+                  className="rounded-lg border border-admin-border bg-admin-bg px-3 py-2.5 text-sm outline-none focus:border-admin-ink"
                 />
               </div>
               <ImageUploadField
@@ -454,7 +461,10 @@ const AdminProducts = () => {
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label htmlFor="admin-badge" className="label-tag text-stone">
+                <label
+                  htmlFor="admin-badge"
+                  className="label-tag text-admin-gray-light"
+                >
                   Badge
                 </label>
                 <select
@@ -466,8 +476,8 @@ const AdminProducts = () => {
                       badge: e.target.value as ProductBadge | "None",
                     })
                   }
-                  className="border border-line-light rounded-lg
-                bg-paper px-3 py-2.5 text-sm outline-none focus:border-ink"
+                  className="border border-admin-border rounded-lg
+                bg-admin-bg px-3 py-2.5 text-sm outline-none focus:border-admin-ink"
                 >
                   {BADGE_OPTIONS.map((badge) => (
                     <option key={badge} value={badge}>

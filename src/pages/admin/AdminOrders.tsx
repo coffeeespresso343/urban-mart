@@ -6,7 +6,7 @@ import { AdminOrdersSkeleton } from "../../components/ui/Skeleton";
 import EmptyState from "../../components/ui/EmptyState";
 import { ArrowUpRight, PackageX } from "lucide-react";
 import { formatPrice } from "../../utils/currency";
-import Badge from "../../components/ui/Badge";
+import Badge, { type Tone } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
 import { Link } from "react-router-dom";
 
@@ -17,11 +17,11 @@ const STATUS_OPTIONS: { value: OrderStatus; label: string }[] = [
   { value: "cancelled", label: "Cancelled" },
 ];
 
-const STATUS_TONE: Record<OrderStatus, "ink" | "orange" | "good" | "warn"> = {
-  processing: "orange",
-  shipped: "ink",
-  delivered: "good",
-  cancelled: "warn",
+const STATUS_TONE: Record<OrderStatus, Tone> = {
+  processing: "blue",
+  shipped: "purple",
+  delivered: "green",
+  cancelled: "pink",
 };
 
 type StatusFilter = "all" | OrderStatus;
@@ -58,6 +58,13 @@ const AdminOrders = () => {
   };
 
   useEffect(load, []);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   const filteredOrders = useMemo(() => {
     if (!orders) return [];
@@ -116,7 +123,7 @@ const AdminOrders = () => {
       </div>
 
       <div className="mt-6 overflow-x-auto scrollbar-none">
-        <div className="inline-flex min-w-max gap-1 rounded-2xl border border-paper-warm/50 bg-paper-warm/40 p-1">
+        <div className="inline-flex min-w-max gap-1 rounded-lg border border-admin-border bg-admin-card p-1">
           {FILTER_OPTIONS.map((option) => {
             const isActive = statusFilter === option.value;
 
@@ -132,17 +139,17 @@ const AdminOrders = () => {
                 key={option.value}
                 type="button"
                 onClick={() => setStatusFilter(option.value)}
-                className={`label-tag flex items-center gap-1 rounded-xl px-3 py-2 font-semibold
+                className={`label-tag flex items-center gap-1 rounded-lg px-3 py-2 font-semibold
                   transition-all duration-200 active:scale-[0.97] ${
                     isActive
-                      ? "bg-paper text-orange shadow-sm"
-                      : "text-stone hover:bg-paper/70"
+                      ? "bg-admin-active text-admin-ink shadow-sm"
+                      : "text-admin-gray hover:bg-admin-active"
                   }`}
               >
                 <span>{option.label}</span>
                 <span
                   className={`min-w-5 text-center  ${
-                    isActive ? "text-orange" : "text-stone/70"
+                    isActive ? "text-admin-ink" : "text-admin-gray"
                   }`}
                 >
                   ({count})
@@ -153,7 +160,7 @@ const AdminOrders = () => {
         </div>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-xl border border-line-light">
+      <div className="mt-6 bg-admin-card overflow-hidden rounded-xl border border-admin-border">
         {filteredOrders.length === 0 ? (
           <EmptyState
             icon={PackageX}
@@ -170,11 +177,11 @@ const AdminOrders = () => {
             }
           />
         ) : (
-          <div className="divide-y divide-line-light">
+          <div className="divide-y divide-admin-border">
             {filteredOrders.map((order) => (
               <div
                 key={order.id}
-                className="relative flex flex-col px-4 py-4 transition-colors duration-200 hover:bg-paper-dim/30 sm:px-5 lg:flex-row lg:items-center lg:justify-between lg:gap-6"
+                className="relative flex flex-col px-4 py-4 transition-colors duration-200 hover:bg-admin-bg sm:px-5 lg:flex-row lg:items-center lg:justify-between lg:gap-6"
               >
                 <Link
                   to={`/account/orders/${order.orderNumber}`}
@@ -183,7 +190,7 @@ const AdminOrders = () => {
                   <span
                     className="flex h-6 w-6 items-center justify-center
                     rounded-full 
-                    bg-paper-dim/25 text-stone
+                    bg-paper-dim/10 text-admin-ink
                     backdrop-blur-sm
                     transition-all duration-200
                     hover:bg-orange
@@ -234,7 +241,7 @@ const AdminOrders = () => {
                 </div>
                 <div className="mt-2 mr-8 flex w-full items-center justify-between gap-4 sm:justify-end lg:w-auto">
                   <div className="min-w-20 sm:text-right">
-                    <p className="price mt-0.5 text-sm font-bold tracking-tight text-ink">
+                    <p className="mt-0.5 font-mono tabular-nums text-sm font-bold tracking-tight text-admin-gray">
                       {formatPrice(order.totals.total)}
                     </p>
                   </div>
@@ -254,8 +261,8 @@ const AdminOrders = () => {
                             e.target.value as OrderStatus,
                           )
                         }
-                        className="min-w-28 cursor-pointer text-xs rounded-lg border border-line-light bg-paper px-2 py-1 font-medium
-                capitalize outline-none transition-colors hover:border-ink/30 focus:border-orange focus:ring-2 focus:ring-orange disabled:opacity-50"
+                        className="min-w-26 cursor-pointer text-xs rounded-lg border border-admin-gray/20 bg-admin-card px-2 py-1 font-medium
+                capitalize outline-none transition-colors hover:border-admin-ink focus:border-orange focus:ring-2 focus:ring-orange"
                       >
                         {STATUS_OPTIONS.map((status) => (
                           <option key={status.value} value={status.value}>

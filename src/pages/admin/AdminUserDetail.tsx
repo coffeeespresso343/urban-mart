@@ -25,11 +25,11 @@ import {
   type AdminUser,
 } from "../../lib/admin";
 
-const STATUS_TONE: Record<OrderStatus, "ink" | "orange" | "good" | "warn"> = {
-  processing: "orange",
-  shipped: "ink",
-  delivered: "good",
-  cancelled: "warn",
+const STATUS_TONE: Record<OrderStatus, "blue" | "purple" | "green" | "pink"> = {
+  processing: "blue",
+  shipped: "purple",
+  delivered: "green",
+  cancelled: "pink",
 };
 
 const AdminUserDetail = () => {
@@ -155,15 +155,15 @@ const AdminUserDetail = () => {
     <div>
       <Link
         to="/admin/users"
-        className="flex items-center gap-1.5 text-stone text-sm hover:text-ink"
+        className="flex items-center gap-1.5 text-admin-gray text-sm hover:text-admin-ink"
       >
         <ChevronLeft className="h-4 w-4" aria-hidden="true" /> Users
       </Link>
 
       <div className="mt-6 flex flex-wrap flex-col lg:flex-row items-start justify-between gap-6">
         <div>
-          <div className="flex items-start gap-3 rounded-xl bg-paper-dim/50 px-4 py-6">
-            <div className="h-8 w-8 shrink-0 flex items-center justify-center rounded-full bg-orange text-paper ring-2 ring-orange/30">
+          <div className="flex items-start gap-3 rounded-xl bg-admin-card px-4 py-6">
+            <div className="h-8 w-8 shrink-0 flex items-center justify-center rounded-full bg-admin-gray-light text-paper">
               {targetUser?.firstName
                 ? targetUser.firstName[0].toUpperCase()
                 : "-"}
@@ -177,20 +177,20 @@ const AdminUserDetail = () => {
                     : "Unnamed User"}
                 </h2>
                 {targetUser.isAdmin ? (
-                  <Badge tone="orange">
+                  <Badge tone="blue">
                     <ShieldCheck className="h-3 w-3" strokeWidth={2.5} />
                     Admin
                   </Badge>
                 ) : null}
                 {targetUser.isBlocked ? (
-                  <Badge tone="error">Blocked</Badge>
+                  <Badge tone="pink">Blocked</Badge>
                 ) : null}
               </div>
 
-              <p className="mt-1 text-sm text-stone">
+              <p className="mt-1 text-sm text-admin-gray">
                 {targetUser.email ?? "no email on file"}
               </p>
-              <p className="mt-1 text-sm text-stone">
+              <p className="mt-1 text-sm text-admin-gray">
                 Joined{" "}
                 {new Date(targetUser.createdAt).toLocaleDateString("en-US", {
                   month: "long",
@@ -204,16 +204,17 @@ const AdminUserDetail = () => {
 
         <div className="flex items-center gap-4">
           <button
+            type="button"
             disabled={
               isSelf ||
               (pendingId === targetUser.id && pendingAction === "admin")
             }
             onClick={() => toggleAdmin(targetUser)}
             className={`shrink-0 h-8 min-w-34 rounded-lg flex items-center justify-center gap-1.5 border font-medium text-xs px-3 py-1.5
-                      transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
+                      transition-all text-admin-ink active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-30 ${
                         targetUser.isAdmin
-                          ? "bg-warn/40 text-ink border-warn/20 hover:bg-warn/55"
-                          : "bg-orange/80 border-orange/15 text-paper hover:bg-orange/90"
+                          ? "bg-admin-pink/20 text-admin-pink border-admin-pink/30 hover:bg-admin-pink/35"
+                          : "bg-admin-gold/50 border-admin-gold/35 hover:bg-admin-gold/90"
                       }`}
           >
             {pendingId === targetUser.id && pendingAction === "admin" ? (
@@ -233,17 +234,18 @@ const AdminUserDetail = () => {
               </>
             )}
           </button>
+
           <button
             type="button"
+            onClick={() => toggleBlocked(targetUser)}
             disabled={
               isSelf ||
               (pendingId === targetUser.id && pendingAction === "block")
             }
-            onClick={() => toggleBlocked(targetUser)}
-            className={`flex shrink-0 h-8 min-w-28 items-center justify-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all hover:text-stone disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] ${
+            className={`flex shrink-0 h-8 min-w-28 text-admin-ink items-center justify-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border font-medium transition-all hover:text-admin-gray disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] ${
               targetUser.isBlocked
-                ? "bg-good/30 border-good/10 text-ink hover:bg-good/15"
-                : "bg-error/30 border-error/10 text-error hover:bg-error/15"
+                ? "bg-admin-green/30 border-admin-green/20 hover:bg-admin-green/35"
+                : "bg-admin-pink/10 border-admin-pink/10 text-admin-pink hover:bg-admin-pink/20"
             }`}
           >
             {pendingId === targetUser.id && pendingAction === "block" ? (
@@ -265,8 +267,10 @@ const AdminUserDetail = () => {
 
       <div className="mt-10">
         <div className="flex items-center justify-between">
-          <h3 className="label-tag font-semibold text-stone">Order History</h3>
-          <p className="text-sm text-stone font-semibold">
+          <h3 className="label-tag font-semibold text-admin-gray">
+            Order History
+          </h3>
+          <p className="text-sm text-admin-gray font-semibold">
             {orders.length} order{orders.length === 1 ? "" : "s"} ·{" "}
             {formatPrice(totalSpent)} total
           </p>
@@ -281,7 +285,7 @@ const AdminUserDetail = () => {
             />
           </div>
         ) : (
-          <div className="mt-4 divide-y divide-line-light border-y border-line-light">
+          <div className="mt-4 divide-y divide-admin-border border-y border-admin-border">
             {orders.map((order) => (
               <div
                 key={order.id}
@@ -299,7 +303,7 @@ const AdminUserDetail = () => {
                       {order.status}
                     </Badge>
                   </div>
-                  <p className="mt-1 text-sm text-stone">
+                  <p className="mt-2 text-sm text-admin-gray">
                     {new Date(order.placedAt).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -309,13 +313,14 @@ const AdminUserDetail = () => {
                     {order.totals.itemCount === 1 ? "" : "s"}
                   </p>
                 </div>
-                <span className="price text-sm font-semibold">
+                <span className="font-mono tabular-nums text-xs font-semibold">
                   {formatPrice(order.totals.total)}
                 </span>
                 <Link
                   to={`/account/orders/${order.orderNumber}`}
-                  className="shrink-0 rounded-lg flex items-center justify-center gap-1 px-2 py-1 text-ink
-                   bg-paper border border-ink/20 font-medium transition-colors text-xs hover:border-ink/20 hover:bg-paper-warm active:scale-[0.98]"
+                  className="shrink-0 h-8 rounded-lg flex items-center justify-center
+                   bg-admin-gray/5 border border-admin-gray/10 font-medium text-admin-gray transition-colors
+                    text-xs px-3 py-1.5 hover:border-admin-gray/20 hover:bg-admin-gray/30 active:scale-[0.98]"
                 >
                   Details
                 </Link>

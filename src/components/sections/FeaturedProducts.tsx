@@ -1,21 +1,28 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductGrid from "../product/ProductGrid";
-import { newArrivals } from "../../data/products";
 import { useEffect, useState } from "react";
 import { ProductGridSkeleton } from "../ui/Skeleton";
+import type { Product } from "../../types/Product";
+import { fetchProducts, getNewArrivals } from "../../lib/products";
 
 const FeaturedProducts = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [newArrivals, setNewArrivals] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
-
-    const timeout = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timeout);
+    const load = async () => {
+      setIsLoading(true);
+      try {
+        const products = await fetchProducts();
+        setNewArrivals(getNewArrivals(products));
+      } catch (error) {
+        console.error("Failed to load new arrivals", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    load();
   }, []);
 
   return (

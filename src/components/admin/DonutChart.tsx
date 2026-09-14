@@ -42,7 +42,7 @@ const DonutChart = ({
               style={{ backgroundColor: slice.color }}
             />
             <span className="">
-              {total > 0 ? Math.round((slice.value / total) * 100) : 0}%{" "}
+              {total > 0 ? Math.round((slice.value / total) * 100) : 0} %{" "}
               {slice.label}
             </span>
           </li>

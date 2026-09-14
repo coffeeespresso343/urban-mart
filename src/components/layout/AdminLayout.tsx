@@ -13,6 +13,7 @@ import { ToastContainer } from "../ui/Toast";
 import { useAuth } from "../../hooks/useAuth";
 import { useAdminTheme } from "../../hooks/useAdminTheme";
 import Logo from "../../assets/Logo.png";
+import LogoLight from "../../assets/logo-light.png";
 
 const NAV_ITEMS = [
   { label: "Overview", to: "/admin", end: true, Icon: LayoutDashboard },
@@ -30,11 +31,11 @@ const AdminLayout = () => {
     <div
       className={`${theme === "dark" ? "admin-dark" : ""} flex min-h-screen bg-admin-bg text-admin-ink`}
     >
-      <aside className="hidden w-55 shrink-0 flex-col bg-admin-card px-4 py-6 lg:sticky lg:self-start top-0 lg:flex">
+      <aside className="hidden w-55 shrink-0 rounded-b-2xl flex-col bg-admin-card px-4 py-6 lg:sticky lg:self-start top-0 lg:flex">
         <div className="flex items-center gap-2 px-2">
           <Link to="/" className="flex items-center h-full w-30 lg:w-34">
             <img
-              src={Logo}
+              src={`${theme === "dark" ? LogoLight : Logo}`}
               alt="Urban-Mart-Logo"
               className="h-auto w-full object-contain"
             />
@@ -107,7 +108,7 @@ const AdminLayout = () => {
           <div className="flex items-center gap-3">
             <Link to="/" className="w-34 sm:w-34 lg:hidden">
               <img
-                src={Logo}
+                src={`${theme === "dark" ? LogoLight : Logo}`}
                 alt="Urban-Mart-Logo"
                 className="h-auto w-full object-contain"
               />
@@ -120,9 +121,9 @@ const AdminLayout = () => {
           <div className="flex items-center overflow-hidden rounded-full border border-admin-border bg-admin-card">
             <button
               onClick={() => theme === "dark" && toggleTheme()}
-              className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
+              className={`flex h-6 w-6 items-center justify-center rounded-full transition-colors ${
                 theme === "light"
-                  ? "bg-admin-blue text-white"
+                  ? "bg-admin-gold text-white"
                   : "text-admin-gray-light"
               }`}
             >
@@ -130,9 +131,9 @@ const AdminLayout = () => {
             </button>
             <button
               onClick={() => theme === "light" && toggleTheme()}
-              className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${
+              className={`flex h-6 w-6 items-center justify-center rounded-full transition-colors ${
                 theme === "dark"
-                  ? "bg-admin-blue text-white"
+                  ? "bg-admin-gray text-white"
                   : "text-admin-gray-light"
               }`}
             >

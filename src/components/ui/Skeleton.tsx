@@ -1,5 +1,7 @@
 export const Skeleton = ({ className = "" }: { className: string }) => {
-  return <div className={`animate-pulse bg-paper-warm ${className}`} />;
+  return (
+    <div className={`animate-pulse bg-admin-gray-light/50 ${className}`} />
+  );
 };
 
 export const ProductCardSkeleton = () => {
@@ -127,8 +129,8 @@ export const AdminUsersSkeleton = ({ count = 4 }: { count?: number }) => {
         <Skeleton className="h-5 w-26 rounded-lg" />
         <Skeleton className=" h-6 w-24 rounded-lg" />
       </div>
-      <div className="mt-6 overflow-hidden rounded-2xl border border-paper-warm">
-        <div className="divide-y divide-paper-warm">
+      <div className="mt-6 overflow-hidden rounded-2xl border border-admin-border">
+        <div className="divide-y divide-admin-border border border-admin-border">
           {Array.from({ length: count }).map((_, i) => (
             <div
               key={i}
@@ -168,8 +170,8 @@ export const AdminOrdersSkeleton = ({ count = 4 }: { count?: number }) => {
       <div className="mt-4">
         <Skeleton className="h-7 w-full rounded-xl" />
       </div>
-      <div className="mt-6 overflow-hidden border border-paper-warm rounded-xl">
-        <div className="divide-y divide-paper-warm">
+      <div className="mt-6 overflow-hidden border border-admin-border rounded-xl">
+        <div className="divide-y divide-admin-border border border-admin-border">
           {Array.from({ length: count }).map((_, i) => (
             <div
               key={i}
@@ -199,7 +201,7 @@ export const AdminOrdersSkeleton = ({ count = 4 }: { count?: number }) => {
 
 export const AdminProductsSkeleton = ({ count = 4 }: { count?: number }) => {
   return (
-    <div className="mt-6 divide-y divide-paper-warm border-y border-paper-warm">
+    <div className="mt-6 divide-y divide-admin-borborder-admin-border border-y border-admin-border">
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
@@ -250,7 +252,7 @@ export const AdminUsersDetailSkeleton = ({ count = 4 }: { count?: number }) => {
         </div>
       </div>
 
-      <div className="mt-4 divide-y divide-line-light border-y border-line-light">
+      <div className="mt-4 divide-y divide-admin-border border-y border-admin-bordivide-admin-border">
         {Array.from({ length: count }).map((_, i) => (
           <div
             key={i}

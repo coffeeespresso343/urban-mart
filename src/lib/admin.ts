@@ -368,7 +368,7 @@ function computeUserSegments(
   ];
 }
 
-function computStockHealth(products: Product[]): DonutSlice[] {
+function computeStockHealth(products: Product[]): DonutSlice[] {
   let inStock = 0;
   let lowStock = 0;
   let outOfStock = 0;
@@ -380,9 +380,9 @@ function computStockHealth(products: Product[]): DonutSlice[] {
   }
 
   return [
-    { label: "In Stock", value: inStock, color: "#3B82F6" },
-    { label: "Low Stock", value: lowStock, color: "#93C5FD" },
-    { label: "Out of Stock", value: outOfStock, color: "#f04438" },
+    { label: "In Stock", value: inStock, color: "#12b76a" },
+    { label: "Low Stock", value: lowStock, color: "#D49A3A" },
+    { label: "Out of Stock", value: outOfStock, color: "#C65A5A" },
   ];
 }
 
@@ -399,7 +399,11 @@ export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
   );
 
   const orderCount = orders.length;
-  const averageOrderValue = orderCount > 0 ? totalRevenue / orderCount : 0;
+  const revenueOrders = orders.filter((o) => o.status !== "cancelled");
+
+  const averageOrderValue =
+    revenueOrders.length > 0 ? totalRevenue / revenueOrders.length : 0;
+
   const deliveredCount = orders.filter((o) => o.status === "delivered").length;
   const fulfillmentRatePct =
     orderCount > 0 ? Math.round((deliveredCount / orderCount) * 100) : 0;
@@ -407,7 +411,9 @@ export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
   const now = new Date();
   now.setHours(0, 0, 0, 0);
 
-  const periodEnd = new Date(now.getDate() + 86400000);
+  const periodEnd = new Date(now);
+  periodEnd.setDate(periodEnd.getDate() + 1);
+
   const currentStart = new Date(now);
   currentStart.setDate(currentStart.getDate() - TREND_WINDOW_DAYS);
   const previousStart = new Date(currentStart);
@@ -470,7 +476,7 @@ export async function fetchDashboardMetrics(): Promise<DashboardMetrics> {
     averageOrderValue,
     userCount: users.length,
     userSegments: computeUserSegments(users, orders),
-    stockHealth: computStockHealth(products),
+    stockHealth: computeStockHealth(products),
     revenueByDay: buildRevenueByDay(orders, TREND_WINDOW_DAYS),
     revenueByMonth: buildRevenueByMonth(orders),
     signupsByDay: buildSignupsByDay(users, TREND_WINDOW_DAYS),
