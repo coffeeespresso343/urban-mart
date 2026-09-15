@@ -210,7 +210,7 @@ const AdminOrders = () => {
                     </p>
                     <Badge
                       tone={STATUS_TONE[order.status]}
-                      className="capitalize text-[10px]"
+                      className="text-[11px]"
                     >
                       {order.status}
                     </Badge>
@@ -261,7 +261,7 @@ const AdminOrders = () => {
                             e.target.value as OrderStatus,
                           )
                         }
-                        className="min-w-26 cursor-pointer text-xs rounded-lg border border-admin-gray/20 bg-admin-card px-2 py-1 font-medium
+                        className="min-w-26 cursor-pointer text-xs rounded-lg border border-admin-gray/20 px-2 py-1 font-medium
                 capitalize outline-none transition-colors hover:border-admin-ink focus:border-orange focus:ring-2 focus:ring-orange"
                       >
                         {STATUS_OPTIONS.map((status) => (

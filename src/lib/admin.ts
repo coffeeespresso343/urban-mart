@@ -14,6 +14,7 @@ export interface AdminUser {
   createdAt: string;
   isAdmin: boolean;
   isBlocked: boolean;
+  avatarUrl: string | null;
 }
 
 interface ProfileRow {
@@ -23,6 +24,7 @@ interface ProfileRow {
   last_name: string | null;
   created_at: string;
   is_blocked: boolean;
+  avatar_url: string | null;
 }
 
 interface UserRoleRow {
@@ -44,7 +46,9 @@ export async function fetchAllUsers(): Promise<AdminUser[]> {
   const [profileResult, roleResult] = await Promise.all([
     supabase
       .from("profiles")
-      .select("id, email, first_name, last_name, created_at, is_blocked")
+      .select(
+        "id, email, first_name, last_name, created_at, is_blocked, avatar_url",
+      )
       .order("created_at", { ascending: false }),
     supabase.from("user_roles").select("user_id, roles(name)"),
   ]);
@@ -65,6 +69,7 @@ export async function fetchAllUsers(): Promise<AdminUser[]> {
     createdAt: row.created_at,
     isAdmin: adminIds.has(row.id),
     isBlocked: row.is_blocked,
+    avatarUrl: row.avatar_url,
   }));
 }
 
@@ -74,7 +79,9 @@ export async function fetchUserById(userId: string): Promise<AdminUser | null> {
   const [profileResult, rolesResult] = await Promise.all([
     supabase
       .from("profiles")
-      .select("id, first_name, last_name, email, created_at, is_blocked")
+      .select(
+        "id, first_name, last_name, email, created_at, is_blocked, avatar_url",
+      )
       .eq("id", userId)
       .single(),
     supabase
@@ -98,6 +105,7 @@ export async function fetchUserById(userId: string): Promise<AdminUser | null> {
     createdAt: row.created_at,
     isAdmin,
     isBlocked: row.is_blocked,
+    avatarUrl: row.avatar_url,
   };
 }
 

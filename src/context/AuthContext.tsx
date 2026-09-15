@@ -1,5 +1,6 @@
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -13,6 +14,7 @@ interface Profile {
   firstName: string | null;
   lastName?: string | null;
   isBlocked: boolean;
+  avatarUrl: string | null;
 }
 
 interface AuthResult {
@@ -27,6 +29,7 @@ interface AuthContextValue {
   isConfigured: boolean;
   isAdmin: boolean;
   isAdminLoading: boolean;
+  refreshProfile: () => Promise<void>;
   signUpWithPassword: (
     email: string,
     password: string,
@@ -72,7 +75,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => listener.subscription.unsubscribe();
   }, []);
 
-  //   Fetch the profile row whenever the sigined-in user changes.
+  const loadProfile = useCallback(async (userId: string) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("id, first_name, last_name, is_blocked, avatar_url")
+      .eq("id", userId)
+      .single();
+
+    if (data) {
+      setProfile({
+        id: data.id as string,
+        firstName: data.first_name as string | null,
+        lastName: data.last_name as string | null,
+        isBlocked: Boolean(data.is_blocked),
+        avatarUrl: data.avatar_url as string | null,
+      });
+    }
+  }, []);
+
   useEffect(() => {
     if (!user || !isSupabaseConfigured) {
       setProfile(null);
@@ -80,27 +100,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     let cancelled = false;
-
-    supabase
-      .from("profiles")
-      .select("id, first_name, last_name, is_blocked")
-      .eq("id", user.id)
-      .single()
-      .then(({ data }) => {
-        if (!cancelled && data) {
-          setProfile({
-            id: data.id as string,
-            firstName: data.first_name as string | null,
-            lastName: data.last_name as string | null,
-            isBlocked: Boolean(data.is_blocked),
-          });
-        }
-      });
+    (async () => {
+      await loadProfile(user.id);
+      if (cancelled) return;
+    })();
 
     return () => {
       cancelled = true;
     };
-  }, [user]);
+  }, [user, loadProfile]);
+
+  const refreshProfile = useCallback(async () => {
+    if (!user) return;
+
+    await loadProfile(user.id);
+  }, [user, loadProfile]);
 
   // Check the admin role via the has_role() Postgres function
   useEffect(() => {
@@ -179,6 +193,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isConfigured: isSupabaseConfigured,
     isAdmin,
     isAdminLoading,
+    refreshProfile,
     signUpWithPassword,
     signInWithPassword,
     signInWithMagicLink,

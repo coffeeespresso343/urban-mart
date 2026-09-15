@@ -46,3 +46,38 @@ export async function uploadProductImages(
 
   return { urls, error: null };
 }
+
+/**
+ * Uploads a single avatar image to avatars/{userId}/{random}-{filename}.
+ * Storage RLS scopes access by the folder name matching auth.uid(), not
+ * by admin role — this is a self-service "my own account" upload, so any
+ * signed-in user could reuse this later, not just admins.
+ */
+
+export async function uploadAvatar(
+  file: File,
+  userId: string,
+): Promise<{ url: string | null; error: string | null }> {
+  if (!isSupabaseConfigured) {
+    return {
+      url: null,
+      error:
+        "Supabase isn't configured - avatar upload requires a connected project.",
+    };
+  }
+
+  const path = `${userId}/${crypto.randomUUID()}-${file.name}`;
+
+  const { error } = await supabase.storage.from("avatars").upload(path, file, {
+    cacheControl: "3600",
+    upsert: false,
+  });
+
+  if (error) {
+    return { url: null, error: error.message };
+  }
+
+  const { data } = supabase.storage.from("avatars").getPublicUrl(path);
+
+  return { url: data.publicUrl, error: null };
+}

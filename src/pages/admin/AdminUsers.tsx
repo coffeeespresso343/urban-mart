@@ -17,11 +17,13 @@ import {
   Mail,
   ShieldCheck,
   ShieldOff,
+  User2,
   Users2,
   UserX2,
 } from "lucide-react";
 import Badge from "../../components/ui/Badge";
 import { Link } from "react-router-dom";
+import ImageWithFallback from "../../components/ui/ImageWithFallback";
 
 type UserFilter = "all" | "customer" | "admin" | "blocked";
 
@@ -187,7 +189,7 @@ const AdminUsers = () => {
           <select
             value={userFilter}
             onChange={(e) => setUserFilter(e.target.value as UserFilter)}
-            className="min-w-30 h-8 cursor-pointer text-xs rounded-lg border border-admin-gray/20 bg-admin-card px-2 py-1 font-medium
+            className="min-w-30 h-8 cursor-pointer text-xs rounded-lg bg-admin-bg border border-admin-gray/20 px-2 py-1 font-medium
                 capitalize outline-none transition-colors hover:border-admin-ink focus:border-orange focus:ring-2 focus:ring-orange"
           >
             {FILTER_OPTIONS.map((user) => (
@@ -235,10 +237,18 @@ const AdminUsers = () => {
                 </Link>
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <div>
-                      <span className="h-7 w-7 flex items-center justify-center rounded-full bg-admin-gray-light text-xs font-semibold text-paper transition-opacity hover:opacity-80 active:scale-[0.97]">
-                        {user.firstName ? user.firstName[0].toUpperCase() : "-"}
-                      </span>
+                    <div className="h-8 w-8 overflow-hidden ring ring-admin-gray/20 rounded-full bg-admin-bg">
+                      {user.avatarUrl ? (
+                        <ImageWithFallback
+                          src={user.avatarUrl}
+                          alt=""
+                          className="h-full w-full"
+                        />
+                      ) : (
+                        <div className="h-full w-full text-admin-gray-light flex items-center justify-center">
+                          <User2 className="h-4 w-4" />
+                        </div>
+                      )}
                     </div>
                     <p className="text-sm truncate font-semibold text-admin-gray">
                       {user.firstName
@@ -246,13 +256,13 @@ const AdminUsers = () => {
                         : "-"}
                     </p>
                     {user.isAdmin && (
-                      <Badge tone="blue" className="text-[10px] px-2 py-0.5">
+                      <Badge tone="blue" className="text-[11px]">
                         <ShieldCheck className="h-3 w-3" strokeWidth={2.5} />
                         Admin
                       </Badge>
                     )}
                     {user.isBlocked ? (
-                      <Badge tone="pink" className="text-[10px] px-2 py-0.5">
+                      <Badge tone="pink" className="text-[11px]">
                         Blocked
                       </Badge>
                     ) : null}

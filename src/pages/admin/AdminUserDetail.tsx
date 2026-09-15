@@ -12,6 +12,7 @@ import {
   PackageX,
   ShieldCheck,
   ShieldOff,
+  User2,
 } from "lucide-react";
 import Badge from "../../components/ui/Badge";
 import { formatPrice } from "../../utils/currency";
@@ -24,6 +25,8 @@ import {
   setUserBlocked,
   type AdminUser,
 } from "../../lib/admin";
+import ImageWithFallback from "../../components/ui/ImageWithFallback";
+import { Card } from "./AdminOverview";
 
 const STATUS_TONE: Record<OrderStatus, "blue" | "purple" | "green" | "pink"> = {
   processing: "blue",
@@ -161,12 +164,23 @@ const AdminUserDetail = () => {
       </Link>
 
       <div className="mt-6 flex flex-wrap flex-col lg:flex-row items-start justify-between gap-6">
-        <div>
-          <div className="flex items-start gap-3 rounded-xl bg-admin-card px-4 py-6">
-            <div className="h-8 w-8 shrink-0 flex items-center justify-center rounded-full bg-admin-gray-light text-paper">
-              {targetUser?.firstName
-                ? targetUser.firstName[0].toUpperCase()
-                : "-"}
+        <Card>
+          <div className="flex items-start gap-3 ">
+            <div className="h-10 w-10 overflow-hidden rounded-full bg-admin-active">
+              {targetUser?.avatarUrl ? (
+                <ImageWithFallback
+                  src={targetUser.avatarUrl}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                  <User2
+                    className="h-4 w-4 text-admin-gray-light"
+                    aria-hidden="true"
+                  />
+                </div>
+              )}
             </div>
 
             <div className="min-w-60">
@@ -187,10 +201,10 @@ const AdminUserDetail = () => {
                 ) : null}
               </div>
 
-              <p className="mt-1 text-sm text-admin-gray">
+              <p className="mt-1 text-xs text-admin-gray">
                 {targetUser.email ?? "no email on file"}
               </p>
-              <p className="mt-1 text-sm text-admin-gray">
+              <p className="mt-1 text-xs text-admin-gray">
                 Joined{" "}
                 {new Date(targetUser.createdAt).toLocaleDateString("en-US", {
                   month: "long",
@@ -200,7 +214,7 @@ const AdminUserDetail = () => {
               </p>
             </div>
           </div>
-        </div>
+        </Card>
 
         <div className="flex items-center gap-4">
           <button
