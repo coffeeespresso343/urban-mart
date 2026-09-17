@@ -1,30 +1,25 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useState, type FormEvent } from "react";
+import { ArrowRight, Eye, EyeOff, Lock, X } from "lucide-react";
+import { Card } from "../ui/Card";
+import { Button } from "../ui/Button";
 import { useUIStore } from "../../hooks/uiStore";
-import { isValidPassword } from "../../utils/validation";
+import { useState, type FormEvent } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { updateOwnPassword } from "../../lib/profile";
 import { supabase } from "../../lib/supabase";
-import {
-  ArrowRight,
-  Check,
-  Eye,
-  EyeOff,
-  KeyRound,
-  Loader2,
-  X,
-} from "lucide-react";
+import { isValidPassword } from "../../utils/validation";
+import { AnimatePresence, motion } from "framer-motion";
 
 const inputClass =
-  "w-full rounded-lg border border-line-light bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-orange transition-colors";
-const labelClass = "text-xs font-medium text-admin-gray mb-1.5 block";
-const errorClass = "mt-1 text-xs text-error";
+  "rounded-lg w-full border border-admin-border bg-admin-card pr-11 px-3 py-2.5 text-sm outline-none focus:border-admin-blue";
+const errorClass = "mt-1 text-xs text-admin-pink";
 
-const Security = () => {
+const AdminPassword = () => {
   const { user } = useAuth();
   const showToast = useUIStore((s) => s.showToast);
 
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
+
   const [showPassword, setShowPassword] = useState({
     current: false,
     new: false,
@@ -38,21 +33,6 @@ const Security = () => {
   const [passwordErrors, setPasswordErrors] = useState<Record<string, string>>(
     {},
   );
-
-  const openPasswordEditor = () => {
-    setPasswordForm({
-      currentPassword: "",
-      newPassword: "",
-      confirmPassword: "",
-    });
-    setPasswordErrors({});
-    setIsChangingPassword(true);
-  };
-
-  const cancelPasswordEdit = () => {
-    setIsChangingPassword(false);
-    setPasswordErrors({});
-  };
 
   const validatePasswordForm = () => {
     const errors: Record<string, string> = {};
@@ -76,7 +56,7 @@ const Security = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleChangePassword = async (e: FormEvent) => {
+  const handlePasswordSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     if (!user?.email) return;
@@ -95,14 +75,14 @@ const Security = () => {
       return;
     }
 
-    const { error: updateError } = await supabase.auth.updateUser({
-      password: passwordForm.newPassword,
-    });
+    const { error: updateError } = await updateOwnPassword(
+      passwordForm.confirmPassword,
+    );
 
     setIsSavingPassword(false);
 
     if (updateError) {
-      showToast(updateError.message, "error");
+      showToast(updateError, "error");
       return;
     }
 
@@ -110,13 +90,28 @@ const Security = () => {
     showToast("Password updated successfully", "success");
   };
 
+  const openPasswordEditor = () => {
+    setPasswordForm({
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    });
+    setPasswordErrors({});
+    setIsChangingPassword(true);
+  };
+
+  const closePasswordEditor = () => {
+    setIsChangingPassword(false);
+    setPasswordErrors({});
+  };
+
   return (
-    <div className="border border-line-light rounded-xl p-6">
+    <Card>
       <div className="flex flex-col gap-2">
         <div>
-          <p className="label-tag text-stone">Security</p>
+          <p className="text-admin-gray">Security</p>
           <p className="flex items-center gap-2 mt-4 text-lg font-medium">
-            <KeyRound className="h-5 w-5 text-orange" strokeWidth={1.5} />
+            <Lock className="h-5 w-5 text-admin-gray" strokeWidth={1.5} />
             Password
           </p>
         </div>
@@ -124,12 +119,11 @@ const Security = () => {
           Change the password used to sign in.
         </p>
       </div>
-
       <AnimatePresence>
         {!isChangingPassword ? (
           <button
             onClick={openPasswordEditor}
-            className="label-tag mt-6 flex items-center gap-1.5 font-semibold hover:text-orange"
+            className="label-tag mt-6 flex items-center gap-1.5 font-semibold text-admin-gray hover:text-admin-gray-light"
           >
             Change Password
             <ArrowRight className="h-3.5 w-3.5" />
@@ -140,11 +134,14 @@ const Security = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -14, scale: 0.97 }}
             transition={{ duration: 0.15 }}
-            onSubmit={handleChangePassword}
-            className="mt-5 space-y-5"
+            onSubmit={handlePasswordSubmit}
+            className="mt-4 space-y-5"
           >
-            <div>
-              <label htmlFor="current-password" className={labelClass}>
+            <div className="relative flex flex-col gap-1.5">
+              <label
+                htmlFor="profile-current-password"
+                className="text-xs font-medium text-admin-gray"
+              >
                 Current Password
               </label>
               <div className="relative">
@@ -168,9 +165,9 @@ const Security = () => {
                       current: !prev.current,
                     }))
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-stone/30 hover:text-ink"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-admin-gray-light/50"
                 >
-                  {showPassword.current ? (
+                  {showPassword ? (
                     <EyeOff className="h-4 w-4" />
                   ) : (
                     <Eye className="h-4 w-4" />
@@ -181,9 +178,11 @@ const Security = () => {
                 <p className={errorClass}>{passwordErrors.currentPassword}</p>
               )}
             </div>
-
-            <div>
-              <label htmlFor="new-password" className={labelClass}>
+            <div className="relative flex flex-col gap-1.5">
+              <label
+                htmlFor="profile-new-password"
+                className="text-xs font-medium text-admin-gray"
+              >
                 New Password
               </label>
               <div className="relative">
@@ -207,9 +206,9 @@ const Security = () => {
                       new: !prev.new,
                     }))
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-stone/30 hover:text-ink"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-admin-gray-light/50"
                 >
-                  {showPassword.new ? (
+                  {showPassword ? (
                     <EyeOff className="h-4 w-4" />
                   ) : (
                     <Eye className="h-4 w-4" />
@@ -220,11 +219,13 @@ const Security = () => {
                 <p className={errorClass}>{passwordErrors.newPassword}</p>
               )}
             </div>
-            <div>
-              <label htmlFor="current-password" className={labelClass}>
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="profile-confirm-password"
+                className="text-xs font-medium text-admin-gray"
+              >
                 Confirm Password
               </label>
-
               <div className="relative">
                 <input
                   type={showPassword.confirm ? "text" : "password"}
@@ -246,9 +247,9 @@ const Security = () => {
                       confirm: !prev.confirm,
                     }))
                   }
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-stone/30 hover:text-ink"
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-admin-gray-light/50"
                 >
-                  {showPassword.confirm ? (
+                  {showPassword ? (
                     <EyeOff className="h-4 w-4" />
                   ) : (
                     <Eye className="h-4 w-4" />
@@ -259,38 +260,30 @@ const Security = () => {
                 <p className={errorClass}>{passwordErrors.confirmPassword}</p>
               )}
             </div>
-
-            <div className="mt-2 flex items-center gap-2">
-              <button
+            <div className="sm:col-span-2 mt-2  flex items-center gap-2">
+              <Button
                 type="submit"
-                disabled={isSavingPassword}
-                className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition-all duration-200 hover:opacity-90 active:scale-95 disabled:opacity-60"
+                isLoading={isSavingPassword}
+                className="w-full bg-admin-blue! text-white! border-admin-border! 
+            hover:shadow-admin-blue hover:opacity-90!"
               >
-                {isSavingPassword ? (
-                  <Loader2
-                    className="h-3.5 w-3.5 animate-spin"
-                    strokeWidth={2.5}
-                  />
-                ) : (
-                  <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
-                )}
                 Update Password
-              </button>
-              <button
-                type="button"
-                disabled={isSavingPassword}
-                onClick={cancelPasswordEdit}
-                className="flex items-center gap-1.5 rounded-lg border border-line-light px-4 py-2 text-sm font-semibold text-stone transition-all duration-200 hover:bg-paper-dim active:scale-95"
+              </Button>
+
+              <Button
+                type="submit"
+                onClick={closePasswordEditor}
+                className="bg-admin-gray-light! text-admin-ink! border-admin-border! hover:opacity-90!"
               >
                 <X className="h-3.5 w-3.5" />
                 Cancel
-              </button>
+              </Button>
             </div>
           </motion.form>
         )}
       </AnimatePresence>
-    </div>
+    </Card>
   );
 };
 
-export default Security;
+export default AdminPassword;

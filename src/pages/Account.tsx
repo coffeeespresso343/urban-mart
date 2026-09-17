@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
   Camera,
@@ -184,7 +184,7 @@ const Account = () => {
 
   const inputClass =
     "w-full rounded-lg border border-line-light bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-orange transition-colors";
-  const labelClass = "label-tag text-stone mb-1.5 block";
+  const labelClass = "text-xs font-medium text-admin-gray mb-1.5 block";
   const errorClass = "mt-1 text-xs text-error";
 
   return (
@@ -199,7 +199,7 @@ const Account = () => {
         <div className="border border-line-light rounded-xl p-6 sm:col-span-2">
           <div className="flex items-start justify-between gap-4">
             <p className="label-tag text-stone">Profile</p>
-            {!isEditingProfile && (
+            {!isEditingProfile ? (
               <button
                 onClick={openProfileEditor}
                 className="flex items-center gap-1.5 rounded-full border border-ink/10 bg-paper-dim/50
@@ -207,6 +207,15 @@ const Account = () => {
               >
                 <Pencil className="h-3.5 w-3.5" />
                 Edit
+              </button>
+            ) : (
+              <button
+                onClick={cancelProfileEdit}
+                className="flex items-center gap-1.5 rounded-full border border-ink/10 bg-paper-dim/50
+              px-3 py-1.5 text-xs font-semibold transition-all duration-200 hover:bg-paper-dim hover:text-orange active:scale-95"
+              >
+                <X className="h-3.5 w-3.5" />
+                Cancel
               </button>
             )}
           </div>
@@ -272,103 +281,98 @@ const Account = () => {
               <p className="text-sm text-stone">Update your details below.</p>
             )}
           </div>
-
-          {isEditingProfile && (
-            <motion.form
-              initial={{ opacity: 0, y: -16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.35,
-                delay: 0.15,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              onSubmit={handleSaveProfile}
-              className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2"
-            >
-              <div>
-                <label htmlFor="profile-first-name" className={labelClass}>
-                  First name
-                </label>
-                <input
-                  id="profile-first-name"
-                  type="text"
-                  value={profileForm.firstName}
-                  onChange={(e) =>
-                    setProfileForm((f) => ({ ...f, firstName: e.target.value }))
-                  }
-                  className={inputClass}
-                />
-                {profileErrors.firstName && (
-                  <p className={errorClass}>{profileErrors.firstName}</p>
-                )}
-              </div>
-              <div>
-                <label htmlFor="profile-first-name" className={labelClass}>
-                  Last Name
-                </label>
-                <input
-                  id="profile-last-name"
-                  type="text"
-                  value={profileForm.lastName}
-                  onChange={(e) =>
-                    setProfileForm((f) => ({ ...f, lastName: e.target.value }))
-                  }
-                  className={inputClass}
-                />
-                {profileErrors.lastName && (
-                  <p className={errorClass}>{profileErrors.lastName}</p>
-                )}
-              </div>
-              <div className="sm:col-span-2">
-                <label htmlFor="profile-email" className={labelClass}>
-                  Email
-                </label>
-                <input
-                  id="profile-email"
-                  type="email"
-                  value={profileForm.email}
-                  onChange={(e) =>
-                    setProfileForm((f) => ({ ...f, email: e.target.value }))
-                  }
-                  className={inputClass}
-                />
-                {profileErrors.email && (
-                  <p className={errorClass}>{profileErrors.email}</p>
-                )}
-                <p className="mt-1 text-xs text-stone">
-                  Changing your email will send a confirmation link to new
-                  address.
-                </p>
-              </div>
-
-              <div className="sm:col-span-2 w-full flex items-center gap-2">
-                <button
-                  type="submit"
-                  disabled={isSavingProfile}
-                  className="flex items-center gap-1.5 rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition-all duration-200 hover:opacity-90 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  {isSavingProfile ? (
-                    <Loader2
-                      className="h-3.5 w-3.5 animate-spin"
-                      strokeWidth={2.5}
-                    />
-                  ) : (
-                    <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
+          <AnimatePresence>
+            {isEditingProfile ? (
+              <motion.form
+                initial={{ opacity: 0, y: -14, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -14, scale: 0.97 }}
+                transition={{ duration: 0.15 }}
+                onSubmit={handleSaveProfile}
+                className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3"
+              >
+                <div>
+                  <label htmlFor="profile-first-name" className={labelClass}>
+                    First name
+                  </label>
+                  <input
+                    id="profile-first-name"
+                    type="text"
+                    value={profileForm.firstName}
+                    onChange={(e) =>
+                      setProfileForm((f) => ({
+                        ...f,
+                        firstName: e.target.value,
+                      }))
+                    }
+                    className={inputClass}
+                  />
+                  {profileErrors.firstName && (
+                    <p className={errorClass}>{profileErrors.firstName}</p>
                   )}
-                  Save changes
-                </button>
+                </div>
+                <div>
+                  <label htmlFor="profile-first-name" className={labelClass}>
+                    Last Name
+                  </label>
+                  <input
+                    id="profile-last-name"
+                    type="text"
+                    value={profileForm.lastName}
+                    onChange={(e) =>
+                      setProfileForm((f) => ({
+                        ...f,
+                        lastName: e.target.value,
+                      }))
+                    }
+                    className={inputClass}
+                  />
+                  {profileErrors.lastName && (
+                    <p className={errorClass}>{profileErrors.lastName}</p>
+                  )}
+                </div>
+                <div className="sm:col-span-2">
+                  <label htmlFor="profile-email" className={labelClass}>
+                    Email
+                  </label>
+                  <input
+                    id="profile-email"
+                    type="email"
+                    value={profileForm.email}
+                    onChange={(e) =>
+                      setProfileForm((f) => ({ ...f, email: e.target.value }))
+                    }
+                    className={inputClass}
+                  />
+                  {profileErrors.email && (
+                    <p className={errorClass}>{profileErrors.email}</p>
+                  )}
+                  <p className="mt-1 text-xs text-stone">
+                    Changing your email will send a confirmation link to new
+                    address.
+                  </p>
+                </div>
 
-                <button
-                  onClick={cancelProfileEdit}
-                  className="flex items-center gap-1.5 rounded-lg border border-line-light px-4 py-2
-                  text-sm font-semibold text-stone transition-all duration-200 hover:bg-paper-dim active:scale-95"
-                >
-                  <X className="h-3.5 w-3.5" />
-                  Cancel
-                </button>
-              </div>
-            </motion.form>
-          )}
+                <div className="mt-2 sm:col-span-2 w-full flex items-center gap-2">
+                  <button
+                    type="submit"
+                    disabled={isSavingProfile}
+                    className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition-all duration-200 hover:opacity-90 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {isSavingProfile ? (
+                      <Loader2
+                        className="h-3.5 w-3.5 animate-spin"
+                        strokeWidth={2.5}
+                      />
+                    ) : (
+                      <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
+                    )}
+                    Save changes
+                  </button>
+                </div>
+              </motion.form>
+            ) : null}
+          </AnimatePresence>
 
           <div className="mt-6 flex items-center justify-between gap-2 border-t border-line-light pt-6">
             <button

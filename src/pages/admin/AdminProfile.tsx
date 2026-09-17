@@ -3,31 +3,25 @@ import {
   CalendarClock,
   Camera,
   Clock,
-  Eye,
-  EyeOff,
   Loader,
-  Lock,
   Pencil,
   ShieldCheck,
   User2,
   UserShield,
   X,
 } from "lucide-react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import ImageWithFallback from "../../components/ui/ImageWithFallback";
 import { useAuth } from "../../hooks/useAuth";
 import { Card } from "./AdminOverview";
 import { Button } from "../../components/ui/Button";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import {
-  fetchAdminGrantedAt,
-  updateOwnPassword,
-  updateOwnProfile,
-} from "../../lib/profile";
+import { fetchAdminGrantedAt, updateOwnProfile } from "../../lib/profile";
 import { useUIStore } from "../../hooks/uiStore";
 import { uploadAvatar } from "../../lib/storage";
 import { isValidEmail, required } from "../../utils/validation";
 import { supabase } from "../../lib/supabase";
+import AdminPassword from "../../components/admin/AdminPassword";
 
 const formatDate = (iso: string | null | undefined): string => {
   if (!iso) return "-";
@@ -141,12 +135,6 @@ const AdminProfile = () => {
       setOpenProfileEditor(false);
     }
   };
-
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfrimPassword] = useState("");
-  const [isSavingPassword, setIsSavingPassword] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-
   const [adminSince, setAdminSince] = useState<string | null | undefined>(null);
 
   const handleAvatarChange = async (file: File) => {
@@ -176,30 +164,6 @@ const AdminProfile = () => {
     void refreshProfile();
   };
 
-  const handlePasswordSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    if (!user) return;
-
-    if (newPassword !== confirmPassword) {
-      showToast("Passwords don't match", "error");
-      return;
-    }
-
-    setIsSavingPassword(true);
-
-    try {
-      const { error } = await updateOwnPassword(newPassword);
-      if (error) return showToast(error, "error");
-    } finally {
-      setIsSavingPassword(false);
-      setNewPassword("");
-      setConfrimPassword("");
-    }
-
-    showToast("Password updated", "success");
-  };
-
   useEffect(() => {
     if (!user) return;
 
@@ -220,7 +184,7 @@ const AdminProfile = () => {
         <span className="h-10 w-10 flex items-center justify-center bg-admin-active rounded-xl">
           <UserShield className="h-6 w-6 text-admin-gray" />
         </span>
-        <h2 className="text-xl font-bold">My Profile</h2>
+        <h2 className="text-xl font-bold">Admin Profile</h2>
       </div>
 
       <Card className="relative">
@@ -288,184 +252,125 @@ const AdminProfile = () => {
             />
           </div>
 
-          <div>
-            <p className="text-sm font-semibold">
-              {profile?.firstName
-                ? `${profile.firstName} ${profile.lastName ?? ""}`
-                : "Admin"}
-            </p>
-            <p className="text-sm text-admin-gray">{user?.email}</p>
-          </div>
+          {!openProfileEditor ? (
+            <div>
+              <p className="flex items-center gap-1 text-sm font-semibold">
+                {profile?.firstName
+                  ? `${profile.firstName} ${profile.lastName ?? ""}`
+                  : "Admin"}
+                <ShieldCheck className="h-3 w-3 text-admin-green" />
+              </p>
+              <p className="text-sm text-admin-gray">{user?.email}</p>
+            </div>
+          ) : (
+            <p className="text-sm text-admin-gray">Edit your details below.</p>
+          )}
         </div>
 
-        {openProfileEditor && (
-          <motion.form
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.35,
-              delay: 0.15,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            onSubmit={handleProfileSubmit}
-            className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2"
-          >
-            <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="profile-first-name"
-                className="text-xs font-medium text-admin-gray"
-              >
-                First Name
-              </label>
-              <input
-                type="text"
-                id="profile-first-name"
-                value={profileForm.firstName}
-                onChange={(e) =>
-                  setProfileForm((f) => ({
-                    ...f,
-                    firstName: e.target.value,
-                  }))
-                }
-                className="rounded-lg border border-admin-border bg-admin-card px-3 py-2.5 text-sm
+        <AnimatePresence>
+          {openProfileEditor ? (
+            <motion.form
+              initial={{ opacity: 0, y: -14, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -14, scale: 0.97 }}
+              transition={{ duration: 0.15 }}
+              onSubmit={handleProfileSubmit}
+              className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2"
+            >
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="profile-first-name"
+                  className="text-xs font-medium text-admin-gray"
+                >
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  id="profile-first-name"
+                  value={profileForm.firstName}
+                  onChange={(e) =>
+                    setProfileForm((f) => ({
+                      ...f,
+                      firstName: e.target.value,
+                    }))
+                  }
+                  className="rounded-lg border border-admin-border bg-admin-card px-3 py-2.5 text-sm
             outline-none focus:border-admin-blue"
-              />
-              {profileErrors.firstName && (
-                <p className="mt-1 text-xs text-admin-pink">
-                  {profileErrors.firstName}
-                </p>
-              )}
-            </div>
-            <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="profile-last-name"
-                className="text-xs font-medium text-admin-gray"
-              >
-                Last Name
-              </label>
-              <input
-                type="text"
-                id="profile-last-name"
-                value={profileForm.lastName}
-                onChange={(e) =>
-                  setProfileForm((f) => ({
-                    ...f,
-                    lastName: e.target.value,
-                  }))
-                }
-                className="rounded-lg border border-admin-border bg-admin-card px-3 py-2.5 text-sm
+                />
+                {profileErrors.firstName && (
+                  <p className="mt-1 text-xs text-admin-pink">
+                    {profileErrors.firstName}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="profile-last-name"
+                  className="text-xs font-medium text-admin-gray"
+                >
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  id="profile-last-name"
+                  value={profileForm.lastName}
+                  onChange={(e) =>
+                    setProfileForm((f) => ({
+                      ...f,
+                      lastName: e.target.value,
+                    }))
+                  }
+                  className="rounded-lg border border-admin-border bg-admin-card px-3 py-2.5 text-sm
             outline-none focus:border-admin-blue"
-              />
-              {profileErrors.lastName && (
-                <p className="mt-1 text-xs text-admin-pink">
-                  {profileErrors.lastName}
-                </p>
-              )}
-            </div>
+                />
+                {profileErrors.lastName && (
+                  <p className="mt-1 text-xs text-admin-pink">
+                    {profileErrors.lastName}
+                  </p>
+                )}
+              </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label
-                htmlFor="profile-last-name"
-                className="text-xs font-medium text-admin-gray"
-              >
-                Email
-              </label>
-              <input
-                type="text"
-                id="profile-email"
-                value={profileForm.email}
-                onChange={(e) =>
-                  setProfileForm((f) => ({
-                    ...f,
-                    email: e.target.value,
-                  }))
-                }
-                className="rounded-lg border border-admin-border bg-admin-card px-3 py-2.5 text-sm
+              <div className="flex flex-col gap-1.5">
+                <label
+                  htmlFor="profile-last-name"
+                  className="text-xs font-medium text-admin-gray"
+                >
+                  Email
+                </label>
+                <input
+                  type="text"
+                  id="profile-email"
+                  value={profileForm.email}
+                  onChange={(e) =>
+                    setProfileForm((f) => ({
+                      ...f,
+                      email: e.target.value,
+                    }))
+                  }
+                  className="rounded-lg border border-admin-border bg-admin-card px-3 py-2.5 text-sm
             outline-none focus:border-admin-blue"
-              />
-              {profileErrors.email && (
-                <p className="mt-1 text-xs text-admin-pink">
-                  {profileErrors.email}
-                </p>
-              )}
-            </div>
-            <div className="sm:col-span-2">
-              <Button
-                type="submit"
-                isLoading={isSavingProfile}
-                className="w-full sm:w-auto bg-admin-blue! text-white! border-admin-border! hover:opacity-90!"
-              >
-                Save Changes
-              </Button>
-            </div>
-          </motion.form>
-        )}
+                />
+                {profileErrors.email && (
+                  <p className="mt-1 text-xs text-admin-pink">
+                    {profileErrors.email}
+                  </p>
+                )}
+              </div>
+              <div className="mt-2 sm:col-span-2">
+                <Button
+                  type="submit"
+                  isLoading={isSavingProfile}
+                  className="w-full bg-admin-blue! text-white! border-admin-border! hover:opacity-90!"
+                >
+                  Save Changes
+                </Button>
+              </div>
+            </motion.form>
+          ) : null}
+        </AnimatePresence>
       </Card>
 
-      <Card>
-        <div className="flex items-center gap-2.5">
-          <Lock className="h-4 w-4 text-admin-gray" />
-          <h3 className="text-sm font-semibold">Change Password</h3>
-        </div>
-        <form
-          onSubmit={handlePasswordSubmit}
-          className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2"
-        >
-          <div className="relative flex flex-col gap-1.5">
-            <label
-              htmlFor="profile-new-password"
-              className="text-xs font-medium text-admin-gray"
-            >
-              New Password
-            </label>
-            <input
-              type={showPassword ? "text" : "password"}
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="At least 8 characters"
-              className="rounded-lg border border-admin-border bg-admin-card pr-11 px-3 py-2.5 text-sm
-            outline-none focus:border-admin-blue"
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-4 top-1/2 translate-y-1/4 text-admin-gray-light/50"
-            >
-              {showPassword ? (
-                <EyeOff className="h-4 w-4" />
-              ) : (
-                <Eye className="h-4 w-4" />
-              )}
-            </button>
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="profile-confirm-password"
-              className="text-xs font-medium text-admin-gray"
-            >
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfrimPassword(e.target.value)}
-              placeholder=""
-              className="rounded-lg border border-admin-border bg-admin-card pr-11 px-3 py-2.5 text-sm
-            outline-none focus:border-admin-blue"
-            />
-          </div>
-          <div className="sm:col-span-2">
-            <Button
-              type="submit"
-              isLoading={isSavingPassword}
-              className="w-full sm:w-auto bg-admin-blue! text-white! border-admin-border! 
-           hover:shadow-admin-blue hover:opacity-90!"
-            >
-              Update Password
-            </Button>
-          </div>
-        </form>
-      </Card>
+      <AdminPassword />
 
       <Card>
         <div className="flex items-center gap-2.5">
