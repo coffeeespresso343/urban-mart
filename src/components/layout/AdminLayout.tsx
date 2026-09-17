@@ -1,5 +1,4 @@
 import {
-  Bell,
   LayoutDashboard,
   LogOut,
   Moon,
@@ -25,6 +24,7 @@ import LogoLight from "../../assets/logo-light.png";
 import ImageWithFallback from "../ui/ImageWithFallback";
 import { useUIStore } from "../../hooks/uiStore";
 import { useEffect } from "react";
+import NotificationBell from "../admin/NotificationBell";
 
 const NAV_ITEMS = [
   { label: "Overview", to: "/admin", end: true, Icon: LayoutDashboard },
@@ -165,17 +165,9 @@ const AdminLayout = () => {
                 <Moon className="h-3.5 w-3.5" />
               </button>
             </div>
-            <div className="relative">
-              <button
-                onClick={() =>
-                  showToast("This feature unavailable yet", "info")
-                }
-                className="bg-admin-card text-admin-gray-light h-8 w-8 flex items-center justify-center rounded-full"
-              >
-                <Bell className="h-4 w-4" />
-              </button>
-              <span className="absolute top-0 right-0 h-1.5 w-1.5 rounded-full bg-admin-pink"></span>
-            </div>
+
+            <NotificationBell />
+
             <Link
               to="/admin/profile"
               className="flex items-center gap-2.5 hover:opacity-80"
