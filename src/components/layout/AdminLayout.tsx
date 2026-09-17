@@ -10,13 +10,21 @@ import {
   User2,
   Users2,
 } from "lucide-react";
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { ToastContainer } from "../ui/Toast";
 import { useAuth } from "../../hooks/useAuth";
 import { useAdminTheme } from "../../hooks/useAdminTheme";
 import Logo from "../../assets/Logo.png";
 import LogoLight from "../../assets/logo-light.png";
 import ImageWithFallback from "../ui/ImageWithFallback";
+import { useUIStore } from "../../hooks/uiStore";
+import { useEffect } from "react";
 
 const NAV_ITEMS = [
   { label: "Overview", to: "/admin", end: true, Icon: LayoutDashboard },
@@ -27,8 +35,18 @@ const NAV_ITEMS = [
 
 const AdminLayout = () => {
   const { theme, toggleTheme } = useAdminTheme();
+  const showToast = useUIStore((s) => s.showToast);
   const { signOut, profile } = useAuth();
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [location]);
 
   const displayName = profile?.firstName
     ? `${profile.firstName} ${profile.lastName ?? ""}`.trim()
@@ -148,7 +166,12 @@ const AdminLayout = () => {
               </button>
             </div>
             <div className="relative">
-              <button className="bg-admin-card text-admin-gray-light h-8 w-8 flex items-center justify-center rounded-full">
+              <button
+                onClick={() =>
+                  showToast("This feature unavailable yet", "info")
+                }
+                className="bg-admin-card text-admin-gray-light h-8 w-8 flex items-center justify-center rounded-full"
+              >
                 <Bell className="h-4 w-4" />
               </button>
               <span className="absolute top-0 right-0 h-1.5 w-1.5 rounded-full bg-admin-pink"></span>

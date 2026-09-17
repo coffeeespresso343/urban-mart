@@ -95,13 +95,6 @@ const AdminProducts = () => {
     void refetch();
   }, []);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, []);
-
   const [modalOpen, setModalOpen] = useState(false);
 
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -262,8 +255,8 @@ const AdminProducts = () => {
           </div>
           <p className="mt-1 text-sm text-stone">Manage products.</p>
         </div>
-        <Button onClick={openCreate}>
-          <Plus className="h-3.5 w-3.5" /> Add Product
+        <Button onClick={openCreate} className="rounded-full!">
+          <Plus className="h-3.5 w-3.5" strokeWidth={2.5} /> Add Product
         </Button>
       </div>
 
@@ -306,14 +299,30 @@ const AdminProducts = () => {
                 </Link>
                 <div className="min-w-0">
                   <div className="flex items-start flex-col-reverse lg:flex-row gap-1 lg:gap-3">
-                    <p className="text-sm max-w-40 lg:min-w-70 font-medium">
+                    <p className="text-xs lg:text-sm max-w-38 lg:min-w-70 font-medium">
                       {product.name}
                     </p>
-                    <span className="hidden lg:block">
+                    <span className="hidden lg:flex lg:items-center lg:gap-2">
                       {product.badge ? (
-                        <Badge tone="stone" className="text-[10px]">
+                        <Badge
+                          tone={
+                            product.badge === "Best Seller"
+                              ? "green"
+                              : product.badge === "Limited"
+                                ? "stone"
+                                : product.badge === "New"
+                                  ? "blue"
+                                  : "stone"
+                          }
+                          className=""
+                        >
                           {product.badge}
                         </Badge>
+                      ) : null}
+                      {product.stock === 0 ? (
+                        <Badge tone="error">Out of Stock</Badge>
+                      ) : product.stock <= 5 ? (
+                        <Badge tone="error">Low Stock</Badge>
                       ) : null}
                     </span>
                   </div>
@@ -506,9 +515,9 @@ const AdminProducts = () => {
               </div>
               <Button
                 type="submit"
-                size="lg"
+                size="md"
                 isLoading={isSaving}
-                className="mt-2"
+                className="mt-2 rounded-full!"
               >
                 {editingProduct ? "Save Changes" : "Add Product"}
               </Button>

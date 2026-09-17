@@ -201,7 +201,7 @@ export const AdminOrdersSkeleton = ({ count = 4 }: { count?: number }) => {
 
 export const AdminProductsSkeleton = ({ count = 4 }: { count?: number }) => {
   return (
-    <div className="mt-6 divide-y divide-admin-borborder-admin-border border-y border-admin-border">
+    <div className="mt-6 divide-y divide-admin-border border-y border-admin-border">
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
@@ -252,7 +252,7 @@ export const AdminUsersDetailSkeleton = ({ count = 4 }: { count?: number }) => {
         </div>
       </div>
 
-      <div className="mt-4 divide-y divide-admin-border border-y border-admin-bordivide-admin-border">
+      <div className="mt-4 divide-y divide-admin-border border-y border-admin-border">
         {Array.from({ length: count }).map((_, i) => (
           <div
             key={i}

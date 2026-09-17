@@ -15,11 +15,13 @@ import {
   Clock,
   Loader2,
   Mail,
+  Search,
   ShieldCheck,
   ShieldOff,
   User2,
   Users2,
   UserX2,
+  X,
 } from "lucide-react";
 import Badge from "../../components/ui/Badge";
 import { Link } from "react-router-dom";
@@ -39,6 +41,7 @@ const AdminUsers = () => {
 
   const showToast = useUIStore((s) => s.showToast);
   const [users, setUsers] = useState<AdminUser[] | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [userFilter, setUserFilter] = useState<UserFilter>("all");
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [pendingAction, setPendingAction] = useState<"admin" | "block" | null>(
@@ -51,25 +54,31 @@ const AdminUsers = () => {
 
   useEffect(load, []);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, []);
-
   const filteredUsers = useMemo(() => {
     if (!users) return [];
 
+    let result = users;
+
     if (userFilter === "admin") {
-      return users.filter((user) => user.isAdmin);
+      result = result.filter((user) => user.isAdmin);
     } else if (userFilter === "customer") {
-      return users.filter((user) => !user.isAdmin);
+      result = result.filter((user) => !user.isAdmin);
     } else if (userFilter === "blocked") {
-      return users.filter((user) => user.isBlocked);
+      result = result.filter((user) => user.isBlocked);
     }
-    return users;
-  }, [users, userFilter]);
+
+    const query = searchQuery.trim().toLowerCase();
+
+    if (!query) return result;
+
+    return result.filter((u) => {
+      const fullName = `${u.firstName ?? ""} ${u.lastName ?? ""}`
+        .trim()
+        .toLowerCase();
+      const haystack = [fullName, u.email ?? "", u.id].join(" ").toLowerCase();
+      return haystack.includes(query);
+    });
+  }, [users, userFilter, searchQuery]);
 
   const guardSelf = (targetUser: AdminUser, message: string) => {
     if (targetUser.id === currentUser?.id) {
@@ -189,8 +198,8 @@ const AdminUsers = () => {
           <select
             value={userFilter}
             onChange={(e) => setUserFilter(e.target.value as UserFilter)}
-            className="min-w-30 h-8 cursor-pointer text-xs rounded-lg bg-admin-bg border border-admin-gray/20 px-2 py-1 font-medium
-                capitalize outline-none transition-colors hover:border-admin-ink focus:border-orange focus:ring-2 focus:ring-orange"
+            className="min-w-30 h-8 cursor-pointer text-xs rounded-lg bg-admin-card border border-admin-border px-2 py-1 font-medium
+                capitalize outline-none transition-colors hover:border-admin-ink focus:border-admin-blue focus:ring-2 focus:ring-admin-blue"
           >
             {FILTER_OPTIONS.map((user) => (
               <option key={user.value} value={user.value}>
@@ -201,15 +210,43 @@ const AdminUsers = () => {
         </div>
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-2xl border border-admin-border bg-admin-card">
+      <div className="relative mt-6 flex-1 lg:max-w-[50%]">
+        <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-admin-gray-light h-4 w-4" />
+        <label htmlFor="user-search" className="sr-only">
+          Search users by name, email, or ID
+        </label>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search users by name, email or ID"
+          className="w-full rounded-full border border-admin-border bg-admin-card py-2.5 pl-9 pr-9
+          text-sm outline-none focus:border-admin-blue"
+        />
+        {searchQuery ? (
+          <button
+            type="button"
+            onClick={() => setSearchQuery("")}
+            className="text-admin-gray-light absolute right-3 top-1/2 -translate-y-1/2"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        ) : null}
+      </div>
+
+      <div className="mt-6 overflow-hidden border-admin-border bg-admin-card rounded-2xl">
         {filteredUsers.length === 0 ? (
           <EmptyState
             icon={UserX2}
             title="No Users Found!"
-            message="Try different filters."
+            message={
+              searchQuery
+                ? `No users match "${searchQuery}".`
+                : `No ${userFilter} users found.`
+            }
           />
         ) : filteredUsers.length > 0 ? (
-          <div className="divide-y divide-admin-border">
+          <div className="divide-y divide-admin-gray-light">
             {filteredUsers.map((user) => (
               <div
                 key={user.id}
@@ -256,13 +293,13 @@ const AdminUsers = () => {
                         : "-"}
                     </p>
                     {user.isAdmin && (
-                      <Badge tone="blue" className="text-[11px]">
+                      <Badge tone="blue" className="">
                         <ShieldCheck className="h-3 w-3" strokeWidth={2.5} />
                         Admin
                       </Badge>
                     )}
                     {user.isBlocked ? (
-                      <Badge tone="pink" className="text-[11px]">
+                      <Badge tone="pink" className="">
                         Blocked
                       </Badge>
                     ) : null}

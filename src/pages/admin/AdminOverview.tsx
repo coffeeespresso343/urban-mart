@@ -110,13 +110,6 @@ const AdminOverview = () => {
   // const [isRefreshing, setIsRefreshing] = useState(false);
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, []);
-
-  useEffect(() => {
     const load = async () => {
       const [metricsData, products] = await Promise.all([
         fetchDashboardMetrics(),

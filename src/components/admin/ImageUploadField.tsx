@@ -78,7 +78,7 @@ const ImageUploadField = ({
           {previews.map((preview) => (
             <div
               key={preview.key}
-              className="group relative h-20 w-20 overflow-hidden bg-paper"
+              className="group relative h-20 w-20 overflow-hidden bg-admin-card"
             >
               <img
                 src={preview.src}

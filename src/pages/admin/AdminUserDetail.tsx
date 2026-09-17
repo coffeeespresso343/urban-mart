@@ -184,7 +184,7 @@ const AdminUserDetail = () => {
             </div>
 
             <div className="min-w-60">
-              <div className="flex items-center gap-2">
+              <div className="flex mb-2 items-center gap-2">
                 <h2 className="font-display text-md font-bold">
                   {targetUser.firstName
                     ? `${targetUser.firstName} ${targetUser.lastName ?? ""}`.trim()

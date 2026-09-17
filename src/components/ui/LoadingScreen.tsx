@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const LoadingScreen = () => {
   return (
-    <div className="fixed inset-0 z-50 flex min-h-screen flex-col items-center justify-center bg-paper-dim">
+    <div className="fixed inset-0 z-50 flex min-h-screen flex-col items-center justify-center bg-paper-warm">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}

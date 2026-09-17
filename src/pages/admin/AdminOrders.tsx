@@ -59,13 +59,6 @@ const AdminOrders = () => {
 
   useEffect(load, []);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  }, []);
-
   const filteredOrders = useMemo(() => {
     if (!orders) return [];
 
@@ -160,7 +153,7 @@ const AdminOrders = () => {
         </div>
       </div>
 
-      <div className="mt-6 bg-admin-card overflow-hidden rounded-xl border border-admin-border">
+      <div className="mt-6 bg-admin-card overflow-hidden rounded-2xl border border-admin-border">
         {filteredOrders.length === 0 ? (
           <EmptyState
             icon={PackageX}
@@ -177,7 +170,7 @@ const AdminOrders = () => {
             }
           />
         ) : (
-          <div className="divide-y divide-admin-border">
+          <div className="divide-y divide-admin-gray-light">
             {filteredOrders.map((order) => (
               <div
                 key={order.id}
@@ -208,10 +201,7 @@ const AdminOrders = () => {
                     <p className="label-tag font-semibold text-orange">
                       #{order.orderNumber}
                     </p>
-                    <Badge
-                      tone={STATUS_TONE[order.status]}
-                      className="text-[11px]"
-                    >
+                    <Badge tone={STATUS_TONE[order.status]} className="">
                       {order.status}
                     </Badge>
                   </div>
@@ -261,8 +251,8 @@ const AdminOrders = () => {
                             e.target.value as OrderStatus,
                           )
                         }
-                        className="min-w-26 cursor-pointer text-xs rounded-lg border border-admin-gray/20 px-2 py-1 font-medium
-                capitalize outline-none transition-colors hover:border-admin-ink focus:border-orange focus:ring-2 focus:ring-orange"
+                        className="min-w-26 cursor-pointer text-xs rounded-lg border border-admin-border bg-admin-card px-2 py-1 font-medium
+                capitalize outline-none transition-colors hover:border-admin-blue focus:border-admin-blue focus:ring-2 focus:ring-admin-blue"
                       >
                         {STATUS_OPTIONS.map((status) => (
                           <option key={status.value} value={status.value}>

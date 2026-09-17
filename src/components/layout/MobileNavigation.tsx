@@ -20,6 +20,7 @@ import { useWishlist } from "../../hooks/useWishlist";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../hooks/useAuth";
 import Logo from "../../assets/Logo.png";
+import ImageWithFallback from "../ui/ImageWithFallback";
 
 interface NavLinkItem {
   Icon: LucideIcon;
@@ -151,11 +152,12 @@ const MobileNavigation = () => {
   };
 
   const signedIn = isConfigured && Boolean(user);
-  const initial = (
-    profile?.firstName?.[0] ??
-    user?.email?.[0] ??
-    "U"
-  ).toUpperCase();
+  // const initial = (
+  //   profile?.firstName?.[0] ??
+  //   user?.email?.[0] ??
+  //   "U"
+  // ).toUpperCase();
+
   const displayName = profile?.firstName
     ? `${profile.firstName} ${profile.lastName ?? ""}`.trim()
     : "Account";
@@ -243,9 +245,21 @@ const MobileNavigation = () => {
               >
                 {signedIn ? (
                   <>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange text-sm font-semibold text-paper">
-                      {initial}
-                    </span>
+                    <div className="flex h-10 w-10 overflow-hidden shrink-0 items-center justify-center rounded-full ring-3 ring-orange/40 bg-admin-card text-sm font-semibold text-paper">
+                      {profile?.avatarUrl ? (
+                        <ImageWithFallback
+                          src={profile.avatarUrl}
+                          alt=""
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full text-xl bg-orange text-paper font-semibold items-center justify-center">
+                          {profile?.firstName
+                            ? profile.firstName[0].toUpperCase()
+                            : "-"}
+                        </div>
+                      )}
+                    </div>
                     <span className="min-w-0 flex-1">
                       <span className="truncate text-sm font-medium text-ink">
                         {displayName}
@@ -257,7 +271,7 @@ const MobileNavigation = () => {
                   </>
                 ) : (
                   <>
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-orange text-sm font-semibold text-paper">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-admin-card text-sm font-semibold text-admin-gray">
                       <User2 className="h-5 w-5" />
                     </span>
                     <span className="text-sm font-medium text-ink">
