@@ -2,9 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  Activity,
   ArrowRight,
+  CalendarClock,
   Camera,
   Check,
+  Clock,
   Loader,
   Loader2,
   LogOut,
@@ -24,6 +27,21 @@ import { isValidEmail, required } from "../utils/validation";
 import { supabase } from "../lib/supabase";
 import Security from "../components/account/Security";
 import DeleteAccount from "../components/account/DeleteAccount";
+
+const formatDate = (iso: string | null | undefined): string => {
+  if (!iso) return "-";
+
+  return new Date(iso).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
+const inputClass =
+  "w-full rounded-lg border border-line-light bg-admin-card px-3 py-2 text-sm text-ink outline-none focus:border-orange transition-colors";
+const labelClass = "text-xs font-medium text-admin-gray mb-1.5 block";
+const errorClass = "mt-1 text-xs text-error";
 
 const Account = () => {
   const { user, profile, signOut, isAdmin, refreshProfile } = useAuth();
@@ -182,39 +200,35 @@ const Account = () => {
     }
   };
 
-  const inputClass =
-    "w-full rounded-lg border border-line-light bg-paper px-3 py-2 text-sm text-ink outline-none focus:border-orange transition-colors";
-  const labelClass = "text-xs font-medium text-admin-gray mb-1.5 block";
-  const errorClass = "mt-1 text-xs text-error";
-
   return (
     <div className="container-edge py-10 sm:py-14">
-      <h1 className="mt-4 flex items-center gap-2 font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
-        <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-line-light bg-paper-dim sm:h-11 sm:w-11">
-          <User2 className="h-5 w-5 text-orange" />
+      <div className="flex items-center gap-2">
+        <span className="h-10 w-10 flex items-center justify-center bg-paper-dim rounded-xl">
+          <User2 className="h-6 w-6 text-orange" />
         </span>
-        Account
-      </h1>
-      <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-        <div className="border border-line-light rounded-xl p-6 sm:col-span-2">
+        <h2 className="text-xl font-bold">My Account</h2>
+      </div>
+
+      <div className="mt-8 flex flex-col gap-6 ">
+        <div className="border bg-admin-card/80 border-admin-border rounded-xl p-6">
           <div className="flex items-start justify-between gap-4">
-            <p className="label-tag text-stone">Profile</p>
+            <p className="label-tag text-stone">Signed In As</p>
             {!isEditingProfile ? (
               <button
                 onClick={openProfileEditor}
-                className="flex items-center gap-1.5 rounded-full border border-ink/10 bg-paper-dim/50
-              px-3 py-1.5 text-xs font-semibold transition-all duration-200 hover:bg-paper-dim hover:text-orange active:scale-95"
+                className="bg-admin-active text-admin-gray-light px-2 py-1 rounded-full text-xs
+            font-semibold flex items-center gap-1 transition-all duration-200 hover:text-admin-gray active:scale-95"
               >
-                <Pencil className="h-3.5 w-3.5" />
+                <Pencil className="h-3.5 w-3.5" strokeWidth={2.5} />
                 Edit
               </button>
             ) : (
               <button
                 onClick={cancelProfileEdit}
-                className="flex items-center gap-1.5 rounded-full border border-ink/10 bg-paper-dim/50
-              px-3 py-1.5 text-xs font-semibold transition-all duration-200 hover:bg-paper-dim hover:text-orange active:scale-95"
+                className="bg-admin-active text-admin-gray-light px-2 py-1 rounded-full text-xs
+            font-semibold flex items-center gap-1 transition-all duration-200 hover:text-admin-gray active:scale-95"
               >
-                <X className="h-3.5 w-3.5" />
+                <X className="h-3.5 w-3.5" strokeWidth={2.5} />
                 Cancel
               </button>
             )}
@@ -276,6 +290,9 @@ const Account = () => {
                   ) : null}
                 </p>
                 <p className="text-stone text-sm">{user?.email}</p>
+                <p className="text-admin-gray-light text-xs">
+                  Joined {formatDate(user?.created_at)}
+                </p>
               </div>
             ) : (
               <p className="text-sm text-stone">Update your details below.</p>
@@ -289,7 +306,7 @@ const Account = () => {
                 exit={{ opacity: 0, y: -14, scale: 0.97 }}
                 transition={{ duration: 0.15 }}
                 onSubmit={handleSaveProfile}
-                className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3"
+                className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2"
               >
                 <div>
                   <label htmlFor="profile-first-name" className={labelClass}>
@@ -357,7 +374,7 @@ const Account = () => {
                   <button
                     type="submit"
                     disabled={isSavingProfile}
-                    className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition-all duration-200 hover:opacity-90 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition-all duration-200 hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {isSavingProfile ? (
                       <Loader2
@@ -374,57 +391,83 @@ const Account = () => {
             ) : null}
           </AnimatePresence>
 
-          <div className="mt-6 flex items-center justify-between gap-2 border-t border-line-light pt-6">
-            <button
-              disabled={isSigningOut}
-              onClick={handleSignOut}
-              className="rounded-2xl min-w-32 text-sm border border-error flex items-center justify-center gap-1 text-error px-3 py-1 hover:bg-error/10 transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {isSigningOut ? (
-                <>
-                  <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />
-                  Signing Out
-                </>
-              ) : (
-                <>
-                  <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
-                  Sign Out
-                </>
-              )}
-            </button>
-            {isAdmin && (
-              <Link
-                to="/admin"
-                className="text-xs flex items-center gap-1.5 font-semibold border border-ink/10 rounded-full px-3 py-1.5
-              transition-all duration-200 bg-paper-dim/50 hover:bg-paper-dim hover:text-orange active:scale-98"
+          {!isEditingProfile && (
+            <div className="mt-6 flex items-center justify-between gap-2 pt-6">
+              <button
+                disabled={isSigningOut}
+                onClick={handleSignOut}
+                className="rounded-2xl min-w-32 text-sm border border-error flex items-center justify-center gap-1 text-error px-3 py-1 hover:bg-error/10 transition-all duration-200 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Admin Dashboard
-                <ArrowRight className="h-3.5 w-3.5 group-hover:text-orange" />
-              </Link>
-            )}
-          </div>
+                {isSigningOut ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin" />
+                    Signing Out
+                  </>
+                ) : (
+                  <>
+                    <LogOut className="h-3.5 w-3.5" aria-hidden="true" />
+                    Sign Out
+                  </>
+                )}
+              </button>
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="text-xs flex items-center gap-1.5 font-semibold transition-all duration-200 hover:text-orange active:scale-95"
+                >
+                  Admin Dashboard
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:text-orange" />
+                </Link>
+              )}
+            </div>
+          )}
         </div>
-
-        {/*Password*/}
-        <Security />
 
         <Link
           to="/account/orders"
           className="group flex flex-col justify-between border border-line-light rounded-xl p-6 hover:border-ink"
         >
           <div>
-            <Package className="h-6 w-6 text-orange" strokeWidth={1.5} />
-            <p className="mt-4 text-lg font-medium">Order History</p>
-            <p className="mt-1 text-sm text-stone">
-              View past orders and track deliveries.
+            <p className="label-tag text-stone">History</p>
+            <p className="flex items-center gap-2 mt-4 text-lg font-medium">
+              <Package className="h-5 w-5 text-orange" strokeWidth={1.5} />
+              Order History
             </p>
           </div>
+          <p className="text-sm mt-1 text-stone">
+            View past orders and track deliveries.
+          </p>
           <span className="label-tag mt-6 flex items-center gap-1.5 font-semibold group-hover:text-orange">
             View Orders
             <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
           </span>
         </Link>
 
+        {/*Password*/}
+        <Security />
+
+        <div className="border border-line-light rounded-xl p-6">
+          <div className="flex items-center gap-2.5">
+            <Activity className="h-4 w-4 text-orange" />
+            <h3 className="text-sm font-semibold">Account Activity</h3>
+          </div>
+          <div className="mt-4 flex flex-col gap-3 text-sm">
+            <div className="flex items-center gap-2.5 text-admin-gray">
+              <Clock className="h-4 w-4 shrink-0" />
+              Last signed in{" "}
+              <span className="font-medium text-admin-ink">
+                {formatDate(user?.last_sign_in_at)}
+              </span>
+            </div>
+            <div className="flex items-center gap-2.5 text-admin-gray">
+              <CalendarClock className="h-4 w-4 shrink-0" />
+              Account created{" "}
+              <span className="font-medium text-admin-ink">
+                {formatDate(user?.created_at)}
+              </span>
+            </div>
+          </div>
+        </div>
         {/*Danger Zone */}
         <DeleteAccount />
       </div>

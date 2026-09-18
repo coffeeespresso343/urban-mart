@@ -85,7 +85,7 @@ const AccountMenu = () => {
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen((o) => !o)}
-        className="h-7 w-7 overflow-hidden flex items-center justify-center rounded-full bg-admin-card ring-2 ring-orange/60 text-xs font-semibold transition-opacity hover:opacity-80 active:scale-[0.97]"
+        className="h-7 w-7 overflow-hidden flex items-center justify-center rounded-full bg-admin-card text-xs font-semibold transition-opacity hover:opacity-80 active:scale-[0.97]"
       >
         {profile?.avatarUrl ? (
           <ImageWithFallback
@@ -94,7 +94,7 @@ const AccountMenu = () => {
             className="h-full w-full object-cover"
           />
         ) : (
-          <div className="flex h-full w-full text-sm bg-orange text-paper font-semibold items-center justify-center">
+          <div className="flex h-full w-full text-sm bg-admin-gray-light text-admin-gray font-semibold items-center justify-center">
             {profile?.firstName ? profile.firstName[0].toUpperCase() : "-"}
           </div>
         )}

@@ -29,7 +29,7 @@ const DeleteAccount = () => {
 
   return (
     <>
-      <div className="border border-admin-pink/30 rounded-xl p-6 sm:col-span-2">
+      <div className="bg-admin-pink/5 border border-admin-pink/30 rounded-xl p-6">
         <p className="label-tag text-admin-pink flex items-center gap-2">
           <ShieldAlert className="h-4 w-4" />
           Danger Zone
