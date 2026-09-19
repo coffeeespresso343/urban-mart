@@ -8,22 +8,22 @@
     --border: #e5e4e7;
 
     /* Core surfaces */
-    --color-ink: #121313;
-    --color-ink-soft: #1B1D1D;
-    --color-ink-elevated: #252727;
+    --color-ink: #2B1B24;
+    --color-ink-soft: #3A2731;
+    --color-ink-elevated: #49343D;
 
-    --color-paper: #F3F3F0;
-    --color-paper-dim: #E7E8E5;
-    --color-paper-warm: #D9DBD8;
+    --color-paper: #FBF7EE;
+    --color-paper-dim: #F3EEDF;
+    --color-paper-warm: #E8DFCF;
 
     /* Neutral text */
-    --color-stone: #777B79;
-    --color-stone-light: #AEB2AF;
-    --color-stone-dark: #505452;
+    --color-stone: #756C6F;
+    --color-stone-light: #ADA4A5;
+    --color-stone-dark: #55484E;
 
     /* Borders */
-    --color-line: #2C302F66;
-    --color-line-light: #D5D8D5;
+    --color-line: #2B1B2466;
+    --color-line-light: #DED6C9;
 
     /* Premium accent — muted orange D06A3A */
     --color-orange: #D06A3A;

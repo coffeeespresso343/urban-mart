@@ -4,7 +4,7 @@ import type { Product, ProductBadge, ProductCategory } from "../types/Product";
 import { products, products as staticProducts } from "../data/products";
 import { isSupabaseConfigured, supabase } from "./supabase";
 
-interface ProductRow {
+export interface ProductRow {
   id: number;
   sku: string;
   name: string;
@@ -25,7 +25,7 @@ interface ProductRow {
   best_seller: boolean;
 }
 
-function mapRowToProduct(row: ProductRow): Product {
+export function mapRowToProduct(row: ProductRow): Product {
   return {
     id: row.id,
     sku: row.sku,

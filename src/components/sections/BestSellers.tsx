@@ -150,7 +150,7 @@ const BestSellers = () => {
         )}
       </div>
 
-      {bestSellers !== null ? (
+      {/* {bestSellers !== null ? (
         <div className="mt-8 flex items-center justify-center gap-2 lg:hidden">
           <button
             disabled={!canScrollPrev}
@@ -178,7 +178,7 @@ const BestSellers = () => {
             <ChevronRight className="h-5 w-5" />
           </button>
         </div>
-      ) : null}
+      ) : null} */}
     </section>
   );
 };
