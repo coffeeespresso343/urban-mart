@@ -1,5 +1,3 @@
-import { AnimatePresence, motion } from "framer-motion";
-
 import { useEffect, useRef, useState } from "react";
 import type { HeroSlide } from "../../types/HeroSlide";
 import { fetchActiveHeroSlides } from "../../lib/heroSlides";
@@ -7,8 +5,6 @@ import HeroContent from "../hero/HeroContent";
 import HeroImage from "../hero/HeroImage";
 import SlideNavigation from "../hero/SlideNavigation";
 import QuickViewModal from "../hero/QuickVIewModal";
-
-const ease = [0.16, 1, 0.3, 1] as const;
 
 const Hero = () => {
   const [slides, setSlides] = useState<HeroSlide[] | null>(null);

@@ -61,7 +61,7 @@ const Navbar = () => {
     <header
       className={`sticky top-0 z-50 border-b transition-all duration-300 ${
         scrolled
-          ? "border-line-light bg-paper/90 backdrop-blur-md"
+          ? "border-line-light bg-paper/80 backdrop-blur-md"
           : "border-transparent bg-paper"
       }`}
     >

@@ -25,10 +25,10 @@
     --color-line: #2B1B2466;
     --color-line-light: #DED6C9;
 
-    /* Premium accent — muted orange D06A3A */
-    --color-orange: #D06A3A;
-    --color-orange-dark: #A94E28;
-    --color-orange-light: #F3E2D9;
+    /* Premium accent — muted orange D06A3A A94E28 F3E2D9*/
+    --color-orange: #FF6900;
+    --color-orange-dark: #C24100;
+    --color-orange-light: #FFB86A;
 
     /* Semantic colors */
     --color-good: #3e8c62;

@@ -36,7 +36,7 @@ const SlideNavigation = ({
                 className="h-10 w-10 rounded-lg object-cover"
               />
               <div className="hidden pr-2 text-left sm:block">
-                <p className="max-w-[100px] truncate text-xs font-bold">
+                <p className="max-w-25 truncate text-xs font-bold">
                   {slide.product.name}
                 </p>
                 <p className="text-[10px] text-stone-400">

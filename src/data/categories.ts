@@ -1,10 +1,17 @@
 import type { ProductCategory } from "../types/Product";
 
 export interface CategoryInfo {
-  name: ProductCategory;
   slug: string;
+  name: ProductCategory;
+  subtitle?: string;
+  count?: number;
+  badge: string;
   description: string;
   image: string;
+  featuredProduct?: string; // slug
+  priceRange?: string;
+  tag?: string[];
+  accentColor?: string;
 }
 
 const img = (id: string, w = 1200) =>
@@ -12,52 +19,117 @@ const img = (id: string, w = 1200) =>
 
 export const categories: CategoryInfo[] = [
   {
-    name: "Home",
     slug: "home",
+    name: "Home & Living",
+    subtitle: "Architectural Decon",
+    count: 42,
+    badge: "Featured",
     description: "Considered objects for compact city living.",
-    image: img("1567416880385-6158327d05d6"),
+    image: "/images/category/home.jfif",
+
+    featuredProduct: "Frame Wall Shelf",
+    priceRange: "$29 - $300",
+    tag: ["new"],
+    accentColor: "#D97706",
   },
   {
-    name: "Everyday Carry",
     slug: "everyday-carry",
+    name: "Everyday Carry",
+    subtitle: "Tactile EDC & Pocket Gear",
+    count: 28,
+    badge: "Trending",
     description: "What you reach for on your way out the door.",
-    image: img("1594299447935-e5b840f54b9b"),
+    image: "/images/category/everyday-carry.png",
+
+    featuredProduct: "Core Everyday Backpack",
+    priceRange: "$35 - $180",
+    tag: ["popular, new"],
+    accentColor: "#C95B3E",
   },
   {
-    name: "Tech Accessories",
     slug: "tech-accessories",
-    description: "Gear that keeps your setup fast and tidy.",
-    image: img("1749048575579-c6f995615893"),
+    name: "Tech Accessories",
+    subtitle: "Workstations & Studio Sound",
+    count: 42,
+    badge: "Featured",
+    description:
+      "Smart devices essential accessories, and everyday tech for a more connected life.",
+    image: "/images/category/tech.png",
+
+    featuredProduct: "Wireless Headphone",
+    priceRange: "$65 - $420",
+    tag: ["popular"],
+    accentColor: "#2563EB",
   },
   {
     name: "Travel",
     slug: "travel",
-    description: "Built to move — carry-on ready, city tested.",
-    image: img("1448582649076-3981753123b5"),
+    subtitle: "Modular Bags & Luggage",
+    count: 19,
+    badge: "Best Seller",
+
+    description:
+      "Thoughtful gear for smoother journeys, from everyday commutes to long trips.",
+    image: "/images/category/travel.png",
+
+    featuredProduct: "Sling Travel Duffel",
+    priceRange: "$80 - $343",
+    tag: ["popular"],
+    accentColor: "#6B705C",
   },
   {
-    name: "Tools",
     slug: "tools",
+    name: "Tools",
+    subtitle: "Precision Utilitarian Hardware",
+    count: 14,
+    badge: "Limited",
     description: "Dependable hardware for fixes big and small.",
-    image: img("1756027583186-a04a19e4f6ce"),
+    image: img("1581092160607-ee22621dd758"),
+    featuredProduct: "Torque Compact Wrench",
+    priceRange: "$45 - $213",
+    tag: ["new"],
+    accentColor: "#7C3AED",
   },
   {
-    name: "Lighting",
     slug: "lighting",
+    name: "Lighting",
+    subtitle: "Ambient Desk & Floor Glow",
+    count: 22,
+    badge: "New Arrival",
+
     description: "Warm, directable light for work and rest.",
-    image: img("1605194004886-56d82f482d53"),
+    image: "/images/category/lighting.png",
+    featuredProduct: "Urban Desk Lamp",
+    priceRange: "$79 - $310",
+    tag: ["new"],
+    accentColor: "#B86B3D",
   },
   {
-    name: "Storage",
     slug: "storage",
+    name: "Storage",
+    subtitle: "",
+    count: 12,
+    badge: "Best Seller",
     description: "Modular systems that keep small spaces sharp.",
-    image: img("1583686298564-46fbffda0707"),
+    image: "/images/category/storage.jfif",
+
+    featuredProduct: "Modular Drawer Bin",
+    priceRange: "$79 - $310",
+    tag: ["sale"],
+    accentColor: "#DB2777",
   },
   {
-    name: "Lifestyle",
     slug: "lifestyle",
+    name: "Lifestyle",
+    subtitle: "Modern Lifestyle",
+    count: 5,
+    badge: "new",
     description: "Finishing pieces for how you actually live.",
     image: img("1600369672770-985fd30004eb"),
+    featuredProduct: "Ceramic Pour-Over Set",
+    priceRange: "$45 - $130",
+    tag: ["new", "sale"],
+    accentColor: "#7C3AED",
   },
 ];
 

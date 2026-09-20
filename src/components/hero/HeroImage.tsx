@@ -20,7 +20,7 @@ const ProductSpotlight = ({ slide }: ProductSpotlightProps) => {
       >
         <div className="flex items-center justify-between gap-2">
           <span
-            className="rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white"
+            className="rounded px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white"
             style={{ backgroundColor: slide.accentColor }}
           >
             {slide.product.badge}
@@ -28,6 +28,16 @@ const ProductSpotlight = ({ slide }: ProductSpotlightProps) => {
           <span className="text-sm font-extrabold">${slide.product.price}</span>
         </div>
         <h3 className="mt-2 text-base font-bold">{slide.product.name}</h3>
+        <div className="mt-2 flex flex-wrap gap-1">
+          {slide.product.details.map((feat, index) => (
+            <span
+              key={index}
+              className="text-[10px] bg-white/10 text-stone-200 px-2 py-0.5 rounded-full"
+            >
+              {feat}
+            </span>
+          ))}
+        </div>
       </motion.div>
     </AnimatePresence>
   );
@@ -114,6 +124,7 @@ const HeroImage = ({
             type="button"
             onClick={onToggleAutoplay}
             aria-label={isAutoplay ? "Pause autoplay" : "Resume autoplay"}
+            title={`${isAutoplay ? "Pause Autoplay" : "Play Autoplay"}`}
             className="rounded-full border border-white/20 bg-black/40 p-2 text-white backdrop-blur-md transition-colors hover:bg-black/70"
           >
             {isAutoplay ? (

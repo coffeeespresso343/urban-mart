@@ -38,9 +38,9 @@ const QuickViewModal = ({
             type="button"
             onClick={onClose}
             aria-label="Close quick details"
-            className="absolute right-4 top-4 rounded-full p-2 transition-colors hover:bg-white/10"
+            className="absolute right-3 top-3 bg-white/5 rounded-full p-2 transition-colors hover:bg-white/10"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </button>
           <div className="grid grid-cols-1 items-center gap-6 sm:grid-cols-2">
             <div className="aspect-square overflow-hidden rounded-2xl bg-stone-800">
