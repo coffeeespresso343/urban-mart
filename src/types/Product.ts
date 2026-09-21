@@ -3,7 +3,7 @@ export type ProductCategory =
   | "Lighting"
   | "Storage"
   | "Tech Accessories"
-  | "Home & Living"
+  | "Home"
   | "Travel"
   | "Lifestyle"
   | "Everyday Carry";

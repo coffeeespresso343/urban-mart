@@ -151,7 +151,7 @@ const Shop = () => {
             All
           </button>
           {categories.map((cat) => {
-            const isActive = activeCategory === cat.name;
+            const isActive = activeCategory === cat.slug;
             return (
               <button
                 ref={isActive ? activeCategoryRef : null}

@@ -5,8 +5,11 @@ import HeroContent from "../hero/HeroContent";
 import HeroImage from "../hero/HeroImage";
 import SlideNavigation from "../hero/SlideNavigation";
 import QuickViewModal from "../hero/QuickVIewModal";
+import { useCart } from "../../hooks/useCart";
+import type { Product } from "../../types/Product";
 
 const Hero = () => {
+  const { addItem } = useCart();
   const [slides, setSlides] = useState<HeroSlide[] | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoplay, setIsAutoplay] = useState(true);
@@ -63,8 +66,10 @@ const Hero = () => {
     return () => window.clearInterval(interval);
   }, [isAutoplay, slides]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (product: Product) => {
     setIsAddedToCart(true);
+
+    addItem(product, 1, product.colors?.[0]);
 
     if (addToCartTimer.current) {
       clearTimeout(addToCartTimer.current);

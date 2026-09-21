@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "../ui/Button";
+import { Link } from "react-router-dom";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -23,15 +24,6 @@ const FILTERS = [
   { id: "new", label: "New" },
   { id: "sale", label: "Sale" },
 ];
-
-// const FEATURED_SLUG = [
-//   "everyday-carry",
-//   "home",
-//   "tech-accessories",
-//   "travel",
-//   "tools",
-//   "lighting",
-// ];
 
 const CategorySection = () => {
   const CATEGORIES = categories;
@@ -51,7 +43,7 @@ const CategorySection = () => {
     return CATEGORIES.filter((category) =>
       category.tag?.includes(activeFilter),
     );
-  }, [activeFilter]);
+  }, [CATEGORIES, activeFilter]);
 
   const handleNextCarousel = () => {
     setCarouselIndex((prev) => (prev + 1) % filteredCategories.length);
@@ -72,20 +64,10 @@ const CategorySection = () => {
       <main className="max-w-7xl mx-auto py-10 lg:py-14">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 pb-8 border-b border-white/10">
           <div>
-            <div
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase
-            tracking-wider bg-orange-500/10 text-orange-500 border border-orange-500/20 mb-2"
-            >
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>Curated Deparments</span>
-            </div>
-            <h2 className="font-black text-3xl sm:text-5xl tracking-tight">
+            <span className="label-tag text-orange">Browse</span>
+            <h2 className="mt-2 font-black text-3xl sm:text-4xl tracking-tight">
               Shop by Category
             </h2>
-            <p className="mt-2 text-base max-w-xl text-stone">
-              Explore our precision-engineered essentials, crafted for modern
-              lifestyle, work setups, and travel.
-            </p>
           </div>
 
           {/**Filters & Layout View */}
@@ -104,7 +86,7 @@ const CategorySection = () => {
                     }}
                     className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all duration-300 active:scale-95 ${
                       isActive
-                        ? "bg-orange-500 text-white shadow-md shadow-orange-500/25"
+                        ? "bg-orange text-white shadow-md shadow-orange-500/25"
                         : "text-stone hover:text-white"
                     }`}
                   >
@@ -211,9 +193,9 @@ const CategorySection = () => {
 
                     {/**Btns */}
                     <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 z-10 text-white flex flex-col justify-end">
-                      <p className="text-xs uppercase font-bold tracking-widest text-orange-400 mb-1">
+                      {/* <p className="text-xs uppercase font-bold tracking-widest text-orange-400 mb-1">
                         {cat.subtitle}
-                      </p>
+                      </p> */}
 
                       <div className="flex items-end justify-between gap-4">
                         <div>
@@ -273,7 +255,7 @@ const CategorySection = () => {
                 <div
                   key={cat.slug}
                   className="group relative bg-[#14161d] border border-white/10 rounded-3xl overflow-hidden
-                  aspect-[4/3] transition-all duration-500 hover:shadow-xl hover:bg-orange-500/40"
+                  aspect-4/3 transition-all duration-500 hover:shadow-xl hover:bg-orange-500/40"
                 >
                   <img
                     src={cat.image}
@@ -337,7 +319,7 @@ const CategorySection = () => {
                   className="absolute inset-y-0 left-0 p-8 sm:p-12 z-10 text-white max-w-xl
                 flex flex-col justify-center"
                 >
-                  <span className="text-xs font-bold uppercase tracking-widest text-orange-dark">
+                  <span className="text-xs font-mono uppercase tracking-wide text-orange-light">
                     0{carouselIndex + 1} / 0{filteredCategories.length} +{" "}
                     {filteredCategories[carouselIndex].badge}
                   </span>
@@ -446,13 +428,14 @@ const CategorySection = () => {
                     {selectedCategory.featuredProduct}
                   </span>
                 </div>
-                <button
+                <Link
+                  to={`/shop?category=${selectedCategory.slug}`}
                   onClick={() => setSelectedCategory(null)}
                   className="px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-orange-500/30 transition-all flex items-center gap-2"
                 >
                   <span>Go to Shop</span>
                   <ArrowUpRight className="w-4 h-4" />
-                </button>
+                </Link>
               </div>
             </motion.div>
           </div>

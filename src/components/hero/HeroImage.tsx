@@ -20,7 +20,7 @@ const ProductSpotlight = ({ slide }: ProductSpotlightProps) => {
       >
         <div className="flex items-center justify-between gap-2">
           <span
-            className="rounded px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white"
+            className="rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white"
             style={{ backgroundColor: slide.accentColor }}
           >
             {slide.product.badge}
@@ -29,7 +29,7 @@ const ProductSpotlight = ({ slide }: ProductSpotlightProps) => {
         </div>
         <h3 className="mt-2 text-base font-bold">{slide.product.name}</h3>
         <div className="mt-2 flex flex-wrap gap-1">
-          {slide.product.details.map((feat, index) => (
+          {slide.product.details.slice(0, 3).map((feat, index) => (
             <span
               key={index}
               className="text-[10px] bg-white/10 text-stone-200 px-2 py-0.5 rounded-full"
@@ -74,7 +74,7 @@ const HeroImage = ({
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
-        className="group relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/10 shadow-2xl transition-all duration-500 sm:aspect-[16/11] lg:aspect-[4/3]"
+        className="group relative aspect-4/3 overflow-hidden rounded-3xl border border-white/10 shadow-2xl transition-all duration-500 sm:aspect-16/11 lg:aspect-4/3"
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -92,7 +92,7 @@ const HeroImage = ({
             />
           </motion.div>
         </AnimatePresence>
-        {/* Image overlay */}
+
         <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/20 to-transparent" />
 
         {/* Product card */}
@@ -100,7 +100,7 @@ const HeroImage = ({
         <ProductSpotlight slide={slide} />
 
         {/* Previous / Next */}
-        <div className="pointer-events-none absolute inset-x-4 inset-y-0 flex items-center justify-between opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <div className="pointer-events-none absolute inset-x-4 inset-y-0 flex items-center justify-between opacity-0  transition-opacity duration-300 group-hover:opacity-100">
           <button
             type="button"
             onClick={onPrevious}
@@ -128,13 +128,14 @@ const HeroImage = ({
             className="rounded-full border border-white/20 bg-black/40 p-2 text-white backdrop-blur-md transition-colors hover:bg-black/70"
           >
             {isAutoplay ? (
-              <Pause className="h-3.5 w-3.5" />
+              <Pause className="h-3 w-3" />
             ) : (
-              <Play className="h-3.5 w-3.5" />
+              <Play className="h-3 w-3" />
             )}
           </button>
+
           <div className="rounded-full border border-white/20 bg-black/40 px-3 py-1 font-mono text-xs text-white backdrop-blur-md">
-            {String(currentIndex + 1).padStart(2, "0")} /
+            {String(currentIndex + 1).padStart(2, "0")} /{" "}
             {String(totalSlides).padStart(2, "0")}
           </div>
         </div>

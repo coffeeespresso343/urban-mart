@@ -20,7 +20,7 @@ const img = (id: string, w = 1200) =>
 export const categories: CategoryInfo[] = [
   {
     slug: "home",
-    name: "Home & Living",
+    name: "Home",
     subtitle: "Architectural Decon",
     count: 42,
     badge: "Featured",

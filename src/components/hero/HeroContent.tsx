@@ -3,18 +3,19 @@ import type { HeroSlide } from "../../types/HeroSlide";
 import {
   ArrowRight,
   Check,
-  Eye,
+  Info,
   Package,
   ShieldCheck,
   Sparkles,
   Star,
   Truck,
 } from "lucide-react";
+import type { Product } from "../../types/Product";
 
 interface HeroContentProps {
   slide: HeroSlide;
   isAddedToCart: boolean;
-  onAddToCart: () => void;
+  onAddToCart: (product: Product) => void;
   onQuickView: () => void;
 }
 
@@ -119,14 +120,14 @@ const HeroContent = ({
             {titleParts.after}
           </h1>
           {/* Description */}
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-stone-400 sm:text-lg">
+          <p className="mt-6 max-w-xl line-clamp-2 text-base leading-relaxed text-stone-400 sm:text-lg">
             {slide.description}
           </p>
           {/* Actions */}
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <button
               type="button"
-              onClick={onAddToCart}
+              onClick={() => onAddToCart(slide.product)}
               style={{
                 backgroundColor: slide.accentColor,
                 boxShadow: `0 10px 25px -5px ${slide.accentColor}50`,
@@ -150,7 +151,7 @@ const HeroContent = ({
               onClick={onQuickView}
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 px-6 py-4 font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:bg-white/10"
             >
-              <Eye className="h-4 w-4" strokeWidth={2.5} />
+              <Info className="h-4 w-4" strokeWidth={2.5} />
               <span>Quick Details</span>
             </button>
           </div>

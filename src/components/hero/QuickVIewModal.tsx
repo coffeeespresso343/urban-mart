@@ -1,13 +1,14 @@
 import { AnimatePresence, motion } from "framer-motion";
 import type { HeroSlide } from "../../types/HeroSlide";
 import { Check, ShoppingBag, X } from "lucide-react";
+import type { Product } from "../../types/Product";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
 interface QuickViewModalProps {
   slide: HeroSlide;
   onClose: () => void;
-  onAddToCart: () => void;
+  onAddToCart: (product: Product) => void;
 }
 const QuickViewModal = ({
   slide,
@@ -38,12 +39,12 @@ const QuickViewModal = ({
             type="button"
             onClick={onClose}
             aria-label="Close quick details"
-            className="absolute right-3 top-3 bg-white/5 rounded-full p-2 transition-colors hover:bg-white/10"
+            className="absolute right-2 top-2 bg-white/5 rounded-full p-2 transition-colors hover:bg-white/10"
           >
             <X className="h-4 w-4" />
           </button>
           <div className="grid grid-cols-1 items-center gap-6 sm:grid-cols-2">
-            <div className="aspect-square overflow-hidden rounded-2xl bg-stone-800">
+            <div className="aspect-video lg:aspect-square overflow-hidden rounded-2xl bg-stone-800">
               <img
                 src={slide.image}
                 alt={slide.product.name}
@@ -59,7 +60,7 @@ const QuickViewModal = ({
               </span>
               <h3 className="text-2xl font-black"> {slide.product.name} </h3>
               <p className="mt-1 text-xl font-bold text-orange-500">
-                {slide.product.price}
+                ${slide.product.price}
               </p>
               <p className="mt-3 text-sm leading-relaxed text-stone-400">
                 {slide.description}
@@ -83,7 +84,7 @@ const QuickViewModal = ({
               <button
                 type="button"
                 onClick={() => {
-                  onAddToCart();
+                  onAddToCart(slide.product);
                   onClose();
                 }}
                 className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 py-3.5 font-bold text-white shadow-lg shadow-orange-500/30 transition-all hover:bg-orange-600"
