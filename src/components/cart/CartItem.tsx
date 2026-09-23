@@ -3,7 +3,7 @@ import { useCart } from "../../hooks/useCart";
 import type { CartItem as CartItemType } from "../../types/Cart";
 import ImageWithFallback from "../ui/ImageWithFallback";
 import { useUIStore } from "../../hooks/uiStore";
-import { X } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import QuantitySelector from "../product/QuantitySelector";
 import { formatPrice } from "../../utils/currency";
 
@@ -48,9 +48,9 @@ const CartItem = ({
           </div>
           <button
             onClick={() => removeItem(product.id, color)}
-            className="text-warn transition-colors hover:text-stone"
+            className="text-error transition-colors hover:text-warn"
           >
-            <X className="h-3.5 w-3.5" />
+            <Trash2 className="h-3.5 w-3.5" />
           </button>
         </div>
 

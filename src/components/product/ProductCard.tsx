@@ -1,22 +1,37 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import type { Product } from "../../types/Product";
 import ImageWithFallback from "../ui/ImageWithFallback";
-import { Heart, PlusCircle, ShoppingCart } from "lucide-react";
+import { Check, Heart, ShoppingCart } from "lucide-react";
 import { formatPrice } from "../../utils/currency";
 import Badge from "../ui/Badge";
 import ProductRating from "./ProductRating";
 import { useCart } from "../../hooks/useCart";
 import { useWishlist } from "../../hooks/useWishlist";
+import { useState } from "react";
 
 const ProductCard = ({ product }: { product: Product }) => {
   const { addItem, isAdded } = useCart();
   const { isWishListed, toggleWishlist } = useWishlist();
+  const [isJustAdded, setIsJustAdded] = useState(false);
   const wishlisted = isWishListed(product.id);
   const outOfStock = product.stock <= 0;
   const lowStock = product.stock > 0 && product.stock <= 5;
 
   const added = isAdded(product.id, product.colors?.[0]);
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (outOfStock) return;
+
+    addItem(product, 1, product.colors?.[0]);
+    setIsJustAdded(true);
+    setTimeout(() => {
+      setIsJustAdded(false);
+    }, 1500);
+  };
 
   return (
     <div
@@ -141,61 +156,48 @@ const ProductCard = ({ product }: { product: Product }) => {
         >
           <button
             type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-
-              if (!outOfStock) {
-                addItem(product, 1, product.colors?.[0]);
-              }
-            }}
+            onClick={handleAddToCart}
             disabled={outOfStock}
             className="
-          label-tag flex w-full
-          items-center justify-center gap-2
-          rounded-lg
-          border border-paper/60
-          bg-paper/95
-          px-4 py-2.5
-          font-semibold text-ink
-          shadow-[0_8px_25px_rgba(0,0,0,0.12)]
-          backdrop-blur-md
-          transition-all duration-300
-          hover:border-orange
-          hover:bg-orange
-          hover:text-paper
-          hover:shadow-[0_10px_30px_rgba(0,0,0,0.16)]
-          active:scale-[0.97]
-          disabled:cursor-not-allowed
-          disabled:border-transparent
-          disabled:bg-stone-light/90
-          disabled:text-stone-dark
-          disabled:opacity-80
-        "
+              flex w-full items-center justify-center gap-2
+              rounded-xl border border-white/40 bg-paper/90 px-4 py-2.5
+              text-xs font-semibold text-ink shadow-lg backdrop-blur-md
+              transition-all duration-200 hover:bg-orange hover:text-white hover:border-orange
+              active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-75
+            "
           >
-            {!added && !outOfStock ? (
-              <ShoppingCart
-                className="
-              h-4 w-4
-              transition-transform duration-200
-              group-hover:-translate-y-px
-            "
-                strokeWidth={2.1}
-                aria-hidden="true"
-              />
-            ) : added && !outOfStock ? (
-              <PlusCircle
-                className="
-              h-4 w-4
-              transition-transform duration-200
-              group-hover:-translate-y-px
-            "
-                strokeWidth={2.1}
-                aria-hidden="true"
-              />
-            ) : null}
-
-            {outOfStock ? "Unavailable" : added ? "Add More" : "Quick Add"}
+            <AnimatePresence mode="wait" initial={false}>
+              {isJustAdded ? (
+                <motion.span
+                  key="added"
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  className="flex items-center gap-2"
+                >
+                  <Check
+                    className="h-4 w-4 text-emerald-500 animate-bounce"
+                    strokeWidth={2.5}
+                  />
+                  Added to Cart
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="default"
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  className="flex items-center gap-2"
+                >
+                  <ShoppingCart className="h-4 w-4" strokeWidth={2} />
+                  {outOfStock
+                    ? "Out of Stock"
+                    : added
+                      ? "Add More"
+                      : "Quick Add"}
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
         </div>
       </Link>

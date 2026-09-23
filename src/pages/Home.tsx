@@ -4,6 +4,7 @@ import EditorialBanner from "../components/sections/EditorialBanner";
 import FeaturedProducts from "../components/sections/FeaturedProducts";
 import Hero from "../components/sections/Hero";
 import Newsletter from "../components/sections/Newsletter";
+import Promotion from "../components/sections/Promotion";
 import WhyUrbanMart from "../components/sections/WhyUrbanMart";
 
 const Home = () => {
@@ -11,6 +12,7 @@ const Home = () => {
     <>
       <Hero />
       <CategorySection />
+      <Promotion />
       <FeaturedProducts />
       <EditorialBanner />
       <BestSellers />

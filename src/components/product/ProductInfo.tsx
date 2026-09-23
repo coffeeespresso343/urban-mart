@@ -7,7 +7,6 @@ import {
   Check,
   Clipboard,
   Heart,
-  PlusCircle,
   RotateCcw,
   Share2,
   ShoppingCart,
@@ -18,6 +17,7 @@ import QuantitySelector from "./QuantitySelector";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useCart } from "../../hooks/useCart";
 import { useUIStore } from "../../hooks/uiStore";
+import { AnimatePresence, motion } from "framer-motion";
 
 const ProductInfo = ({ product }: { product: Product }) => {
   const [color, setColor] = useState(product.colors?.[0]);
@@ -25,6 +25,8 @@ const ProductInfo = ({ product }: { product: Product }) => {
   const [quantity, setQuantity] = useState(1);
 
   const { addItem, isAdded } = useCart();
+  const [isJustAdded, setIsJustAdded] = useState(false);
+
   const { isWishListed, toggleWishlist } = useWishlist();
   const showToast = useUIStore((s) => s.showToast);
 
@@ -34,6 +36,17 @@ const ProductInfo = ({ product }: { product: Product }) => {
   const lowStock = product.stock > 0 && product.stock <= 5;
 
   const added = isAdded(product.id, product.colors?.[0]);
+
+  const handleAddToCart = () => {
+    if (outOfStock) return;
+
+    addItem(product, quantity, color);
+
+    setIsJustAdded(true);
+    setTimeout(() => {
+      setIsJustAdded(false);
+    }, 1500);
+  };
 
   const handleShare = async () => {
     const shareData = {
@@ -134,27 +147,39 @@ const ProductInfo = ({ product }: { product: Product }) => {
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
         <Button
-          onClick={() => {
-            addItem(product, quantity, color);
-          }}
+          onClick={handleAddToCart}
           size="lg"
           className="flex-1"
           disabled={outOfStock}
         >
-          {!added ? (
-            <ShoppingCart
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-              strokeWidth={2.2}
-              aria-hidden="true"
-            />
-          ) : !outOfStock ? (
-            <PlusCircle
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-              strokeWidth={2.2}
-              aria-hidden="true"
-            />
-          ) : null}
-          {outOfStock ? "Unavailable" : added ? "Add more" : "Quick Add"}
+          <AnimatePresence mode="wait" initial={false}>
+            {isJustAdded ? (
+              <motion.span
+                key="added"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className="flex items-center gap-2"
+              >
+                <Check
+                  className="h-4 w-4 text-emerald-500 animate-bounce"
+                  strokeWidth={2.5}
+                />
+                Added to Cart
+              </motion.span>
+            ) : (
+              <motion.span
+                key="default"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className="flex items-center gap-2"
+              >
+                <ShoppingCart className="h-4 w-4" strokeWidth={2} />
+                {outOfStock ? "Out of Stock" : added ? "Add More" : "Quick Add"}
+              </motion.span>
+            )}
+          </AnimatePresence>
         </Button>
         <Button
           size="lg"

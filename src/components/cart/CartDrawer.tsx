@@ -34,7 +34,7 @@ const CartDrawer = () => {
   return (
     <AnimatePresence>
       {cartOpen ? (
-        <div className="fixed inset-0 z-[95]">
+        <div className="fixed inset-0 z-95">
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
