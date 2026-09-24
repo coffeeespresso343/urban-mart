@@ -56,7 +56,7 @@ export const fetchNotifications = async (
 
   const { data: reads } = await supabase
     .from("notification_reads")
-    .select("notificatioin_id")
+    .select("notification_id")
     .eq("user_id", userId)
     .in("notification_id", ids);
 

@@ -23,7 +23,7 @@ const Promotion = () => {
     "flash",
   );
   const [timer, setTimer] = useState({ hours: 7, minutes: 24, seconds: 18 });
-  const [copiedCode, setCopiedCode] = useState(null);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   const showToast = useUIStore((s) => s.showToast);
 
@@ -43,13 +43,13 @@ const Promotion = () => {
     return () => clearInterval(timer);
   });
 
-  const copyToClipboard = (code, label) => {
-    navigator.clipboard.writeText(code);
+  const copyToClipboard = async (code: string) => {
+    await navigator.clipboard.writeText(code);
     setCopiedCode(code);
     showToast(`Promo code "${code}" copied to clipboard!`, "success");
     setTimeout(() => {
       setCopiedCode(null);
-    }, 3000);
+    }, 4000);
   };
 
   return (
@@ -66,8 +66,7 @@ const Promotion = () => {
                 className="inline-flex items-center gap-2 px-3 py-1.5 bg-ink-elevated border border-orange/40 rounded-full text-xs uppercase
               tracking-wider font-semibold text-orange-light"
               >
-                <Flame className="h-4 w-4 text-orange animate-bounce" /> Limited
-                Time Offers
+                <Flame className="h-4 w-4 animate-bounce" /> Limited Time Offers
               </div>
 
               <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-paper leading-tight">
@@ -82,7 +81,7 @@ const Promotion = () => {
                 exclusive discounts before the countdown runs out.
               </p>
 
-              <div className="flex items-center gap-3 pt-3">
+              <div className="flex items-center justify-center lg:justify-start gap-3 pt-3">
                 <span className="text-xs uppercase tracking-wider text-stone-light font-medium mr-2 hidden md:inline">
                   Ends In:
                 </span>
@@ -180,9 +179,7 @@ const Promotion = () => {
 
               <button
                 type="button"
-                onClick={() =>
-                  copyToClipboard(dealOftTheDay.code, "Flash Code")
-                }
+                onClick={() => copyToClipboard(dealOftTheDay.code)}
                 className="w-full py-3 px-4 bg-orange hover:bg-orange-dark rounded-xl text-paper font-semibold transition flex items-center gap-2 justify-center shadow-lg"
               >
                 {copiedCode === dealOftTheDay.code ? (

@@ -27,6 +27,7 @@ import ImageUploadField, {
   type ImagePreviewItem,
 } from "../../components/admin/ImageUploadField";
 import { uploadProductImages } from "../../lib/storage";
+import HeroSlidesPanel from "../../components/admin/HeroSlidesPanel";
 
 const BADGE_OPTIONS: (ProductBadge | "None")[] = [
   "None",
@@ -244,288 +245,291 @@ const AdminProducts = () => {
   };
 
   return (
-    <div>
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h2 className="text-xl font-display font-bold tracking-tight">
-              Products
-            </h2>
-            <p className="mt-1 text-sm text-stone">({products.length})</p>
+    <>
+      <HeroSlidesPanel products={products} />
+      <div className="rounded-2xl border border-admin-border bg-admin-card p-4 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-display font-bold tracking-tight">
+                Products
+              </h2>
+              <p className="mt-1 text-sm text-stone">({products.length})</p>
+            </div>
+            <p className="mt-1 text-sm text-stone">Manage products.</p>
           </div>
-          <p className="mt-1 text-sm text-stone">Manage products.</p>
+          <Button onClick={openCreate} className="">
+            <Plus className="h-3.5 w-3.5" strokeWidth={2.5} /> Add Product
+          </Button>
         </div>
-        <Button onClick={openCreate} className="rounded-full!">
-          <Plus className="h-3.5 w-3.5" strokeWidth={2.5} /> Add Product
-        </Button>
-      </div>
 
-      {isLoading ? (
-        <div className="mt-6">
-          <AdminProductsSkeleton count={8} />
-        </div>
-      ) : products.length === 0 ? (
-        <EmptyState
-          icon={PackageX}
-          title="No Prducts Yet"
-          message="Add your first product to get started."
-        />
-      ) : (
-        <div className="mt-6 divide-y divide-admin-border border-y border-admin-border">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="flex flex-wrap items-center justify-between gap-4 py-4"
-            >
-              <div className="flex items-center gap-2 lg:gap-5">
-                <span className="bg-admin-gray/30 text-admin-ink text-[10px] h-4 w-4 flex items-center justify-center rounded-full">
-                  {product.id}
-                </span>
+        {isLoading ? (
+          <div className="mt-6">
+            <AdminProductsSkeleton count={8} />
+          </div>
+        ) : products.length === 0 ? (
+          <EmptyState
+            icon={PackageX}
+            title="No Prducts Yet"
+            message="Add your first product to get started."
+          />
+        ) : (
+          <div className="mt-6 divide-y divide-admin-border border-y border-admin-border">
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="flex flex-wrap items-center justify-between gap-4 py-4"
+              >
+                <div className="flex items-center gap-2 lg:gap-5">
+                  <span className="bg-admin-gray/30 text-admin-ink text-[10px] h-4 w-4 flex items-center justify-center rounded-full">
+                    {product.id}
+                  </span>
 
-                <Link
-                  to={`/product/${product.id}`}
-                  className="relative h-14 w-14 rounded-xl shrink-0 overflow-hidden bg-paper-dim hover:opacity-90 active:scale-95"
-                >
-                  <ImageWithFallback
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="h-full w-full object-cover"
-                  />
-                  {product.badge ? (
-                    <div className="absolute -right-0.5 -top-0.5 lg:hidden">
-                      <BadgeIcon badge={product.badge} tone="stone" />
+                  <Link
+                    to={`/product/${product.id}`}
+                    className="relative h-14 w-14 rounded-xl shrink-0 overflow-hidden bg-paper-dim hover:opacity-90 active:scale-95"
+                  >
+                    <ImageWithFallback
+                      src={product.images[0]}
+                      alt={product.name}
+                      className="h-full w-full object-cover"
+                    />
+                    {product.badge ? (
+                      <div className="absolute -right-0.5 -top-0.5 lg:hidden">
+                        <BadgeIcon badge={product.badge} tone="stone" />
+                      </div>
+                    ) : null}
+                  </Link>
+                  <div className="min-w-0">
+                    <div className="flex items-start flex-col-reverse lg:flex-row gap-1 lg:gap-3">
+                      <p className="text-xs truncate lg:text-sm max-w-28 lg:min-w-70 font-medium">
+                        {product.name}
+                      </p>
+                      <span className="hidden lg:flex lg:items-center lg:gap-2">
+                        {product.badge ? (
+                          <Badge
+                            tone={
+                              product.badge === "Best Seller"
+                                ? "green"
+                                : product.badge === "Limited"
+                                  ? "stone"
+                                  : product.badge === "New"
+                                    ? "blue"
+                                    : "stone"
+                            }
+                            className=""
+                          >
+                            {product.badge}
+                          </Badge>
+                        ) : null}
+                        {product.stock === 0 ? (
+                          <Badge tone="error">Out of Stock</Badge>
+                        ) : product.stock <= 5 ? (
+                          <Badge tone="error">Low Stock</Badge>
+                        ) : null}
+                      </span>
                     </div>
-                  ) : null}
-                </Link>
-                <div className="min-w-0">
-                  <div className="flex items-start flex-col-reverse lg:flex-row gap-1 lg:gap-3">
-                    <p className="text-xs lg:text-sm max-w-38 lg:min-w-70 font-medium">
-                      {product.name}
-                    </p>
-                    <span className="hidden lg:flex lg:items-center lg:gap-2">
-                      {product.badge ? (
-                        <Badge
-                          tone={
-                            product.badge === "Best Seller"
-                              ? "green"
-                              : product.badge === "Limited"
-                                ? "stone"
-                                : product.badge === "New"
-                                  ? "blue"
-                                  : "stone"
-                          }
-                          className=""
-                        >
-                          {product.badge}
-                        </Badge>
-                      ) : null}
-                      {product.stock === 0 ? (
-                        <Badge tone="error">Out of Stock</Badge>
-                      ) : product.stock <= 5 ? (
-                        <Badge tone="error">Low Stock</Badge>
-                      ) : null}
-                    </span>
-                  </div>
-                  <div className="mt-1 label-tag flex flex-col lg:items-center lg:flex-row lg:gap-2 text-stone lg:mt-2">
-                    <p>{product.category}</p>
-                    <span className="hidden text-stone/80 lg:block">.</span>
-                    <p className="text-admin-gray-light text-[10px]">
-                      Stock {product.stock}
-                    </p>
+                    <div className="mt-1 text-[11px] font-semibold uppercase text-admin-gray flex flex-col lg:items-center lg:flex-row lg:gap-2 lg:mt-2">
+                      <p>{product.category}</p>
+                      <span className="hidden text-stone/80 lg:block">.</span>
+                      <p className="text-admin-gray-light text-[10px]">
+                        Stock {product.stock}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex items-center gap-4 lg:gap-10">
-                <span className="font-mono tabular-nums text-admin-gray text-sm font-semibold">
-                  {formatPrice(product.price)}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => openEdit(product)}
-                  className="text-admin-gray-light transition-colors duration-200 hover:text-admin-gray active:scale-[0.95]"
-                >
-                  <Pencil className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleDelete(product)}
-                  disabled={product.id === deletingId}
-                  className="text-admin-pink/60 transition-colors duration-200 hover:text-admin-pink/70 active:scale-[0.95] disabled:opacity-40"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
+                <div className="flex items-center gap-4 lg:gap-10">
+                  <span className="font-mono tabular-nums text-admin-gray text-sm font-semibold">
+                    {formatPrice(product.price)}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => openEdit(product)}
+                    className="text-admin-gray-light transition-colors duration-200 hover:text-admin-gray active:scale-[0.95]"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(product)}
+                    disabled={product.id === deletingId}
+                    className="text-admin-pink/60 transition-colors duration-200 hover:text-admin-pink/70 active:scale-[0.95] disabled:opacity-40"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          <Modal
-            isOpen={modalOpen}
-            onClose={() => setModalOpen(false)}
-            title={editingProduct ? "Edit Product" : "Add Product"}
-          >
-            <form
-              onSubmit={handleSubmit}
-              noValidate
-              className="flex max-h-[70vh] flex-col gap-4 scrollbar-none overflow-y-auto pr-1"
+            <Modal
+              isOpen={modalOpen}
+              onClose={() => setModalOpen(false)}
+              title={editingProduct ? "Edit Product" : "Add Product"}
             >
-              <div className="mt-2 grid grid-cols-2 gap-2">
-                <TextField
-                  label="Name"
-                  value={form.name}
-                  onChange={(v) => setForm({ ...form, name: v })}
-                  placeholder="Product name"
-                  required
-                />
-                <TextField
-                  label="SKU"
-                  value={form.sku}
-                  onChange={(v) => setForm({ ...form, sku: v })}
-                  placeholder="UM-SKU-000"
-                  required
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="admin-category"
-                  className="label-tag text-admin-gray-light"
-                >
-                  Category
-                </label>
-                <select
-                  id="admin-category"
-                  value={form.category}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      category: e.target.value as ProductCategory,
-                    })
-                  }
-                  className="border border-admin-border rounded-lg
-                bg-admin-bg px-3 py-2.5 text-sm outline-none focus:border-admin-ink"
-                >
-                  {categories.map((cat) => (
-                    <option key={cat.slug}>{cat.name}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3">
-                <TextField
-                  label="Price ($)"
-                  value={form.price}
-                  onChange={(v) => setForm({ ...form, price: v })}
-                  required
-                  inputMode="decimal"
-                />
-                <TextField
-                  label="Compare-at"
-                  value={form.compareAtPrice}
-                  onChange={(v) => setForm({ ...form, compareAtPrice: v })}
-                  inputMode="decimal"
-                />
-                <TextField
-                  label="Stock"
-                  value={form.stock}
-                  onChange={(v) => setForm({ ...form, stock: v })}
-                  required
-                  inputMode="numeric"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="admin-description"
-                  className="label-tag text-admin-gray-light"
-                >
-                  Description
-                </label>
-                <textarea
-                  id="admin-description"
-                  value={form.description}
-                  onChange={(e) =>
-                    setForm({ ...form, description: e.target.value })
-                  }
-                  rows={3}
-                  className="rounded-lg border border-admin-border bg-admin-bg px-3 py-2.5 text-sm outline-none focus:border-admin-ink"
-                />
-              </div>
-              <ImageUploadField
-                previews={imagePreviews}
-                onFilesSelected={(files) =>
-                  setPendingFiles((prev) => [...prev, ...files])
-                }
-              />
-
-              <div className="grid grid-cols-2 gap-2">
-                <TextField
-                  label="Colors"
-                  value={form.colors}
-                  onChange={(v) => setForm({ ...form, colors: v })}
-                />
-                <TextField
-                  label="Tags"
-                  value={form.tags}
-                  onChange={(v) => setForm({ ...form, tags: v })}
-                />
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="admin-badge"
-                  className="label-tag text-admin-gray-light"
-                >
-                  Badge
-                </label>
-                <select
-                  id="admin-badge"
-                  value={form.badge}
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      badge: e.target.value as ProductBadge | "None",
-                    })
-                  }
-                  className="border border-admin-border rounded-lg
-                bg-admin-bg px-3 py-2.5 text-sm outline-none focus:border-admin-ink"
-                >
-                  {BADGE_OPTIONS.map((badge) => (
-                    <option key={badge} value={badge}>
-                      {badge}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-wrap gap-4">
-                <CheckboxField
-                  label="Featured"
-                  checked={form.featured}
-                  onChange={(v) => setForm({ ...form, featured: v })}
-                />
-                <CheckboxField
-                  label="New"
-                  checked={form.isNew}
-                  onChange={(v) => setForm({ ...form, isNew: v })}
-                />
-                <CheckboxField
-                  label="Best Seller"
-                  checked={form.bestSeller}
-                  onChange={(v) => setForm({ ...form, bestSeller: v })}
-                />
-              </div>
-              <Button
-                type="submit"
-                size="md"
-                isLoading={isSaving}
-                className="mt-2 rounded-full!"
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                className="flex max-h-[70vh] flex-col gap-4 scrollbar-none overflow-y-auto pr-1"
               >
-                {editingProduct ? "Save Changes" : "Add Product"}
-              </Button>
-            </form>
-          </Modal>
-        </div>
-      )}
-    </div>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <TextField
+                    label="Name"
+                    value={form.name}
+                    onChange={(v) => setForm({ ...form, name: v })}
+                    placeholder="Product name"
+                    required
+                  />
+                  <TextField
+                    label="SKU"
+                    value={form.sku}
+                    onChange={(v) => setForm({ ...form, sku: v })}
+                    placeholder="UM-SKU-000"
+                    required
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label
+                    htmlFor="admin-category"
+                    className="label-tag text-admin-gray-light"
+                  >
+                    Category
+                  </label>
+                  <select
+                    id="admin-category"
+                    value={form.category}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        category: e.target.value as ProductCategory,
+                      })
+                    }
+                    className="border border-admin-border rounded-lg
+                bg-admin-bg px-3 py-2.5 text-sm outline-none focus:border-admin-ink"
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat.slug}>{cat.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <TextField
+                    label="Price ($)"
+                    value={form.price}
+                    onChange={(v) => setForm({ ...form, price: v })}
+                    required
+                    inputMode="decimal"
+                  />
+                  <TextField
+                    label="Compare-at"
+                    value={form.compareAtPrice}
+                    onChange={(v) => setForm({ ...form, compareAtPrice: v })}
+                    inputMode="decimal"
+                  />
+                  <TextField
+                    label="Stock"
+                    value={form.stock}
+                    onChange={(v) => setForm({ ...form, stock: v })}
+                    required
+                    inputMode="numeric"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label
+                    htmlFor="admin-description"
+                    className="label-tag text-admin-gray-light"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    id="admin-description"
+                    value={form.description}
+                    onChange={(e) =>
+                      setForm({ ...form, description: e.target.value })
+                    }
+                    rows={3}
+                    className="rounded-lg border border-admin-border bg-admin-bg px-3 py-2.5 text-sm outline-none focus:border-admin-ink"
+                  />
+                </div>
+                <ImageUploadField
+                  previews={imagePreviews}
+                  onFilesSelected={(files) =>
+                    setPendingFiles((prev) => [...prev, ...files])
+                  }
+                />
+
+                <div className="grid grid-cols-2 gap-2">
+                  <TextField
+                    label="Colors"
+                    value={form.colors}
+                    onChange={(v) => setForm({ ...form, colors: v })}
+                  />
+                  <TextField
+                    label="Tags"
+                    value={form.tags}
+                    onChange={(v) => setForm({ ...form, tags: v })}
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label
+                    htmlFor="admin-badge"
+                    className="label-tag text-admin-gray-light"
+                  >
+                    Badge
+                  </label>
+                  <select
+                    id="admin-badge"
+                    value={form.badge}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        badge: e.target.value as ProductBadge | "None",
+                      })
+                    }
+                    className="border border-admin-border rounded-lg
+                bg-admin-bg px-3 py-2.5 text-sm outline-none focus:border-admin-ink"
+                  >
+                    {BADGE_OPTIONS.map((badge) => (
+                      <option key={badge} value={badge}>
+                        {badge}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                  <CheckboxField
+                    label="Featured"
+                    checked={form.featured}
+                    onChange={(v) => setForm({ ...form, featured: v })}
+                  />
+                  <CheckboxField
+                    label="New"
+                    checked={form.isNew}
+                    onChange={(v) => setForm({ ...form, isNew: v })}
+                  />
+                  <CheckboxField
+                    label="Best Seller"
+                    checked={form.bestSeller}
+                    onChange={(v) => setForm({ ...form, bestSeller: v })}
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  size="md"
+                  isLoading={isSaving}
+                  className="mt-2 rounded-full!"
+                >
+                  {editingProduct ? "Save Changes" : "Add Product"}
+                </Button>
+              </form>
+            </Modal>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

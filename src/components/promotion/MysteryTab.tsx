@@ -1,4 +1,4 @@
-import { Check, Copy, Gift, Sparkles } from "lucide-react";
+import { Check, Copy, Gift } from "lucide-react";
 import { useState } from "react";
 import { useUIStore } from "../../hooks/uiStore";
 
@@ -42,15 +42,15 @@ const MysteryTab = () => {
 
     setTimeout(() => {
       setCopied(false);
-    }, 2000);
+    }, 4000);
   };
 
   return (
     <div className="bg-paper-dim border border-line-light rounded-3xl p-8 md:p-12 text-center max-w-3xl mx-auto shadow-sm">
       <div className="inline-flex p-3 bg-orange/10 rounded-2xl text-orange mb-4">
-        <Sparkles
-          className="h-8 w-8 animate-spin"
-          style={{ animationDuration: "6s" }}
+        <Gift
+          className="h-8 w-8 animate-bounce"
+          // style={{ animationDuration: "2s" }}
         />
       </div>
 

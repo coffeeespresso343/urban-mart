@@ -18,13 +18,18 @@ const VipTab = () => {
     }
   };
 
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText("VIPMEMBER22");
+    showToast("Promo code 'VIPMEMBER22' copied to clipboard.", "success");
+  };
+
   return (
     <div className="bg-ink text-paper rounded-3xl p-8 md:p-12 border border-line-light/20 relative overflow-hidden shadow-xl">
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <div className="space-y-4">
           <div
             className="inline-flex items-center gap-2 bg-ink-elevated px-3 py-1.5 rounded-full text-xs
-          font-semibold text-orange-light border border-orange/30"
+          font-semibold text-orange border border-orange/30"
           >
             <Crown className="h-4 w-4 text-orange" />
             VIP Club Unlocked
@@ -90,13 +95,16 @@ const VipTab = () => {
                 Welcome to VIP Access
               </h3>
               <p className="text-xs text-stone-light">
-                Use this code at checkout for 20% off:
+                Use this code at checkout for 20% off
               </p>
 
               <div className="p-3 bg-ink-elevated rounded-xl font-mono text-orange-accent font-bold text-lg border border-orange-accent/30">
                 VIPMEMBER20
               </div>
-              <button className="text-xs text-orange-light underline hover:text-paper">
+              <button
+                onClick={handleCopy}
+                className="text-xs text-orange-light underline hover:text-paper"
+              >
                 Click here to copy code
               </button>
             </div>

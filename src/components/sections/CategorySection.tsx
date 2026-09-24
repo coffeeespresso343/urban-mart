@@ -8,7 +8,6 @@ import {
   Grid2X2,
   Layers,
   LayoutGrid,
-  Sparkles,
   Tag,
   X,
 } from "lucide-react";

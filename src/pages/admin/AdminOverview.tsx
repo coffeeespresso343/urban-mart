@@ -61,7 +61,7 @@ function Delta({ pct }: { pct: number | null }) {
     return <span className="text-xs text-admin-gray-light">No prior data</span>;
   }
 
-  const positive = pct >= 0;
+  const positive = pct > 0;
 
   return (
     <span

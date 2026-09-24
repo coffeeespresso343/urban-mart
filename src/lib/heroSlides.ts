@@ -63,7 +63,7 @@ export async function fetchAllHeroSlides(): Promise<HeroSlide[]> {
 }
 
 export interface HeroSlideInput {
-  productId: number;
+  productId: number | null;
   tagline: string;
   title: string;
   highlightText: string;

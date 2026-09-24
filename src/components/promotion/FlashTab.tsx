@@ -1,5 +1,7 @@
 import {
   Award,
+  Check,
+  Copy,
   Layers,
   RefreshCcw,
   ShieldCheck,
@@ -8,6 +10,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import ImageWithFallback from "../ui/ImageWithFallback";
+import { useUIStore } from "../../hooks/uiStore";
 
 const bundleProducts = [
   {
@@ -33,8 +36,46 @@ const bundleProducts = [
   },
 ];
 
+const promoCodes = [
+  {
+    label: "First Order",
+    title: "15% OFF",
+    description: "Min spend $50",
+    code: "WELCOME15",
+  },
+
+  {
+    label: "Free Shipping",
+    title: "$0 Express Delivery",
+    description: "All orders over $99",
+    code: "FREESHP",
+  },
+
+  {
+    label: "Weekend Special",
+    title: "$25 OFF Premium Sets",
+    description: "Valid until Sunday",
+    code: "WEEKEND22",
+  },
+];
+
 const FlashTab = () => {
   const [selectedBundleItems, setSelectedBundleItems] = useState([1, 2]);
+
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const showToast = useUIStore((u) => u.showToast);
+
+  const toggleBundleItem = (id: number) => {
+    if (selectedBundleItems.includes(id)) {
+      if (selectedBundleItems.length > 1) {
+        setSelectedBundleItems(
+          selectedBundleItems.filter((item) => item !== id),
+        );
+      }
+    } else {
+      setSelectedBundleItems([...selectedBundleItems, id]);
+    }
+  };
 
   const totalBundlePrice = selectedBundleItems.reduce((sum, id) => {
     const item = bundleProducts.find((p) => p.id === id);
@@ -49,6 +90,16 @@ const FlashTab = () => {
         : 0;
   const finalBundlePrice = Math.round(totalBundlePrice * (1 - bundleDiscount));
   const savedAmount = totalBundlePrice - finalBundlePrice;
+
+  const handleCopy = async (code: string) => {
+    await navigator.clipboard.writeText(code);
+    setCopiedCode(code);
+
+    showToast(`Promo code '${code}' copied to clipboard`, "success");
+    setTimeout(() => {
+      setCopiedCode(null);
+    }, 4000);
+  };
 
   return (
     <div className="grid lg:grid-cols-12 gap-8">
@@ -81,6 +132,7 @@ const FlashTab = () => {
               return (
                 <div
                   key={product.id}
+                  onClick={() => toggleBundleItem(product.id)}
                   className={`flex items-center justify-between gap-2 p-3.5 rounded-2xl border cursor-pointer transition-all ${
                     isSelected
                       ? "bg-paper border-orange shadow-sm"
@@ -95,7 +147,7 @@ const FlashTab = () => {
                     />
 
                     <div>
-                      <h4 className="text-sm font-semibold text-ink">
+                      <h4 className="text-xs font-semibold text-ink">
                         {product.name}
                       </h4>
                       <span className="text-xs text-stone">
@@ -105,8 +157,8 @@ const FlashTab = () => {
                   </div>
 
                   <span
-                    className={`text-xs font-semibold px-2.5 py-1 rounded-lg ${
-                      isSelected ? "text-orange bg-orange/10" : "text-stone"
+                    className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg ${
+                      isSelected ? "text-good bg-good/10" : "text-stone"
                     }`}
                   >
                     {isSelected ? "Selected" : "Add +"}
@@ -120,23 +172,29 @@ const FlashTab = () => {
         {/** Dynamic Saving Summary */}
         <div className="bg-paper rounded-2xl p-5 border border-line-light space-y-3">
           <div className="flex justify-between text-sm">
-            <span className="text-stone">Subtotal:</span>
+            <span className="text-stone">Subtotal</span>
             <span className="text-stone line-through">${totalBundlePrice}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-good font-medium">
-              Bundle Discount ({bundleDiscount * 100}%):
+              Bundle Discount ({bundleDiscount * 100}%)
             </span>
             <span className="text-good font-semibold">-${savedAmount}</span>
           </div>
           <div className="border-t border-line-light/60 pt-3 flex justify-between items-baseline">
-            <span className="font-bold text-ink text-base">Bundle Total:</span>
+            <span className="font-bold text-ink text-base">Bundle Total</span>
             <span className="text-2xl font-extrabold text-orange-accent">
               ${finalBundlePrice}
             </span>
           </div>
 
-          <button className="w-full mt-2 py-3 bg-ink hover:bg-ink-soft text-paper rounded-xl font-semibold transition flex items-center justify-center gap-2 shadow-md">
+          <button
+            type="button"
+            onClick={() =>
+              showToast(`Bundled added! You saved $${savedAmount}`)
+            }
+            className="w-full mt-2 py-3 bg-ink hover:bg-ink-soft text-paper rounded-xl font-semibold transition flex items-center justify-center gap-2 shadow-md"
+          >
             <ShoppingBag className="w-4 h-4" /> Claim Bundle Deal
           </button>
         </div>
@@ -151,71 +209,39 @@ const FlashTab = () => {
           </div>
 
           <div className="space-y-3">
-            <div
-              className="bg-paper border border-line-light rounded-2xl p-4 flex items-center justify-between shadow-xs
+            {promoCodes.map((promo) => (
+              <div
+                key={promo.code}
+                className="bg-paper border border-line-light rounded-2xl p-4 flex items-center justify-between shadow-xs
               hover:border-orange transition"
-            >
-              <div>
-                <span className="text-xs font-bold text-orange uppercase tracking-wider block">
-                  First Order
-                </span>
-                <h4 className="font-bold text-ink text-base">
-                  15% OFF Sitewide
-                </h4>
-                <p className="text-xs text-stone">Min. spend $50</p>
-              </div>
-              <button
-                type="button"
-                className="px-3.5 py-2 bg-paper-dim hover:bg-orange hover:text-paper text-ink border border-line-light
-                text-xs font-semibold rounded-xl transition"
               >
-                WELCOME15
-              </button>
-            </div>
-
-            <div
-              className="bg-paper border border-line-light rounded-2xl p-4 flex items-center justify-between shadow-xs
-              hover:border-orange transition"
-            >
-              <div>
-                <span className="text-xs font-bold text-orange uppercase tracking-wider block">
-                  Free Shipping
-                </span>
-                <h4 className="font-bold text-ink text-base">
-                  $0 Express Delivery
-                </h4>
-                <p className="text-xs text-stone">All orders over $99</p>
-              </div>
-              <button
-                type="button"
-                className="px-3.5 py-2 bg-paper-dim hover:bg-orange hover:text-paper text-ink border border-line-light
+                <div>
+                  <span className="text-xs font-bold text-orange uppercase tracking-wider block">
+                    {promo.label}
+                  </span>
+                  <h4 className="font-bold text-ink text-base">
+                    {promo.title}
+                  </h4>
+                  <p className="text-xs text-stone">{promo.description}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleCopy(promo.code)}
+                  className="px-3.5 py-2 flex items-center gap-1 justify-center bg-paper-dim hover:bg-orange hover:text-paper text-ink border border-line-light
                 text-xs font-semibold rounded-xl transition"
-              >
-                FREESHP
-              </button>
-            </div>
-
-            <div
-              className="bg-paper border border-line-light rounded-2xl p-4 flex items-center justify-between shadow-xs
-              hover:border-orange transition"
-            >
-              <div>
-                <span className="text-xs font-bold text-orange uppercase tracking-wider block">
-                  Weekend Special
-                </span>
-                <h4 className="font-bold text-ink text-base">
-                  $25 OFF Premium Sets
-                </h4>
-                <p className="text-xs text-stone">Valid until Sunday</p>
+                >
+                  {copiedCode === promo.code ? (
+                    <>
+                      <Check className="h-3 w-3 text-good" /> Copied
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="h-3 w-3" /> {promo.code}
+                    </>
+                  )}
+                </button>
               </div>
-              <button
-                type="button"
-                className="px-3.5 py-2 bg-paper-dim hover:bg-orange hover:text-paper text-ink border border-line-light
-                text-xs font-semibold rounded-xl transition"
-              >
-                WEEKEND22
-              </button>
-            </div>
+            ))}
           </div>
         </div>
 

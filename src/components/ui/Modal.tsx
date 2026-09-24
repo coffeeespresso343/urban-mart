@@ -5,10 +5,11 @@ import { useEffect, type ReactNode } from "react";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onClear?: () => void;
   title?: string;
   children: ReactNode;
 }
-const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+const Modal = ({ isOpen, onClose, onClear, title, children }: ModalProps) => {
   useEffect(() => {
     if (!isOpen) return;
 
@@ -25,16 +26,21 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
     };
   }, [isOpen, onClose]);
 
+  const handleClose = () => {
+    onClear?.();
+    onClose();
+  };
+
   return (
     <AnimatePresence>
       {isOpen ? (
-        <div className="fixed inset-0 z-[90] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-90 flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="absolute inset-0 bg-admin-ink/40 backdrop-blur-2xl"
-            onClick={onClose}
+            onClick={handleClose}
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 12 }}
@@ -44,7 +50,7 @@ const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
             className="relative w-full max-w-md rounded-xl bg-admin-card p-6 shadow-2xl"
           >
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="absolute right-4 top-4 text-admin-gray-light transition-colors hover:text-admin-gray"
             >
               <X className="h-5 w-5" />

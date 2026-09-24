@@ -35,7 +35,6 @@ const NAV_ITEMS = [
 
 const AdminLayout = () => {
   const { theme, toggleTheme } = useAdminTheme();
-  const showToast = useUIStore((s) => s.showToast);
   const { signOut, profile } = useAuth();
   const navigate = useNavigate();
 

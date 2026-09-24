@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type TouchEvent } from "react";
 import type { HeroSlide } from "../../types/HeroSlide";
 import { fetchActiveHeroSlides } from "../../lib/heroSlides";
 import HeroContent from "../hero/HeroContent";
@@ -82,7 +82,7 @@ const Hero = () => {
 
   if (slides === null) {
     return (
-      <section className="min-h-(100vh-80px) w-full animate-pulse bg-[#0c0d10]" />
+      <section className="py-8 min-h-(100vh-60px) w-full animate-pulse bg-ink" />
     );
   }
 

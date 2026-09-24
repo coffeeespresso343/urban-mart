@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import type { HeroSlide } from "../../types/HeroSlide";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import type { TouchEvent } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
