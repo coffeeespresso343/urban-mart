@@ -160,7 +160,7 @@ export function getBestSellers(products: Product[]): Product[] {
   return products.filter((p) => p.bestSeller);
 }
 
-export function getNewArrivals(products: Product[], count = 8): Product[] {
+export function getNewArrivals(products: Product[], count = 4): Product[] {
   return [...products]
     .filter((p) => p.isNew)
     .concat(products.filter((p) => !p.isNew))

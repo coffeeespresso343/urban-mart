@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import type { Product } from "../../types/Product";
+import type { Product, ViewMode } from "../../types/Product";
 import ImageWithFallback from "../ui/ImageWithFallback";
-import { Check, Heart, ShoppingCart } from "lucide-react";
+import { Check, Heart, Info, ShoppingCart } from "lucide-react";
 import { formatPrice } from "../../utils/currency";
 import Badge from "../ui/Badge";
 import ProductRating from "./ProductRating";
@@ -10,7 +10,13 @@ import { useCart } from "../../hooks/useCart";
 import { useWishlist } from "../../hooks/useWishlist";
 import { useState } from "react";
 
-const ProductCard = ({ product }: { product: Product }) => {
+const ProductCard = ({
+  product,
+  viewMode,
+}: {
+  product: Product;
+  viewMode: ViewMode;
+}) => {
   const { addItem, isAdded } = useCart();
   const { isWishListed, toggleWishlist } = useWishlist();
   const [isJustAdded, setIsJustAdded] = useState(false);
@@ -33,12 +39,143 @@ const ProductCard = ({ product }: { product: Product }) => {
     }, 1500);
   };
 
+  if (viewMode === "list") {
+    return (
+      <div
+        className="bg-white rounded-2xl border border-line-light p-4 shadow-sm hover:shadow-md transition-all
+      flex flex-col sm:flex-row items-center gap-6 group"
+      >
+        {/**Image + Badge + Wishlist */}
+        <div className="relative w-full sm:w-48 h-48 rounded-xl overflow-hidden bg-ink/5 shrink-0">
+          <ImageWithFallback
+            src={product.images[0]}
+            alt={product.name}
+            className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
+          />
+
+          <div className="absolute left-2 top-2 flex max-w-[75%] flex-wrap gap-1.5">
+            {product.badge ? (
+              outOfStock ? (
+                <Badge tone="error">Sold out</Badge>
+              ) : (
+                <Badge
+                  tone={
+                    product.badge === "Limited"
+                      ? "warn"
+                      : product.badge === "Best Seller"
+                        ? "good"
+                        : "orange"
+                  }
+                >
+                  {product.badge}
+                </Badge>
+              )
+            ) : null}
+          </div>
+
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleWishlist(product);
+            }}
+            className="absolute top-2 right-2"
+          >
+            <Heart
+              className={`h-4 w-4 ${wishlisted ? "fill-orange text-orange" : "text-ink"}`}
+            />
+          </button>
+        </div>
+
+        {/** Rating */}
+        <div className="flex-1 space-y-2 w-full">
+          <p className="font-bold text-stone text-xs">{product.category}</p>
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="font-bold text-ink text-sm hover:text-orange cursor-pointer">
+              {product.name}
+            </h3>
+            <ProductRating
+              rating={product.rating}
+              reviewCount={product.reviewCount}
+            />
+          </div>
+
+          <p className="text-xs text-stone line-clamp-2">
+            {product.description}
+          </p>
+
+          <div className="pt-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <p className="text-xl font-black text-ink">
+                {formatPrice(product.price)}
+              </p>
+              {product.compareAtPrice && (
+                <p className="text-sm font-semibold text-stone line-through">
+                  {formatPrice(product.compareAtPrice)}
+                </p>
+              )}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button className="p-2 rounded-full bg-ink/90 text-white hover:text-orange transition-all duration-300 active:scale-95">
+                <Info className="h-4 w-4" strokeWidth={2.5} />
+              </button>
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                disabled={outOfStock}
+                className="flex w-full min-w-36 items-center justify-center gap-1.5 rounded-xl border border-white/40 bg-orange px-4 py-2.5
+              text-xs font-semibold text-white shadow-lg backdrop-blur-md
+              transition-all duration-300 hover:bg-orange hover:text-white hover:border-orange
+              active:scale-[0.95] disabled:cursor-not-allowed disabled:opacity-45
+            "
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {isJustAdded ? (
+                    <motion.span
+                      key="added"
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="flex items-center gap-2"
+                    >
+                      <Check
+                        className="h-4 w-4 animate-bounce"
+                        strokeWidth={2.5}
+                      />
+                      Added to Cart
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="default"
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -5 }}
+                      className="flex items-center gap-2"
+                    >
+                      <ShoppingCart className="h-4 w-4" strokeWidth={2} />
+                      {outOfStock
+                        ? "Out of Stock"
+                        : added
+                          ? "Add More"
+                          : "Quick Add"}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="
     group relative flex flex-col
     overflow-hidden rounded-xl
-    bg-paper border border-line-light
+    bg-white border border-line-light
     transition-all duration-200
     hover:-translate-y-0.5
   "
@@ -230,7 +367,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         </div>
 
         <div className="mt-2 flex items-baseline gap-2">
-          <span className="price text-sm font-bold text-ink sm:text-[15px]">
+          <span className=" text-sm font-bold text-ink sm:text-[15px]">
             {formatPrice(product.price)}
           </span>
 

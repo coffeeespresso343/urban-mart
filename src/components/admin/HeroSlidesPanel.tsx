@@ -121,9 +121,9 @@ const HeroSlidesPanel = ({ products }: { products: Product[] }) => {
           {slides.map((slide) => (
             <div
               key={slide.id}
-              className="flex flex-wrap items-center justify-between gap-4 py-4 first:pt-0 last:pb-0"
+              className="flex flex-col sm:flex-row sm:justify-between gap-4 py-4 first:pt-0 last:pb-0"
             >
-              <div className="flex items-center gap-4">
+              <div className="flex min-w-0 items-center gap-3 sm:gap-4">
                 <div className="h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-admin-active">
                   <ImageWithFallback
                     src={slide.image}
@@ -131,11 +131,20 @@ const HeroSlidesPanel = ({ products }: { products: Product[] }) => {
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <p className="text-[11px] sm:text-sm max-w-28 truncate sm:max-w-60 font-medium">
+                <div className="min-w-0 flex-1">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <p className="min-w-0 flex-1 text-sm truncate font-medium">
                       {slide.title}
                     </p>
+                    {!slide.isActive ? (
+                      <span className="rounded-full bg-admin-active px-2 py-0.5 text-xs font-medium text-admin-gray">
+                        Inactive
+                      </span>
+                    ) : (
+                      <span className="rounded-full bg-admin-green/20 px-2 py-0.5 text-xs font-medium text-admin-green">
+                        Active
+                      </span>
+                    )}
                     <span
                       className="rounded-full px-2 py-0.5 text-xs font-medium"
                       style={{
@@ -145,24 +154,19 @@ const HeroSlidesPanel = ({ products }: { products: Product[] }) => {
                     >
                       #{slide.position}
                     </span>
-                    {!slide.isActive ? (
-                      <span className="rounded-full bg-admin-active px-2 py-0.5 text-xs font-medium text-admin-gray">
-                        Inactive
-                      </span>
-                    ) : null}
                   </div>
 
-                  <p className="mt-1 text-[10px] sm:text-xs text-admin-gray-light">
+                  <p className="mt-1 text-xs text-admin-gray-light">
                     {slide.product.name}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4">
+              <div className="flex shrink-0 items-center justify-end gap-4 sm:w-auto">
                 <button
                   onClick={() => toggleActive(slide)}
                   disabled={pendingId === slide.id}
-                  className="text-admin-gray-light transition-colors hover:text-admin-ink active:scale-95 disabled:opacity-40"
+                  className="h-8 w-8 flex items-center justify-center rounded-full bg-admin-active text-admin-gray-light transition-colors hover:text-admin-ink active:scale-95 disabled:opacity-40"
                 >
                   {isActiving && pendingId === slide.id ? (
                     <Loader className="h-4 w-4 animate-spin" />
@@ -175,14 +179,14 @@ const HeroSlidesPanel = ({ products }: { products: Product[] }) => {
 
                 <button
                   onClick={() => openEdit(slide)}
-                  className="text-admin-gray-light transition-colors hover:text-admin-ink active:scale-95 disabled:opacity-40"
+                  className="h-8 w-8 flex items-center justify-center rounded-full bg-admin-active text-admin-gray-light transition-colors hover:text-admin-ink active:scale-95 disabled:opacity-40"
                 >
                   <Pencil className="h-4 w-4" />
                 </button>
 
                 <button
                   onClick={() => handleDelete(slide)}
-                  className="text-error/80 transition-colors hover:text-error active:scale-95 disabled:opacity-40"
+                  className="h-8 w-8 flex items-center justify-center bg-admin-pink/10 rounded-full text-error/80 transition-colors hover:text-error active:scale-95 disabled:opacity-40"
                 >
                   {isDeleting && pendingId === slide.id ? (
                     <Loader className="h-4 w-4 animate-spin" />

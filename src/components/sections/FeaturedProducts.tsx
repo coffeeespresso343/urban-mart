@@ -15,7 +15,7 @@ const FeaturedProducts = () => {
       setIsLoading(true);
       try {
         const products = await fetchProducts();
-        setNewArrivals(getNewArrivals(products));
+        setNewArrivals(getNewArrivals(products, 4));
       } catch (error) {
         console.error("Failed to load new arrivals", error);
       } finally {

@@ -1,9 +1,10 @@
 import {
   ArrowDownCircle,
   ArrowUpCircle,
-  Search,
+  Grid2X2,
+  Grid3X3,
+  List,
   SlidersHorizontal,
-  X,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { categories } from "../data/categories";
@@ -14,7 +15,7 @@ import {
 } from "../utils/filters";
 import { useDebounce } from "../hooks/useDebounce";
 import { useSearchParams } from "react-router-dom";
-import type { ProductCategory, SortOption } from "../types/Product";
+import type { ProductCategory, SortOption, ViewMode } from "../types/Product";
 import { sortProducts } from "../utils/sortProducts";
 import ProductGrid from "../components/product/ProductGrid";
 import { Button } from "../components/ui/Button";
@@ -23,6 +24,7 @@ import FilterSidebar from "../components/filters/FilterSidebar";
 import FilterDrawer from "../components/filters/FilterDrawer";
 import { ProductGridSkeleton } from "../components/ui/Skeleton";
 import { useProducts } from "../hooks/useProducts";
+import HeroBanner from "../components/shop/HeroBanner";
 
 const PAGE_SIZE = 12;
 
@@ -30,10 +32,13 @@ const Shop = () => {
   const { products, isLoading: productLoading } = useProducts();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchInput, setSearchInput] = useState("");
+
   const [filters, setFilters] = useState<ProductFilters>(defaultFilters);
   const [sort, setSort] = useState<SortOption>("featured");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const [viewMode, setViewMode] = useState<ViewMode>("grid-3");
 
   const debouncedSearch = useDebounce(searchInput, 250);
 
@@ -111,133 +116,154 @@ const Shop = () => {
   }, [activeCategory, categorySlug]);
 
   return (
-    <div className="container-edge bg-paper py-10 sm:py-14">
-      <div className="mb-8">
-        <h1 className="font-display text-3xl font-black tracking-wide sm:text-4xl">
-          Shop
-        </h1>
-        <div className="relative mt-6 max-w-md">
-          <Search className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-stone" />
-          <label htmlFor="shop-search" className="sr-only">
-            Search products
-          </label>
-          <input
-            id="shop-search"
-            type="text"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Search products..."
-            className="w-full border-b border-line-light bg-transparent py-2.5 pl-10 text-sm outline-none focus:border-ink"
-          />
-          {searchInput ? (
-            <button
-              onClick={() => setSearchInput("")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 text-stone hover:text-ink"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          ) : null}
-        </div>
+    <div className="min-h-screen bg-slate-50">
+      <HeroBanner searchInput={searchInput} setSearchInput={setSearchInput} />
 
-        <div className="no-scrollbar mt-6 flex gap-2 overflow-x-auto">
-          <button
-            onClick={() => updateFilter({ ...filters, categories: [] })}
-            className={`label-tag shrink-0 border px-4 py-2 font-medium transition-colors rounded-2xl duration-200 active:scale-95 ${
-              !activeCategory
-                ? "border-orange bg-orange text-ink"
-                : "border-line-light hover:border-orange"
-            }`}
-          >
-            All
-          </button>
-          {categories.map((cat) => {
-            const isActive = activeCategory === cat.slug;
-            return (
-              <button
-                ref={isActive ? activeCategoryRef : null}
-                key={cat.slug}
-                onClick={() =>
-                  updateFilter({
-                    ...filters,
-                    categories: [cat.name],
-                  })
-                }
-                className={`label-tag shrink-0 border px-4 py-2 font-medium transition-colors duration-200 active:scale-95 rounded-2xl ${
-                  activeCategory === cat.name
-                    ? "border-orange bg-orange text-ink"
-                    : "border-line-light hover:border-orange"
-                }`}
-              >
-                {cat.name}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-      <div className="sticky self-auto z-10 top-16 flex items-center justify-between bg-paper/98 border-y border-line-light py-4 lg:static lg:top-auto">
-        <p className="label-tag text-stone">
-          {filteredProducts.length} products
-        </p>
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => setDrawerOpen(true)}
-            className="label-tag bg-paper/50 border border-line-light text-ink-elevated px-2 py-1 rounded-md flex items-center gap-1.5 font-medium
-            active:scale-95 lg:hidden"
-          >
-            <SlidersHorizontal className="h-3.5 w-3.5" />
-            Filter
-          </button>
-          <div className="hidden lg:block">
-            <SortSelect value={sort} onChange={setSort} />
+      <main className="container-edge max-w-7xl mx-auto py-4">
+        <div className="mb-8">
+          <div className="no-scrollbar mt-6 flex gap-2 overflow-x-auto">
+            <button
+              onClick={() => updateFilter({ ...filters, categories: [] })}
+              className={`shrink-0 rounded-full border px-3 py-1 text-sm font-medium transition-all duration-200 ease-in-out active:scale-95 ${
+                !activeCategory
+                  ? "border-ink bg-ink text-paper shadow-sm"
+                  : "border-line-light bg-transparent text-ink hover:border-orange hover:text-orange"
+              }`}
+            >
+              All
+            </button>
+            {categories.map((cat) => {
+              const isActive = activeCategory === cat.name;
+              return (
+                <button
+                  ref={isActive ? activeCategoryRef : null}
+                  key={cat.slug}
+                  onClick={() =>
+                    updateFilter({
+                      ...filters,
+                      categories: [cat.name],
+                    })
+                  }
+                  className={`shrink-0 rounded-full border px-3 py-1 text-xs font-medium transition-all duration-200 ease-in-out  active:scale-95 ${
+                    isActive
+                      ? "border-ink bg-ink text-paper shadow-sm"
+                      : "border-line-light bg-transparent text-ink hover:border-orange hover:text-orange"
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              );
+            })}
           </div>
         </div>
-      </div>
-      <div className="block py-3 lg:hidden">
-        <SortSelect value={sort} onChange={setSort} />
-      </div>
-      <div className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-[220px_1fr]">
-        <aside className="hidden lg:block lg:sticky lg:self-start lg:top-30">
-          <FilterSidebar
-            filters={filters}
-            onChange={updateFilter}
-            onReset={resetFilter}
-          />
-        </aside>
+        <div className="sticky bg-slate-50/20 backdrop-blur-sm self-auto z-10 top-16 flex items-center justify-between  border-y border-ink/10 py-4 lg:static lg:top-auto">
+          <button
+            onClick={() => setDrawerOpen(true)}
+            className="text-xs font-semibold bg-ink/5 border border-ink/10 text-ink px-2 py-1.5 rounded-2xl flex items-center gap-1.5
+            active:scale-95 lg:hidden"
+          >
+            <SlidersHorizontal className="h-4 w-4" />
+            Filters
+          </button>
 
-        <div>
-          {productLoading ? (
-            <ProductGridSkeleton
-              count={Math.min(visibleProducts.length || PAGE_SIZE, PAGE_SIZE)}
-            />
-          ) : (
-            <>
-              <ProductGrid products={visibleProducts} />
-              {visibleCount < filteredProducts.length ? (
-                <div className="mt-12 flex justify-center">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-                  >
-                    View More <ArrowDownCircle className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
-              ) : visibleCount >= filteredProducts.length &&
-                visibleProducts.length > PAGE_SIZE / 2 ? (
-                <div className="mt-12 flex justify-center">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => window.scrollTo({ top: 0 })}
-                  >
-                    Back to Top <ArrowUpCircle className="h-3.5 w-3.5" />
-                  </Button>
-                </div>
-              ) : null}
-            </>
-          )}
+          <p className="text-sm font-medium text-ink">
+            Showing {filteredProducts.length} products
+          </p>
+
+          <div className="flex items-center gap-4">
+            <div className="hidden lg:block">
+              <SortSelect value={sort} onChange={setSort} />
+            </div>
+
+            <div className="flex items-center gap-1.5 rounded-2xl border border-ink/10 bg-ink/5 hover:bg-white/10">
+              <button
+                title="4 Column Grid"
+                onClick={() => setViewMode("grid-4")}
+                className={`hidden sm:block p-1.5 rounded-2xl text-xs transition-all active:scale-95 ${
+                  viewMode === "grid-4"
+                    ? "bg-ink text-paper"
+                    : "text-stone hover:text-current"
+                }`}
+              >
+                <Grid3X3 className="h-4 w-4" />
+              </button>
+
+              <button
+                title="3 Column Grid"
+                onClick={() => setViewMode("grid-3")}
+                className={`p-1.5 rounded-2xl text-xs transition-all active:scale-95 ${
+                  viewMode === "grid-3"
+                    ? "bg-ink text-paper"
+                    : "text-stone hover:text-current"
+                }`}
+              >
+                <Grid2X2 className="h-4 w-4" />
+              </button>
+
+              <button
+                title="List View"
+                onClick={() => setViewMode("list")}
+                className={`p-1.5 rounded-2xl text-xs transition-all active:scale-95 ${
+                  viewMode === "list"
+                    ? "bg-ink text-paper"
+                    : "text-stone hover:text-current"
+                }`}
+              >
+                <List className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+
+        <div className="block py-3 lg:hidden">
+          <SortSelect value={sort} onChange={setSort} />
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-[220px_1fr]">
+          <aside className="hidden lg:block lg:sticky lg:self-start lg:top-30">
+            <FilterSidebar
+              filters={filters}
+              onChange={updateFilter}
+              onReset={resetFilter}
+            />
+          </aside>
+
+          <div>
+            {productLoading ? (
+              <ProductGridSkeleton
+                count={Math.min(visibleProducts.length || PAGE_SIZE, PAGE_SIZE)}
+              />
+            ) : (
+              <>
+                <ProductGrid products={visibleProducts} viewMode={viewMode} />
+
+                {visibleCount < filteredProducts.length ? (
+                  <div className="mt-12 flex justify-center">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                    >
+                      View More <ArrowDownCircle className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                ) : visibleCount >= filteredProducts.length &&
+                  visibleProducts.length > PAGE_SIZE / 2 ? (
+                  <div className="mt-12 flex justify-center">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => window.scrollTo({ top: 0 })}
+                    >
+                      Back to Top <ArrowUpCircle className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                ) : null}
+              </>
+            )}
+          </div>
+        </div>
+      </main>
 
       <FilterDrawer
         isOpen={drawerOpen}

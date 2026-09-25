@@ -13,9 +13,10 @@ const AnnouncementBar = () => {
             className="label-tag flex items-center gap-16 font-medium"
           >
             {msg}
-            <span aria-hidden="true" className="text-orange">
-              /
-            </span>
+            <span
+              aria-hidden="true"
+              className="h-1 w-1 bg-orange rounded-full"
+            />
           </span>
         ))}
       </div>

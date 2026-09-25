@@ -61,8 +61,8 @@ const Navbar = () => {
     <header
       className={`sticky top-0 z-50 border-b transition-all duration-300 ${
         scrolled
-          ? "border-line-light bg-paper/80 backdrop-blur-md"
-          : "border-transparent bg-paper"
+          ? "border-line-light bg-white/80 backdrop-blur-md"
+          : "border-transparent bg-white"
       }`}
     >
       <div className="container-edge flex h-16 items-center justify-between sm:h-20">

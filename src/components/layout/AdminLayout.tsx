@@ -22,7 +22,6 @@ import { useAdminTheme } from "../../hooks/useAdminTheme";
 import Logo from "../../assets/Logo.png";
 import LogoLight from "../../assets/logo-light.png";
 import ImageWithFallback from "../ui/ImageWithFallback";
-import { useUIStore } from "../../hooks/uiStore";
 import { useEffect } from "react";
 import NotificationBell from "../admin/NotificationBell";
 

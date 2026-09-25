@@ -21,7 +21,7 @@ const Wishlist = () => {
 
   if (items.length <= 0) {
     return (
-      <div className="container-edge py-20">
+      <div className="container-edge bg-slate-50 py-20">
         <EmptyState
           icon={Heart}
           title="Your wishlist is empty"
@@ -39,7 +39,7 @@ const Wishlist = () => {
   }
 
   return (
-    <div className="container-edge py-10">
+    <div className="container-edge py-10 bg-slate-50">
       <h1 className="mb-8 flex items-center gap-2 font-display text-3xl font-black tracking-tight text-ink sm:text-4xl">
         <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-line-light bg-paper-dim sm:h-11 sm:w-11">
           <Heart className="h-5 w-5 text-orange" />

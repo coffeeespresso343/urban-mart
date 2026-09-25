@@ -26,7 +26,7 @@ const SortSelect = ({
         id="sort-select"
         value={value}
         onChange={(e) => onChange(e.target.value as SortOption)}
-        className="label-tag appearance-none border-none bg-transparent px-1 py-1 pr-6 font-semibold text-ink focus:outline-none"
+        className="text-xs appearance-none border border-ink/10  bg-transparent px-2 py-1 pr-6 font-semibold text-ink focus:outline-none"
       >
         {OPTIONS.map((opt) => (
           <option key={opt.value} value={opt.value}>

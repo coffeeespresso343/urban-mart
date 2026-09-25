@@ -48,3 +48,5 @@ export type SortOption =
   | "price-asc"
   | "price-desc"
   | "rating";
+
+export type ViewMode = "grid-4" | "grid-3" | "list";

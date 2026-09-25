@@ -61,7 +61,7 @@ function Delta({ pct }: { pct: number | null }) {
     return <span className="text-xs text-admin-gray-light">No prior data</span>;
   }
 
-  const positive = pct > 0;
+  const positive = pct >= 0;
 
   return (
     <span
@@ -137,8 +137,6 @@ const AdminOverview = () => {
   if (!metrics) {
     return (
       <div className="flex flex-col gap-5">
-        <Skeleton className="h-4 w-20 rounded-md" />
-        <Skeleton className="h-4 w-50 rounded-md" />
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-30 w-full rounded-xl" />
