@@ -5,10 +5,22 @@ import { useEffect, useState } from "react";
 import { ProductGridSkeleton } from "../ui/Skeleton";
 import type { Product } from "../../types/Product";
 import { fetchProducts, getNewArrivals } from "../../lib/products";
+import ProductQuickViewModal from "../shop/ProductQuickViewModal";
 
 const FeaturedProducts = () => {
   const [newArrivals, setNewArrivals] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
+    null,
+  );
+
+  const handleQuickView = (product: Product) => {
+    setQuickViewProduct(product);
+  };
+
+  const closeQuickView = () => {
+    setQuickViewProduct(null);
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -26,7 +38,7 @@ const FeaturedProducts = () => {
   }, []);
 
   return (
-    <section className="bg-paper py-20 sm:py-28">
+    <section className="bg-slate-50 py-20 sm:py-28">
       <div className="container-edge">
         <div className="mb-10 flex items-end justify-between">
           <div>
@@ -47,7 +59,17 @@ const FeaturedProducts = () => {
           <ProductGridSkeleton count={6} />
         ) : (
           <>
-            <ProductGrid products={newArrivals} />
+            <ProductGrid
+              products={newArrivals}
+              viewMode="grid-4"
+              onQuickView={handleQuickView}
+            />
+            {quickViewProduct && (
+              <ProductQuickViewModal
+                product={quickViewProduct}
+                onClose={closeQuickView}
+              />
+            )}
 
             <div className="mt-10 flex items-center justify-center sm:hidden">
               <Link

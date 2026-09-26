@@ -5,9 +5,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Product } from "../../types/Product";
 import { fetchProducts, getBestSellers } from "../../lib/products";
 import { ProductCardSkeleton } from "../ui/Skeleton";
+import ProductQuickViewModal from "../shop/ProductQuickViewModal";
 
 const BestSellers = () => {
   const [bestSellers, setBestSellers] = useState<Product[] | null>(null);
+
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
+    null,
+  );
+
+  const handleQuickView = (product: Product) => {
+    setQuickViewProduct(product);
+  };
+
+  const closeQuickView = () => {
+    setQuickViewProduct(null);
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -143,7 +156,17 @@ const BestSellers = () => {
                 transition={{ duration: 0.4 }}
                 className="w-[72vw] shrink-0 snap-center sm:w-[45vw] lg:w-[23vw]"
               >
-                <ProductCard product={product} />
+                <ProductCard
+                  product={product}
+                  viewMode="grid-3"
+                  onQuickView={handleQuickView}
+                />
+                {quickViewProduct && (
+                  <ProductQuickViewModal
+                    product={quickViewProduct}
+                    onClose={closeQuickView}
+                  />
+                )}
               </motion.div>
             ))}
           </div>

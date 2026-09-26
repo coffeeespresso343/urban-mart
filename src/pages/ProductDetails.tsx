@@ -100,7 +100,7 @@ const ProductDetails = () => {
           <h2 className="mb-8 font-display text-2xl font-bold tracking-wide">
             You May Also Like
           </h2>
-          <ProductGrid products={related} />
+          <ProductGrid products={related} viewMode="grid-4" />
         </section>
       ) : null}
 
@@ -109,7 +109,7 @@ const ProductDetails = () => {
           <h2 className="mb-8 font-display text-2xl font-bold tracking-wide">
             Recently Viewed
           </h2>
-          <ProductGrid products={recentlyViewed} />
+          <ProductGrid products={recentlyViewed} viewMode="grid-4" />
         </section>
       ) : null}
     </motion.div>

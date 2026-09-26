@@ -15,7 +15,12 @@ import {
 } from "../utils/filters";
 import { useDebounce } from "../hooks/useDebounce";
 import { useSearchParams } from "react-router-dom";
-import type { ProductCategory, SortOption, ViewMode } from "../types/Product";
+import type {
+  Product,
+  ProductCategory,
+  SortOption,
+  ViewMode,
+} from "../types/Product";
 import { sortProducts } from "../utils/sortProducts";
 import ProductGrid from "../components/product/ProductGrid";
 import { Button } from "../components/ui/Button";
@@ -25,6 +30,7 @@ import FilterDrawer from "../components/filters/FilterDrawer";
 import { ProductGridSkeleton } from "../components/ui/Skeleton";
 import { useProducts } from "../hooks/useProducts";
 import HeroBanner from "../components/shop/HeroBanner";
+import ProductQuickViewModal from "../components/shop/ProductQuickViewModal";
 
 const PAGE_SIZE = 12;
 
@@ -39,6 +45,18 @@ const Shop = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const [viewMode, setViewMode] = useState<ViewMode>("grid-3");
+
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
+    null,
+  );
+
+  const handleQuickView = (product: Product) => {
+    setQuickViewProduct(product);
+  };
+
+  const handleCloseQuickView = () => {
+    setQuickViewProduct(null);
+  };
 
   const debouncedSearch = useDebounce(searchInput, 250);
 
@@ -235,7 +253,18 @@ const Shop = () => {
               />
             ) : (
               <>
-                <ProductGrid products={visibleProducts} viewMode={viewMode} />
+                <ProductGrid
+                  products={visibleProducts}
+                  viewMode={viewMode}
+                  onQuickView={handleQuickView}
+                />
+
+                {quickViewProduct && (
+                  <ProductQuickViewModal
+                    product={quickViewProduct}
+                    onClose={handleCloseQuickView}
+                  />
+                )}
 
                 {visibleCount < filteredProducts.length ? (
                   <div className="mt-12 flex justify-center">

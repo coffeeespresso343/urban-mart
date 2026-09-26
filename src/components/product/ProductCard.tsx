@@ -8,14 +8,16 @@ import Badge from "../ui/Badge";
 import ProductRating from "./ProductRating";
 import { useCart } from "../../hooks/useCart";
 import { useWishlist } from "../../hooks/useWishlist";
-import { useState } from "react";
+import { useState, type MouseEvent } from "react";
 
 const ProductCard = ({
   product,
   viewMode,
+  onQuickView,
 }: {
   product: Product;
   viewMode: ViewMode;
+  onQuickView: (product: Product) => void;
 }) => {
   const { addItem, isAdded } = useCart();
   const { isWishListed, toggleWishlist } = useWishlist();
@@ -26,7 +28,7 @@ const ProductCard = ({
 
   const added = isAdded(product.id, product.colors?.[0]);
 
-  const handleAddToCart = (e) => {
+  const handleAddToCart = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -74,16 +76,41 @@ const ProductCard = ({
           </div>
 
           <button
+            type="button"
+            aria-label={
+              wishlisted
+                ? `Remove ${product.name} from wishlist`
+                : `Add ${product.name} to wishlist`
+            }
+            aria-pressed={wishlisted}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
               toggleWishlist(product);
             }}
-            className="absolute top-2 right-2"
+            className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full
+        border border-paper/50 bg-paper/65 text-ink shadow-sm backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-orange/30 hover:bg-paper active:scale-95"
           >
-            <Heart
-              className={`h-4 w-4 ${wishlisted ? "fill-orange text-orange" : "text-ink"}`}
-            />
+            <motion.span
+              key={wishlisted ? "on" : "off"}
+              initial={{ scale: 0.65 }}
+              animate={{ scale: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 15,
+              }}
+            >
+              <Heart
+                strokeWidth={1.8}
+                aria-hidden="true"
+                className={`
+            h-4.25 w-4.25
+            transition-colors duration-200
+            ${wishlisted ? "fill-orange text-orange" : "text-ink"}
+          `}
+              />
+            </motion.span>
           </button>
         </div>
 
@@ -103,6 +130,15 @@ const ProductCard = ({
           <p className="text-xs text-stone line-clamp-2">
             {product.description}
           </p>
+          {lowStock && !outOfStock ? (
+            <div className="mt-2 flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-warn" />
+
+              <span className="text-[10px] font-medium text-warn">
+                Only {product.stock} left
+              </span>
+            </div>
+          ) : null}
 
           <div className="pt-4 flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
@@ -117,7 +153,10 @@ const ProductCard = ({
             </div>
 
             <div className="flex items-center gap-3">
-              <button className="p-2 rounded-full bg-ink/90 text-white hover:text-orange transition-all duration-300 active:scale-95">
+              <button
+                onClick={() => onQuickView(product)}
+                className="p-2 rounded-full bg-ink/90 text-white hover:text-orange transition-all duration-300 active:scale-95"
+              >
                 <Info className="h-4 w-4" strokeWidth={2.5} />
               </button>
               <button
@@ -180,24 +219,15 @@ const ProductCard = ({
     hover:-translate-y-0.5
   "
     >
-      <Link
-        to={`/product/${product.id}`}
-        className="
-      relative block aspect-4/5
-      overflow-hidden rounded-t-xl
-      bg-paper-dim
-    "
+      <div
+        onClick={() => onQuickView(product)}
+        className="relative block aspect-4/5 overflow-hidden rounded-t-xl bg-paper-dim"
       >
         <ImageWithFallback
           src={product.images[0]}
           alt={product.name}
           aria-label={product.name}
-          className="
-        h-full w-full object-cover
-        transition-transform duration-700
-        ease-out
-        group-hover:scale-[1.045]
-      "
+          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
         />
 
         <div
@@ -243,21 +273,9 @@ const ProductCard = ({
             e.stopPropagation();
             toggleWishlist(product);
           }}
-          className="
-        absolute right-2 top-2
-        flex h-8 w-8 items-center justify-center
-        rounded-full
-        border border-paper/50
-        bg-paper/65
-        text-ink
-        shadow-sm
-        backdrop-blur-md
-        transition-all duration-300
-        hover:scale-105
-        hover:border-orange/30
-        hover:bg-paper
-        active:scale-95
-      "
+          className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full border border-paper/50
+        bg-paper/65 text-ink shadow-sm backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-orange/30
+         hover:bg-paperactive:scale-95"
         >
           <motion.span
             key={wishlisted ? "on" : "off"}
@@ -273,7 +291,7 @@ const ProductCard = ({
               strokeWidth={1.8}
               aria-hidden="true"
               className={`
-            h-[17px] w-[17px]
+            h-4.25 w-4.25
             transition-colors duration-200
             ${wishlisted ? "fill-orange text-orange" : "text-ink"}
           `}
@@ -297,7 +315,7 @@ const ProductCard = ({
             disabled={outOfStock}
             className="
               flex w-full items-center justify-center gap-2
-              rounded-xl border border-white/40 bg-paper/90 px-4 py-2.5
+              rounded-xl border border-white/40 bg-white/90 px-4 py-2.5
               text-xs font-semibold text-ink shadow-lg backdrop-blur-md
               transition-all duration-200 hover:bg-orange hover:text-white hover:border-orange
               active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-75
@@ -312,10 +330,7 @@ const ProductCard = ({
                   exit={{ opacity: 0, y: -5 }}
                   className="flex items-center gap-2"
                 >
-                  <Check
-                    className="h-4 w-4 text-emerald-500 animate-bounce"
-                    strokeWidth={2.5}
-                  />
+                  <Check className="h-4 w-4 animate-bounce" strokeWidth={2.5} />
                   Added to Cart
                 </motion.span>
               ) : (
@@ -337,7 +352,7 @@ const ProductCard = ({
             </AnimatePresence>
           </button>
         </div>
-      </Link>
+      </div>
 
       <div className="flex flex-1 flex-col px-1.5 pb-2 pt-4 sm:px-2">
         <span className="label-tag text-[9px] text-stone">
@@ -346,15 +361,8 @@ const ProductCard = ({
 
         <Link
           to={`/product/${product.id}`}
-          className="
-        mt-1.5 line-clamp-2
-        text-[13px] font-semibold
-        leading-snug tracking-[-0.01em]
-        text-ink
-        transition-colors duration-200
-        hover:text-orange
-        sm:text-sm
-      "
+          className="mt-1.5 line-clamp-2 text-[13px] font-semibold leading-snug tracking-[-0.01em]
+        text-ink transition-colors duration-200 hover:text-orange sm:text-sm"
         >
           {product.name}
         </Link>

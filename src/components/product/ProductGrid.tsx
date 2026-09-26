@@ -8,10 +8,12 @@ import { useMemo } from "react";
 const ProductGrid = ({
   products,
   viewMode,
+  onQuickView,
   emptyMessage = "Try adjusting your filters or search terms.",
 }: {
   products: Product[];
   viewMode: ViewMode;
+  onQuickView: (product: Product) => void;
   emptyMessage?: string;
 }) => {
   const gridClasses = useMemo(() => {
@@ -43,7 +45,11 @@ const ProductGrid = ({
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.4, delay: Math.min(index, 8) * 0.04 }}
         >
-          <ProductCard product={product} viewMode={viewMode} />
+          <ProductCard
+            product={product}
+            viewMode={viewMode}
+            onQuickView={onQuickView}
+          />
         </motion.div>
       ))}
     </div>

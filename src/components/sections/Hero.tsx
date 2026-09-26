@@ -7,6 +7,7 @@ import SlideNavigation from "../hero/SlideNavigation";
 import QuickViewModal from "../hero/QuickVIewModal";
 import { useCart } from "../../hooks/useCart";
 import type { Product } from "../../types/Product";
+import { Loader2 } from "lucide-react";
 
 const Hero = () => {
   const { addItem } = useCart();
@@ -82,7 +83,9 @@ const Hero = () => {
 
   if (slides === null) {
     return (
-      <section className="py-8 min-h-(100vh-60px) w-full animate-pulse bg-ink" />
+      <section className="py-8 w-full flex items-center justify-center bg-ink">
+        <Loader2 className="h-5 w-5 animate-spin text-white" />
+      </section>
     );
   }
 
