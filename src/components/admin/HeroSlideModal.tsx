@@ -55,7 +55,6 @@ const slideToForm = (slide: HeroSlide): FormState => ({
 const HeroSlideModal = ({
   isOpen,
   onClose,
-
   onSaved,
   editingSlide,
   products,
@@ -95,6 +94,7 @@ const HeroSlideModal = ({
       image: product.images[0] ?? "",
       thumb: product.images[0] ?? "",
       title: f.title || product.name,
+      description: f.description || product.description,
     }));
   };
 

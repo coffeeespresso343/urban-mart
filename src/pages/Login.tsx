@@ -3,8 +3,11 @@ import {
   AlertCircle,
   ArrowRight,
   CheckCircle2,
+  Eye,
+  EyeOff,
   Info,
   Mail,
+  ShieldCheck,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
@@ -12,8 +15,6 @@ import { Button } from "../components/ui/Button";
 import { useAuth } from "../hooks/useAuth";
 import { isValidEmail, isValidPassword, required } from "../utils/validation";
 import { useUIStore } from "../hooks/uiStore";
-import ImageWithFallback from "../components/ui/ImageWithFallback";
-import Logo from "../assets/Logo.png";
 
 type Mode = "sign-in" | "sign-up" | "magic-link";
 
@@ -41,6 +42,8 @@ const Login = () => {
   const [errors, setErrors] = useState<FiledErrors>({});
   const [magicLinkSent, setMagicLinkSent] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -78,7 +81,7 @@ const Login = () => {
     const newErrors: FiledErrors = {};
 
     if (!required(email)) {
-      newErrors.email = "Valid email address is required.";
+      newErrors.email = "Email address is required.";
     } else if (!isValidEmail(email)) {
       newErrors.email = "Please enter a valid email address.";
     }
@@ -165,22 +168,15 @@ const Login = () => {
   };
 
   return (
-    <div className="container-edge flex min-h-[70vh] items-center justify-center py-16">
+    <div className="container-edge flex min-h-[70vh] bg-white/80 items-center justify-center py-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-sm"
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="w-full max-w-sm border border-paper bg-paper rounded-xl p-6"
       >
         <div className="flex flex-col items-center">
-          <Link to="/" className="flex items-center h-full w-36 lg:w-40">
-            <ImageWithFallback
-              src={Logo}
-              alt="Urban-Mart-Logo"
-              className="h-auto w-full object-contain"
-            />
-          </Link>
-          <h1 className="mt-6 font-display text-2xl font-bold">
+          <h1 className="mt-6 text-orange font-display text-2xl font-bold">
             {mode === "sign-up" ? "Create Account" : "Sign In"}
           </h1>
           <p className="mt-2 text-sm text-stone">
@@ -188,7 +184,7 @@ const Login = () => {
               ? "Save addresses and track orders across devices."
               : "Access your order history and saved details."}
           </p>
-          <p className="mt-3 text-orange flex items-center gap-1 p-2 rounded-lg text-xs bg-orange/5 border border-orange/10">
+          <p className="mt-3 text-stone flex items-center gap-1 p-2 rounded-lg text-xs bg-orange/5 border border-orange/10">
             <Info className="h-3.5 w-3.5" /> Please use VPN to connect your
             account
           </p>
@@ -235,7 +231,7 @@ const Login = () => {
                   )}
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <label htmlFor="first-name" className="label-tag text-stone">
+                  <label htmlFor="last-name" className="label-tag text-stone">
                     Last Name
                   </label>
                   <input
@@ -268,7 +264,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => handleChange("email", e.target.value)}
                 placeholder="you@example.com"
-                className={`border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
+                className={`w-full border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
                   errors.email ? "border-warn" : "border-line-light"
                 }`}
               />
@@ -285,16 +281,32 @@ const Login = () => {
                 <label htmlFor="password" className="label-tag text-stone">
                   Password*
                 </label>
-                <input
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="At least 8 characters."
-                  className={`border rounded-lg bg-paper px-3.5 py-3 outline-none text-sm focus:border-ink ${
-                    errors.password ? "border-warn" : "border-line-light"
-                  }`}
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="At least 8 characters"
+                    className={`w-full border rounded-lg bg-paper px-3.5 py-3 pr-11 outline-none text-sm focus:border-ink ${
+                      errors.password ? "border-warn" : "border-line-light"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-stone hover:text-stone/80"
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="mt-0.5 flex items-center gap-1 text-xs text-warn">
                     <AlertCircle className="h-3 w-3 shrink-0" />
@@ -312,7 +324,7 @@ const Login = () => {
 
             <Button
               type="submit"
-              size="md"
+              size="lg"
               className="mt-2"
               isLoading={isSubmitting}
             >
@@ -367,6 +379,11 @@ const Login = () => {
               </button>
             </>
           )}
+        </p>
+
+        <p className="mt-6 flex items-center justify-center gap-1.5 text-xs text-stone">
+          <ShieldCheck className="h-3.5 w-3.5 shrink-0" />
+          Your details are encrypted and never shared.
         </p>
 
         <p className="mt-4 text-center">

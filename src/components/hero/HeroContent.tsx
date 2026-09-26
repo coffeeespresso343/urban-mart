@@ -21,18 +21,6 @@ interface HeroContentProps {
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const getTitleParts = (title: string, highlightText: string) => {
-  const index = title.indexOf(highlightText);
-  if (index === -1) {
-    return { before: title, highlight: "", after: "" };
-  }
-  return {
-    before: title.slice(0, index),
-    highlight: highlightText,
-    after: title.slice(index + highlightText.length),
-  };
-};
-
 const TrustFeatures = () => {
   const features = [
     { icon: Truck, title: "Fast Delivery", description: "Free over $99" },
@@ -67,8 +55,6 @@ const HeroContent = ({
   onAddToCart,
   onQuickView,
 }: HeroContentProps) => {
-  const titleParts = getTitleParts(slide.title, slide.highlightText);
-
   return (
     <div className="order-2 relative z-10 lg:order-1 lg:col-span-6">
       <AnimatePresence mode="wait">
@@ -105,19 +91,17 @@ const HeroContent = ({
             </div>
           </div>
           {/* Heading */}
-          <h1 className="text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-            {titleParts.before}
-            {titleParts.highlight && (
-              <span
-                className="bg-linear-to-r bg-clip-text text-transparent"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${slide.accentColor}, #F59E0B)`,
-                }}
-              >
-                {titleParts.highlight}
-              </span>
-            )}
-            {titleParts.after}
+          <h1 className="text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-6xl lg:text-6xl">
+            {slide.title.split(slide.highlightText)[0]}{" "}
+            <span
+              className="bg-linear-to-r bg-clip-text text-transparent"
+              style={{
+                backgroundImage: `linear-gradient(135deg, ${slide.accentColor}, #F59E0B)`,
+              }}
+            >
+              {slide.highlightText}
+            </span>
+            {slide.title.split(slide.highlightText)[1]}
           </h1>
           {/* Description */}
           <p className="mt-6 max-w-xl line-clamp-2 text-base leading-relaxed text-stone-400 sm:text-lg">

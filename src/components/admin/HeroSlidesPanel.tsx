@@ -12,7 +12,7 @@ import { Eye, EyeOff, Loader, Pencil, Plus, Star, Trash2 } from "lucide-react";
 import ImageWithFallback from "../ui/ImageWithFallback";
 import HeroSlideModal from "./HeroSlideModal";
 
-const MAX_ACTIVE_SLIDES = 4;
+const MAX_ACTIVE_SLIDES = 5;
 
 const HeroSlidesPanel = ({ products }: { products: Product[] }) => {
   const showToast = useUIStore((s) => s.showToast);
