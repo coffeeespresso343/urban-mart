@@ -66,7 +66,7 @@ const ProductQuickViewModal = ({
           </button>
 
           <div className="p-2 bg-slate-50 flex flex-col justify-between">
-            <div className="aspect-square rounded-2xl overflow-hidden bg-white border border-ink/20">
+            <div className="aspect-video sm:aspect-square rounded-2xl overflow-hidden bg-white border border-ink/20">
               <ImageWithFallback
                 src={selectedImage}
                 alt=""
